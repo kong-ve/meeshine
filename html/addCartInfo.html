@@ -105,8 +105,10 @@ for(var el = 0;el<colorL.length;el++){
       $api.text(product,txt);
     });
 }
+var photoBrowser;
 apiready= function() {
   api.parseTapmode();
+  photoBrowser = api.require('photoBrowser')
   var params = api.pageParam;
   var footer = 　$api.byId('footer');
       $api.fixTabBar(footer);
@@ -124,7 +126,7 @@ function SelectList_all(){
 
 }
 function pic_all() {
-  var photoBrowser = api.require('photoBrowser');
+
 photoBrowser.open({
 images: [
     'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
@@ -135,9 +137,12 @@ images: [
 bgColor: '#000'
 }, function(ret, err) {
 if (ret) {
-    alert(JSON.stringify(ret));
+  if(ret.eventType == 'click'){
+    photoBrowser.close();
+  }
+    console.log(JSON.stringify(ret));
 } else {
-    alert(JSON.stringify(err));
+    console.error(JSON.stringify(err));
 }
 });
 }

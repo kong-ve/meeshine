@@ -623,47 +623,63 @@ function myInfoMes() {
     }
 function shareTos(id) {
     debugger
-    if(id == 'facebook'){
-      var facebook = api.require('facebook');
-      facebook.isInstalled(function(ret, err) {
-    if (ret.installed) {
-        alert("当前设备已安装facebook客户端");
-    } else {
-        alert('当前设备未安装facebook客户端');
-    }
-});
-    facebook.shareLinked({
-        url: 'http://www.apicloud.com/',
-        imgUrl: 'http://p6.sinaimg.cn/2823006341/180/51101340154713',
-        description: 'app 跨平台开发工具',
-        title: 'APICloud',
-        quote: 'very good'
-    }, function(ret, err){
-         if(ret.status) {
-           api.alert({msg:JSON.stringify(ret)});
-         } else {
-            api.alert({msg:JSON.stringify(err)});
-         }
-   });
-}else{
+//     if(id == 'facebook'){
+//       var facebook = api.require('facebook');
+//     facebook.shareLinked({
+//         url: ""+userData[page].goods_video_url+"",
+//         imgUrl: ""+userData[page].goods_video_url+"",
+//         description: 'app 跨平台开发工具',
+//         title: 'APICloud',
+//         quote: 'very good'
+//     }, function(ret, err){
+//          if(ret.status) {
+//            api.alert({msg:JSON.stringify(ret)});
+//          } else {
+//             api.alert({msg:JSON.stringify(err)});
+//          }
+//    });
+// }else{
   document.getElementById(userData[page].id).pause();
-  var mobSharePlus = api.require('mobSharePlus');
-  mobSharePlus.shareTo({
-      target: id,
-      title: '北京新鲜事',
-      titleUrl: 'https://www.apicloud.com',
-      text: '这里是测试的内容',
-      imgPaths: [userData[page].imageUrl],
-      url: 'https://www.apicloud.com',
-  }, function(ret, err) {
-      if (ret.status) {
-          api.alert({
-              msg: JSON.stringify(ret)
-          });
+  var ShareSDKPlus = api.require('ShareSDKPlus');
+  ShareSDKPlus.shareContent({
+      "platform": $sharesdk.PlatformID[id],
+      "shareParams":{
+        "text" : "测试的文字",
+        "imageUrl" : "http://download.sdk.mob.com/206/4f8/dfc9ea27dd8bc4abfec865c38d/800_450_156.2.jpg",
+        "title" : "测试的标题",
+        "titleUrl" : ""+userData[page].goods_video_url+"",
+        "description" : "测试的描述",
+        "site" : "ShareSDK",
+        "siteUrl" : "http://www.mob.com",
+        "type" : $sharesdk.ContentType.Video
       }
+  }, function(ret, err) {
+    var state = ret.state;
+ switch(state)
+ {
+     case $sharesdk.ResponseState.Success://1
+         api.toast({
+             msg: "分享成功",
+             location: 'middle'
+         });
+     break;
+     case $sharesdk.ResponseState.Fail://2
+         api.toast({
+             msg: "分享失败",
+             location: 'middle'
+         });
+     break;
+     case $sharesdk.ResponseState.Cancel://3
+         api.toast({
+             msg: "取消分享",
+             location: 'middle'
+     });
+     break;
+    default:
+ }
   })
   document.getElementById(userData[page].id).play();
-}
+// }
 
 }
 
