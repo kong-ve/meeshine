@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="twitter:" content="">
+    <meta name="facebook:" content="">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+  <div class="aui-searchbar aui-hide" id="search">
+          <form class="aui-searchbar-input aui-border-radius" action="javascript:searchForm()">
+              <i class="aui-iconfont aui-icon-search"></i>
+              <input type="search" placeholder="请输入搜索内容" id="search-input">
+              <div class="aui-searchbar-clear-btn">
+                  <i class="aui-iconfont aui-icon-close"></i>
+              </div>
+          </form>
+          <div class="aui-searchbar-btn" tapmode onclick="hideSelect()">取消</div>
+      </div>
+    <div class="aui-hide model-aui" id="model-show" onclick="hideModel()"></div>
+    <div class="aui-hide sell-model-aui" id="sell-model-show" onclick="hideSell()"></div>
+    <div class="sell-model-aui aui-hide" id="com-show" onclick="hideCom()"></div>
+    <div class="sell-model-aui aui-hide" id="select-show" onclick="hideSelect()"></div>
+    <header id="aui-header" class="aui-bar aui-bar-nav">
+        <div class="aui-pull-left aui-btn" onclick="LefePaneOpen()">
+            <span class="aui-iconfont aui-icon-menu"></span>
+            <span class="camera-text">分类</span>
+        </div>
+        <div class="aui-title">
+            <div class="aui-tab">
+                <div class="aui-tab-item tapmode aui-active" onclick="switchLoading(this,'./header_local.html','home')">推荐</div>
+                <span id="page_aui"></span>
+                <div class="aui-tab-item tapmode" onclick="switchLoading(this,'./localList_win.html','localList')">广州</div>
+            </div>
+        </div>
+
+        <div class="aui-pull-right aui-btn" onclick="RightPaneOpen()">
+            <span class="aui-iconfont aui-icon-cart"></span>
+        </div>
+        <div class="aui-pull-right aui-btn" id="selectbtn" onclick="searchShow(this)">
+            <span class="aui-iconfont aui-icon-search"></span>
+        </div>
+    </header>
+
+    <div id="userBtn" class="flex-btn" style="top:28%" onclick="onAddFL(this)" data-id="28">
+        <div class="btnbox border-white">
+            <div class="img-user">
+                <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png" />
+            </div>
+            <div class="add-user">
+                <i class="icon iconfont icon-plus" size="24"></i>
+                <i class="aui-iconfont aui-icon-correct aui-hide"></i>
+            </div>
+
+        </div>
+    </div>
+    <div id="likeBtn" class="flex-btn" style="" onclick="heartLike()">
+        <div class="btnbox">
+            <i class="icon iconfont icon-heart" size="24"></i>
+            <span class="icon-number">15</span>
+        </div>
+    </div>
+    <div id="shareBtn" class="flex-btn" style="" onclick="openShare()">
+        <div class="btnbox">
+            <i class="icon iconfont icon-share-big" color="#fff" size="24"></i>
+            <span class="icon-number">15</span>
+        </div>
+    </div>
+    <div id="commitBtn" class="flex-btn" style="" onclick="openCom()">
+        <div class="btnbox">
+            <i class="icon iconfont icon-ping" size="24"></i>
+            <span class="icon-number">15</span>
+        </div>
+    </div>
+
+    <div id="shopcartBtn" class="flex-btn" style="" onclick="openSell('all')">
+        <div class="btnbox bg">
+            <i class="icon iconfont icon-addShopcart" size="24"></i>
+            <span class="icon-number-top">sold:15</span>
+        </div>
+    </div>
+    <!-- <div id="sellBtn" class="flex-btn-left" style="top:80%" onclick="openSell('all')">
+        <div class="shopBtn">
+            <i class="iconfont icon-shop-cart-white" size="24"></i>
+            <span>123456</span>
+        </div>
+    </div> -->
+    <div class="swipe-wrap" id="slip">
+        <article class="swipe">
+
+
+
+        </article>
+    </div>
+    <div class="ui-transfer-dom ui-mask share_mask page-e4cd19 show blur-light-android" style="top: 0px; visibility: visible;display:none;" id="share">
+        <div class="column_wrap active ui-view">
+            <div ui:for-index="index" class="column_content ui-view" style="animation-duration: 0.1s;" onclick="shareTos('facebook')">
+                <div class="ui-view">
+                    <div class="ui-view" style="background-color: rgb(65, 196, 81);"><i class="iconfont icon-Facebook" style="font-size: 30px; color: rgb(255, 255, 255);"></i></div>
+                    <div class="ui-text">
+                        <!---->
+                        <span>facebook</span>
+                        <!---->
+                    </div>
+                </div>
+            </div>
+            <div ui:for-index="index" class="column_content ui-view" style="animation-duration: 0.2s;" onclick="shareTos('googlePlus')">
+                <div class="ui-view">
+                    <div class="ui-view" style="background-color: rgb(65, 196, 81);"><i class="iconfont icon-google-plus" style="font-size: 30px; color: rgb(255, 255, 255);"></i></div>
+                    <div class="ui-text">
+                        <!---->
+                        <span>google+</span>
+                        <!---->
+                    </div>
+                </div>
+            </div>
+            <div ui:for-index="index" class="column_content ui-view" style="animation-duration: 0.4s;" onclick="shareTos('twitter')">
+                <div class="ui-view">
+                    <div class="ui-view" style="background-color: rgb(245, 59, 67);"><i class="iconfont icon-ttww" style="font-size: 30px; color: rgb(255, 255, 255);"></i></div>
+                    <div class="ui-text">
+                        <!----><span>twitter</span>
+                        <!---->
+                    </div>
+                </div>
+            </div>
+            <div ui:for-index="index" class="column_content ui-view" style="animation-duration: 0.5s;" onclick="shareTos('instagram')">
+                <div class="ui-view">
+                    <div class="ui-view" style="background-color: rgb(245, 59, 67);"><i class="iconfont icon-ins" style="font-size: 30px; color: rgb(255, 255, 255);"></i></div>
+                    <div class="ui-text">
+                        <!----><span>instagram</span>
+                        <!---->
+                    </div>
+                </div>
+            </div>
+            <div class="close ui-view" onclick="openShare()"><i class="iconfont icon-cancel" style="font-size: 20px; color: rgb(94, 94, 94);"></i></div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/slip.js"></script>
+<script type="text/javascript" src="../script/home.js"></script>
+
+<script type="text/javascript">
+    var container = document.getElementById('slip');
+    var pages;
+    var slip;
+    var sellType = 'all';
+    var moveIsTrue = false;
+    var otherclick = false;
+    var paneName = '';
+    var userData = [];
+    var page = 0;
+    var openShareModel = false;
+    var x_open = 0;
+    var p = 0;
+    // var footer_h = 85;
+    // GetVideoList(userData,container,'.swipe',footer_h);
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('aui-header');
+        $api.fixStatusBar(header);
+        $api.css($api.byId('search'),'margin-top:'+api.safeArea.top+'px');
+        api.setStatusBarStyle({
+            style: 'light',
+        });
+        var footer_h = api.pageParam.foot;
+          userVideo(footer_h,container,p);
+    };
+    var searchBar = document.querySelector(".aui-searchbar-input");
+    if(searchBar){
+        searchBar.onclick = function(){
+            document.querySelector(".aui-searchbar-btn").style.marginRight = 0;
+        }
+    }
+    document.querySelector(".aui-searchbar-btn").onclick = function(){
+        this.style.marginRight = "-"+this.offsetWidth+"px";
+        document.getElementById("search-input").value = '';
+        document.getElementById("search-input").blur();
+    }
+
+</script>
+
+</html>

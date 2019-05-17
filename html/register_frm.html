@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+	<style>
+        .login-third {
+            margin-top: 3rem;
+        }
+	</style>
+</head>
+<body>
+    <section class="aui-content aui-margin-t-15">
+        <ul class="aui-list aui-form-list">
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label aui-border-r color-orange">
+                      手机号
+                  </div>
+                  <div class="aui-list-item-input aui-padded-l-10">
+                      <input type="number" placeholder="输入用户名" id="userName" value="" class="loginName" maxlength="11">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label aui-border-r color-orange">
+                      密码
+                  </div>
+                  <div class="aui-list-item-input aui-padded-l-10">
+                      <input type="password" placeholder="输入密码" id="password" value="123456" class="loginPwd">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label aui-border-r color-orange">
+                      性别
+                  </div>
+                  <div class="aui-list-item-input aui-padded-l-10">
+                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="0">&nbsp;&nbsp;保密&nbsp;&nbsp;
+                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="1">&nbsp;&nbsp;男&nbsp;&nbsp;
+                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="2">&nbsp;&nbsp;女
+                  </div>
+              </div>
+          </li>
+          <!-- <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-input" style="width: auto;">
+                      <input type="text"  maxlength="4" placeholder="验证码" id="codeImg" class="verifyCode">
+                  </div>
+                  <div class="aui-list-item-label aui-margin-r-15" style="width: 6rem;">
+                      <div class="" style="width: 6rem;"><img src="http://wstmart.anaf.cn/home/index/getVerify" onclick="changeImg(this)" id="img_code"/></div>
+                  </div>
+              </div>
+          </li> -->
+        </ul>
+    </section>
+    <section class="aui-content-padded">
+        <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" tapmode onclick="register()"> 注册</div>
+    </section>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script src="../script/aui-toast.js" charset="utf-8"></script>
+<script type="text/javascript">
+var toast = new auiToast();
+    apiready = function(){
+        api.parseTapmode();
+    };
+    function register() {
+        var dataList = {};
+        dataList.phone = $api.val($api.byId('userName'));
+        dataList.userSex = $api.val($api.byId('userSex'));
+        dataList.loginPwd = $api.val($api.byId('password'));
+        dataList.isInform =1;
+        dataList.userStatus =1;
+        dataList.userId =0;
+        dataList.userPhoto ="";
+        console.log(JSON.stringify(dataList))
+        api.ajax({
+            url: 'http://wstmart.anaf.cn/apihome/users/add',
+            method: 'post',
+            data: {
+              values:dataList
+            }
+        }, function(ret, err) {
+
+            if (ret) {
+                // console.log(JSON.stringify(ret));
+                // alert( JSON.stringify( ret ) );
+                if (ret.status == -1){
+                  changeImg($api.byId('img_code'));
+                  toast.fail({
+                      title:ret.msg,
+                      duration:2000
+                  });
+                // $api.byId('codeImg').click();
+
+                }else {
+                  toast.success({
+                      title:ret.msg,
+                      duration:2000
+                  });
+                  api.closeWin();
+                }
+
+            } else {
+              console.log(JSON.stringify(err))
+              toast.fail({
+                  title:"验证失败",
+                  duration:2000
+              });
+              // $api.byId('codeImg').click();
+                // alert( JSON.stringify( ret ) );
+                // alert( JSON.stringify( err ) );
+            }
+        });
+
+    }
+</script>
+</html>

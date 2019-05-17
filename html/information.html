@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>个人资料</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/information.css" />
+  </head>
+  <body>
+
+        <section>
+          <div class="logo" onclick="LogoClip()">
+            <img src="../image/demo1.png" class="imgLogo">
+            <div class="img-mark">
+              <i class="aui-iconfont aui-icon-camera"></i>
+            </div>
+            <span class="img-text">点击更好头像</span>
+          </div>
+        </section>
+        <section>
+          <!-- <ul class="aui-list aui-list-in">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                      <div class="aui-list-item-text">
+                          <div class="aui-list-item-title aui-font-size-12 aui-text-default">Item1</div>
+                          <div class="aui-list-item-right">08:00</div>
+                      </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                  <div class="aui-list-item-text">
+                      <div class="aui-list-item-title aui-font-size-12 aui-text-default">Item1</div>
+                      <div class="aui-list-item-right">08:00</div>
+                  </div>
+                  <div class="aui-list-item-text">
+                      <div class="aui-list-item-title aui-font-size-12 aui-text-default">Item1</div>
+                      <div class="aui-list-item-right">08:00</div>
+                  </div>
+                </div>
+            </li>
+        </ul> -->
+        <div class="aui-card-list">
+            <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                    <li class="aui-list-item aui-list-item-middle" onclick="openEdit('nickname','昵称')">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-12">昵称</div>
+                                    <div class="aui-list-item-right top-other" id="nickname">null</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle" onclick="openEdit('number','编号')">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                              <div class="aui-list-item-text">
+                                  <div class="aui-list-item-title aui-font-size-12">编号</div>
+                                  <div class="aui-list-item-right toplast" id="number">xxxxxxxxxxxx</div>
+                              </div>
+                              <div class="aui-list-item-text">
+                                  允许修改一次
+                              </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle" onclick="openEdit('introduce','个人介绍')">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-12">个人介绍</div>
+                                    <div class="aui-list-item-right top-other" id="introduce">填写个人简介更容易获得别人的关注哦</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle" onclick="openDate()">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-12">年龄</div>
+                                    <div class="aui-list-item-right top-other" id="age">13</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle" onclick="openSexList()">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-12">性别</div>
+                                    <div class="aui-list-item-right top-other" id="sex">保密</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-list-item aui-list-item-middle" onclick="openArea()">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-inner aui-list-item-arrow">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-12">地区</div>
+                                    <div class="aui-list-item-right top-other" id="area">广州</div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </section>
+  </body>
+</html>
+<script src="../script/api.js"></script>
+<script src="../script/editInfo.js"></script>
+<script src="../script/aui-toast.js" charset="utf-8"></script>
+
+<script>
+var toast = new auiToast({});
+var FNImageClip;
+  apiready =function(){
+    api.parseTapmode();
+     FNImageClip = api.require('FNImageClip');
+    // console.log(api.winHeight)
+    $api.css(document.body,'height:'+api.winHeight+'px');
+    MyInfo();
+  }
+</script>

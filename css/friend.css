@@ -1,0 +1,240 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.aui-text-parmary {
+    color: #aeaeae;
+}
+.aui-card-list{
+  background: #262626;
+}
+.aui-card-list-content-padded{
+  color: #fff;
+  text-align: center;
+}
+.aui-card-list-footer-c{
+  text-align: center;
+  display: -webkit-block;
+     display: -webkit-block;
+     display: block;
+     color: #9c9b9b;
+}
+#aui-header {
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
+    /* 标准的语法 */
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#aui-header>.aui-btn {
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+}
+
+#aui-header>.aui-btn>.aui-btn {
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+}
+
+
+
+#aui-header>.aui-pull-left>.camera-text {
+    font-size: 10px;
+    padding-left: .5vh;
+    padding-top: .5vh;
+    font-family: '微软雅黑';
+}
+
+#aui-header>.aui-title>.aui-tab {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#aui-header>.aui-title>.aui-tab>.aui-tab-item {
+    color: #fff;
+}
+
+#aui-header>.aui-title>.aui-tab>.aui-active {
+    border-bottom-color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+}
+
+#main>#myInfo {
+    height: auto;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(175, 175, 175, 0.14);
+  }
+
+#main>#friendsInfo {
+    min-height: 5em;
+}
+
+#main>#seeNewFriend>.aui-card-list,
+#main>#seeNewFriend>.aui-card-list-content {
+    background: rgba(0, 0, 0, 0);
+    color: #fff;
+}
+
+.aui-list {
+    background-color: rgba(0, 0, 0, 0) !important;
+    color: #fff;
+    background-image: linear-gradient(0, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 50%, transparent 50%);
+}
+
+.aui-list .aui-list-item {
+    background-image: linear-gradient(0, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 50%, transparent 50%);
+    background-image: -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 50%, transparent 50%);
+}
+
+.color-snow {
+    color: #fff !important;
+}
+
+#main>#seeNewFriend>.aui-card-list>.aui-list {
+    background-color: rgba(0, 0, 0, 0.85) !important;
+    color: #fff;
+    background-image: -webkit-linear-gradient(0, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 50%);
+}
+
+#main>#seeNewFriend>.aui-card-list>.aui-list>.aui-list-item {
+    background-image: grba(0, 0, 0, 0.85)
+}
+
+.aui-suipai {
+    width: 100%;
+    height: 100%;
+    min-height: 6rem;
+    background-color: rgba(0, 0, 0, 0);
+    display: table;
+    table-layout: fixed;
+}
+
+.aui-suipai>.aui-row {
+    height: 100%;
+}
+
+.sui-xs-4 {
+    width: 33%;
+    height: 100%;
+    margin: .5em;
+}
+
+.suipai1 {
+    background: url('../image/suipai/suipai1.png');
+}
+.suipai {
+  width: 80px;
+  height: 80px;
+}
+.suipai img{
+  object-fit: cover;
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+}
+.suipai2 {
+    background: url('../image/suipai/suipai2.png');
+}
+
+.f-suipai {
+  width:1.5rem;
+  height:1.5rem;
+  color: #fff;
+  bottom: 2rem;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  left: 2.8rem;
+  border: 2px solid #000;
+}
+
+.flex-m {
+  background-color: rgba(0,0,0,.8);
+    width: 100%;
+    height: 100%;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -o-filter: blur(5px);
+    -ms-filter: blur(5px);
+}
+
+
+.f-suipai>i {
+    color: #000;
+    position: absolute;
+    top: .1rem;
+    left: .25rem;
+    font-weight: 900;
+
+}
+
+.suipai-title {
+    position: absolute;
+    bottom: .2rem;
+  left: .5rem;
+    color: #fff;
+}
+#seeNewFriend .aui-list-item.aui-list-item-middle {
+    border-bottom: 1px solid rgba(175, 175, 175, 0.14);
+}
+#ListFriends .aui-card-list-header {
+    border-bottom: 1px solid rgba(175, 175, 175, 0.14);
+}
+#ListFriends .aui-list-item.aui-list-item-middle {
+    border-bottom: 1px solid rgba(175, 175, 175, 0.14);
+}
+#ListFriends .aui-card-list>.aui-card-list-content .aui-list .aui-list-item .aui-list-item-inner #btn_right{
+  position: relative;
+  top: -.8rem;
+  right: .3rem;
+  float: right;
+}
+.sui-xs-1,
+.sui-xs-2,
+.sui-xs-3,
+.sui-xs-4,
+.sui-xs-5,
+.sui-xs-6,
+.sui-xs-7,
+.sui-xs-8,
+.sui-xs-9,
+.sui-xs-10,
+.sui-xs-11,
+.sui-5 {
+    position: relative;
+    float: left;
+    border-radius: 7%
+}
+img.aui-img-round{
+  height: 100%;
+}
+/*#aui-header>.aui-title {
+    min-height: 2.25rem;
+    position: absolute;
+    margin: 0;
+    text-align: center;
+    white-space: nowrap;
+    top: 1.5rem;
+    left: 3rem;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 2;
+}*/

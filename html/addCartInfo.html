@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选择规格</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../css/cart.css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="pic" onclick="pic_all()">
+        <img src="../image/suipai/bg.jpg"/>
+      </div>
+      <div class="message-info">
+        <div class="price-sum">￥ <span>1325</span></div>
+        <div class="price-other">
+          <div class="alsum">库存<span>12314</span>件</div>
+          <div class="product-list">已选：</div>
+        </div>
+      </div>
+
+    </header>
+    <div id="fix-close" onclick="closeFrame()">
+      <i class="iconfont icon-cancelclosedeleteremovereject"></i>
+    </div>
+    <section id="main">
+      <div>
+      <div id="meassage">
+        <div class="select-list">
+          <div class="title">颜色分类</div>
+          <div class="select-list-other" id="colorSelect">
+            <div class="aui-label"><img width="20" src="../image/suipai/bg.jpg"/>  <span>黑色【通信款】</span></div>
+            <div class="aui-label">list</div>
+            <div class="aui-label">or</div>
+            <div class="aui-label">change</div>
+          </div>
+        </div>
+        <div class="select-list aui-hide">
+          <div class="title">123</div>
+          <div class="select-list-other">
+
+          </div>
+        </div>
+
+        <div class="sum-align aui-row">
+          <div class="aui-row-padded">
+            <div class="sum-left aui-col-xs-8">
+              数量
+            </div>
+            <div class="sum-right  aui-bar-btn aui-bar-btn-sm " style="width:33.33333333% !important;padding-right:.1rem">
+              <!-- <div class="btn-add"><i class="aui-iconfont aui-icon-minus"></i></div>
+              <div class="num"><input value="1" class="number-add"/></div>
+              <div class="btn-add show"><i class="aui-iconfont aui-icon-plus"></i></div> -->
+              <div class="aui-bar-btn-item">
+                  <i class="aui-iconfont aui-icon-minus"></i>
+              </div>
+              <div class="aui-bar-btn-item">
+                  <input type="number" class="aui-input aui-text-center" value="1" >
+              </div>
+              <div class="aui-bar-btn-item">
+                  <i class="aui-iconfont aui-icon-plus"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    </section>
+    <footer class="aui-bar aui-bar-tab" id="footer">
+
+            <!-- <div class="aui-bar-tab-item" tapmode style="width: 3rem;">
+                <i class="aui-iconfont aui-icon-comment aui-text-info"></i>
+                <div class="aui-bar-tab-label aui-text-info">咨询</div>
+            </div>
+            <div class="aui-bar-tab-item" tapmode style="width: 3rem;">
+              <div class="aui-badge">1</div>
+                <i class="aui-iconfont aui-icon-cart aui-text-warning"></i>
+                <div class="aui-bar-tab-label aui-text-warning">购物车</div>
+            </div> -->
+      <div class="cartbtn aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;">加入购物车</div>
+            <div class="buybtn aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;">立即购买</div>
+        </footer>
+  </body>
+</html>
+<script src="../script/api.js"></script>
+<script src="../script/home.js"></script>
+<script>
+var colorL =   document.getElementById('colorSelect').querySelectorAll('.aui-label');
+for(var el = 0;el<colorL.length;el++){
+  console.log(JSON.stringify(colorL[el]));
+  $api.addEvt(colorL[el],'click', function(){
+
+      var list = $api.dom($api.byId('colorSelect'),'.aui-active');
+          $api.removeCls(list,'aui-active');
+      $api.addCls(this, 'aui-active');
+      var product = $api.dom(document, '.product-list');
+      var txt = '已选:';
+      txt +=$api.text(this);
+      console.log(txt)
+      $api.text(product,txt);
+    });
+}
+apiready= function() {
+  api.parseTapmode();
+  var params = api.pageParam;
+  var footer = 　$api.byId('footer');
+      $api.fixTabBar(footer);
+    // console.log(JSON.stringify(params));
+    if(params.ids == 'cart'){
+      $api.addCls($api.dom(footer,'.buybtn'),'aui-hide');
+      $api.addCls($api.dom(footer,'.cartbtn'),'cartBuy');
+        $api.removeCls($api.dom(footer,'.cartBuy'),'cartbtn');
+    }
+
+
+
+}
+function SelectList_all(){
+
+}
+function pic_all() {
+  var photoBrowser = api.require('photoBrowser');
+photoBrowser.open({
+images: [
+    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
+    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/1a73dd6a90a52b2aad1aafefbf977e4c.png',
+    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
+    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/51fc1ddde9790c96a6986b74342a15e3.png'
+],
+bgColor: '#000'
+}, function(ret, err) {
+if (ret) {
+    alert(JSON.stringify(ret));
+} else {
+    alert(JSON.stringify(err));
+}
+});
+}
+function closeFrame() {
+  api.execScript({
+frameName: 'home',
+script: 'hideSell();'
+});
+  api.closeFrame({
+      name: 'sellDtail'
+  });
+
+}
+</script>

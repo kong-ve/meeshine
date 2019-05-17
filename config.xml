@@ -1,0 +1,49 @@
+ <widget id="A6000093486263"  version="0.0.1">
+    <name>meeshine</name>
+    <description>
+        Example For APICloud.
+    </description>
+    <author email="developer@apicloud.com" href="http://www.apicloud.com">
+        Developer
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <preference name="pageBounce" value="false"/>
+	<preference name="appBackground" value="rgba(0,0,0,0.0)"/>
+	<preference name="windowBackground" value="rgba(0,0,0,0.0)"/>
+	<preference name="frameBackgroundColor" value="rgba(0,0,0,0.0)"/>
+	<preference name="hScrollBarEnabled" value="false"/>
+	<preference name="vScrollBarEnabled" value="false"/>
+	<preference name="autoLaunch" value="true"/>
+	<preference name="fullScreen" value="false"/>
+	<preference name="autoUpdate" value="true" />
+	<preference name="smartUpdate" value="false" />
+	<preference name="debug" value="true"/>
+	<preference name="statusBarAppearance" value="true"/>
+	<permission name="readPhoneState" />
+	<permission name="camera" />
+	<permission name="record" />
+	<permission name="location" />
+	<permission name="fileSystem" />
+	<permission name="internet" />
+	<permission name="bootCompleted" />
+	<permission name="hardware" />  <feature name="facebook">     <param name="urlScheme" value="fb2260718420859070" />     <param name="appId" value="2260718420859070" /> </feature> <meta-data
+      name="com.c569214475.epg"
+      value="fb2260718420859070" />
+<preference name="querySchemes" value="fb,fbapi,fb-messenger-api,fbauth2,fbshareextension,
+  googlechrome,googlechrome-x-callback,hasgplus4,
+  com.google.gppconsent,com.google.gppconsent.2.2.0,com.google.gppconsent.2.3.0,com.google.gppconsent.2.4.0,com.google.gppconsent.2.4.1" />
+
+  <feature name="mobSharePlus">
+      <param name="android_api_key" value="2ad9c4733ffa5"/>
+      <param name="android_api_secret" value="c3e6c7fbbdeb5d3b045e9ec738cf99b1"/>
+      <param name="ios_api_key" value="2ad9c4733ffa5"/>
+      <param name="ios_api_secret" value="c3e6c7fbbdeb5d3b045e9ec738cf99b1"/>
+      <param name="android_api_key" value="2ad9c4733ffa5"/>
+      <param name="android_api_secret" value="c3e6c7fbbdeb5d3b045e9ec738cf99b1"/>
+      <param name="urlScheme" value="fb2260718420859070"/>
+      <!-- <param name="KAKAO_APP_KEY" value="48d3f524e4a636b08d81b3ceb50f1003"/> -->
+      <!-- 如果使用Android QQ或QZone 还需要如下配置否则无法正确回调 其中tencent后面为appId-->
+      <!-- <param name="android_urlScheme" value="tencent100371282"/> -->
+    </feature>
+</widget>

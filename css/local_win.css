@@ -1,0 +1,72 @@
+body{
+  background-color: rgba(0,0,0,1);
+}
+#main>.aui-grid{
+  background-color: rgba(0,0,0,1);
+  color: #fff;
+}
+    .masonry {
+              -moz-column-count: 2; /* Firefox */
+              -webkit-column-count: 2; /* Safari 和 Chrome */
+              column-count: 2;
+              -moz-column-gap: 2em;
+              -webkit-column-gap: 1em;
+              column-gap: 1em;
+              /* width: 81%; */
+              margin: 2em auto;
+         }
+         .item {
+             /* padding: 2em; */
+             /* margin-bottom: 2em; */
+             -moz-page-break-inside: avoid;
+             -webkit-column-break-inside: avoid;
+             break-inside: avoid;
+             /* background: #f60; */
+         }
+         #aui-header {
+             background: -webkit-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+             /* Safari 5.1 - 6.0 */
+             background: -o-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+             /* Opera 11.1 - 12.0 */
+             background: -moz-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+             /* Firefox 3.6 - 15 */
+             background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+             /* 标准的语法 */
+             position: fixed;
+             top: 0
+         }
+         #aui-header>.aui-pull-left>.camera-text {
+             font-size: 10px;
+             padding-left: .5vh;
+             padding-top: .5vh;
+             font-family: '微软雅黑';
+         }
+
+         #aui-header>.aui-title>.aui-tab {
+             background-color: rgba(0, 0, 0, 0);
+         }
+
+         #aui-header>.aui-title>.aui-tab>.aui-tab-item {
+             color: #fff;
+         }
+
+         #aui-header>.aui-title>.aui-tab>.aui-active {
+             border-bottom: none;
+             font-weight: bold;
+             font-size: 18px;
+             color: #fff;
+         }
+
+         #aui-header>.aui-title>.aui-tab>#page_aui {
+             height: .9em;
+             width: .2em;
+             margin-top: .9em;
+             background: #fff;
+         }
+         .aui-text-default,.aui-ellipsis,.aui-icon-location{
+           color:#9c9c9c !important;
+         }
+         .aui-card-list-content img, .aui-card-list-content-padded img,
+         .aui-card-list-content video, .aui-card-list-content-padded video{
+           width: 100%
+         }

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>好友</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" href="../feature/fonts/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../css/my.css" />
+</head>
+<style>
+</style>
+<body>
+    <div id="felx-btn" onclick="openMenu()">
+        <i class="aui-iconfont aui-icon-menu"></i>
+    </div>
+    <div class="sell-model-aui aui-hide" id="model" onclick="stopMenu()"></div>
+    <section class="aui-content" id="right-pane">
+        <ul class="aui-list aui-list-in aui-margin-b-15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-location aui-text-info"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">收货地址</div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-like aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">我的收藏</div>
+                </div>
+            </li>
+            <li class="aui-list-item" onclick="LoginOut()">
+                <div class="aui-list-item-label-icon">
+                    <i class="aui-iconfont aui-icon-gear aui-text-danger"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    <div class="aui-list-item-title">退出登录</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+    <div id="main">
+        <div class="bg">
+            <img src="../image/apicloud-bg.png" />
+        </div>
+        <div id="message">
+            <div id="logo_my"><img src="../image/suipai/bg.jpg" /></div>
+            <div class="edit_message">
+                <button onclick="EditInfo()">编辑资料</button>
+                <button><i class="aui-iconfont aui-icon-star"></i></button>
+                <button><i class="iconfont icon-user-plus"></i></button>
+            </div>
+            <div class="message">
+                <div class="user" id="nickname">123</div>
+                <div class="user_id">编号:<span id="number">1234566</span></div>
+                <div class="add_user_info" id="introduce">aaaaaa</div>
+                <div class="my_but">
+                    <span><i class="aui-iconfont aui-icon-my"></i>&nbsp;<text id="age">5</text>岁</span>
+                    <span id="area">广州</span>
+                    <span>+其他标签</span>
+                </div>
+                <div class="link_mes">
+                    <span><b id="">0</b>获赞</span>
+                    <span><b id="for_star">0</b>关注</span>
+                    <span><b id="star">0</b>粉丝</span>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="aui-card-list">
+            <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                    <li class="aui-list-item aui-list-item-middle">
+                        <div class="aui-media-list-item-inner">
+                            <div class="aui-list-item-media">
+                                <img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">
+                            </div>
+                            <div class="aui-list-item-inner">
+                                <div class="aui-list-item-text">
+                                    <div class="aui-list-item-title aui-font-size-14 aui-list-item-arrow">全部随拍</div>
+
+                                </div>
+                                <div class="aui-list-item-right btn-list">
+                                    <i class="aui-iconfont aui-icon-camera"></i>
+                                    <span class="addvideoText">添加随拍</span>
+                                </div>
+                                <div class="aui-list-item-text">
+                                    发布72小时后,仅自己可看
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div> -->
+        <div class="otherMsg">
+            <div class="aui-tab" id="tab">
+                <div class="aui-tab-item tapmode aui-active">作品 <span id="collect">3</span></div>
+                <div class="aui-tab-item tapmode ">动态 <span id="action">3</span></div>
+                <div class="aui-tab-item tapmode">喜欢 <span id="like">5</span></div>
+            </div>
+            <section class="aui-grid" id="item1">
+                <div class="aui-row">
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-palying"></i> 1
+                        </div>
+                        <div class="myProject-right">
+                            <i class="iconfont icon-lock"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="aui-hide" id="item2">
+                <div class="aui-card-list">
+                    <div class="aui-card-list-header aui-card-list-user aui-border-b">
+                        <div class="aui-card-list-user-avatar">
+                            <img src="../image/demo4.png" class="aui-img-round" />
+                        </div>
+                        <div class="aui-card-list-user-name">
+                            <div>AUI</div>
+                            <small>1天前</small>
+                        </div>
+                        <div class="aui-card-list-user-info">北京朝阳</div>
+                    </div>
+                    <div class="aui-card-list-content-padded">
+                        <img src="../image/l2.png" />
+                    </div>
+                    <div class="aui-card-list-footer aui-border-t">
+                        <div><i class="aui-iconfont aui-icon-note"></i> 666</div>
+                        <div><i class="aui-iconfont aui-icon-laud"></i> 888</div>
+                        <div><i class="aui-iconfont aui-icon-star"></i> 888</div>
+                    </div>
+                </div>
+            </section>
+            <section class="aui-grid aui-hide" id="item3">
+                <div class="aui-row">
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-like"></i> 1
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-like"></i> 1
+                        </div>
+                    </div>
+                    <div class="aui-col-xs-4">
+                        <div class="myProject">
+                            <img src="http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png" />
+                        </div>
+                        <div class="myProject-left">
+                            <i class="iconfont icon-like"></i> 1
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="../script/api.js"></script>
+<script src="../script/aui-tab.js"></script>
+<script src="../script/aui-toast.js" charset="utf-8"></script>
+<script src="../script/my.js"></script>
+<script>
+    var yx = 0;
+    var firstClick = false;
+    var touchMove = true;
+    var toast = new auiToast({});
+    apiready = function() {
+        document.querySelector('body').style.height = api.frameHeight + 'px';
+        if (api.safeArea.top > 0) {
+            var topM = api.safeArea.top / 20;
+            $api.css($api.byId('felx-btn'), 'top:' + (topM) + 'rem;');
+            $api.css($api.byId('right-pane'), 'padding-top:' + (topM) + 'rem;');
+            $api.css($api.byId('felx-btn'), 'top:' + (api.safeArea.top / 20) + 'rem;');
+        }
+        userInfo();
+        bigBg()
+        // toast.loading({
+        //     title: "加载中",
+        //     duration: 2000
+        // });
+      
+        api.addEventListener({
+            name: 'swipeleft'
+        }, function(ret, err) {
+            openMenu();
+            api.removeEventListener({
+                name: 'swipeleft'
+            });
+
+        });
+
+        var tab = new auiTab({
+            element: document.getElementById("tab"),
+            index: 1,
+            repeatClick: false
+        }, function(ret) {
+            switch (ret.index) {
+                case 1:
+                    if ($api.hasCls($api.byId('item1'), 'aui-hide')) {
+                        $api.removeCls($api.byId('item1'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item2'), 'aui-hide')) {
+                        $api.addCls($api.byId('item2'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item3'), 'aui-hide')) {
+                        $api.addCls($api.byId('item3'), 'aui-hide');
+                    }
+                    break;
+                case 2:
+                    if ($api.hasCls($api.byId('item2'), 'aui-hide')) {
+                        $api.removeCls($api.byId('item2'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item1'), 'aui-hide')) {
+                        $api.addCls($api.byId('item1'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item3'), 'aui-hide')) {
+                        $api.addCls($api.byId('item3'), 'aui-hide');
+                    }
+                    break;
+                case 3:
+                    if ($api.hasCls($api.byId('item3'), 'aui-hide')) {
+                        $api.removeCls($api.byId('item3'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item2'), 'aui-hide')) {
+                        $api.addCls($api.byId('item2'), 'aui-hide');
+                    }
+                    if (!$api.hasCls($api.byId('item1'), 'aui-hide')) {
+                        $api.addCls($api.byId('item1'), 'aui-hide');
+                    }
+                    break;
+            }
+        });
+    }
+
+</script>

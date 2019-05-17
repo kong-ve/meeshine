@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选择规格</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="../css/comment.css" />
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <div class="aui-title"></div>
+        <div class="aui-pull-right aui-btn" onclick="closeWin()">
+            <span class="iconfont icon-cancel"></span>
+        </div>
+    </header>
+    <div class="aui-card-list">
+        <div class="aui-card-list-content">
+            <ul class="aui-list aui-media-list" id="commitList">
+
+            </ul>
+        </div>
+    </div>
+    <footer class="aui-bar aui-bar-tab" id="footer">
+        <form class="aui-bar-tab-item aui-padded-l-15 aui-padded-r-15" tapmode style="width: auto;" action="javascript:addComList()">
+            <div class="search-input aui-font-size-14"><input type="text" id="text" placeholder="请输入评论内容"></div>
+        </form>
+        <!-- <div class="aui-bar-tab-item" tapmode style="width: 2.2rem;">
+                        <i class="aui-iconfont aui-icon-comment"></i>
+                    </div>
+                    <div class="aui-bar-tab-item" tapmode style="width: 2.2rem;">
+                        <i class="aui-iconfont aui-icon-star"></i>
+                    </div> -->
+        <div class="aui-bar-tab-item" tapmode style="width: 2.2rem;" onclick="addComList()">
+            <i class="aui-iconfont aui-icon-paper"></i>
+        </div>
+    </footer>
+</body>
+
+</html>
+<script src="../script/api.js"></script>
+<script src="../script/aui-toast.js" charset="utf-8"></script>
+<script>
+    var toast = new auiToast({});
+    var parse;
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        var footer = $api.byId('footer');
+        $api.fixTabBar(footer);
+        parse = api.pageParam;
+        console.log(JSON.stringify(parse));
+        getComList();
+    };
+
+
+    function closeWin() {
+        api.execScript({
+            frameName: 'home',
+            script: 'removeEl();'
+        });
+        api.closeFrame();
+    }
+
+    function del_comment(id) {
+        api.ajax({
+            url: '/apishop/video/del_comment',
+            method: 'post',
+            data: {
+                values: {
+                    'comment_id': id
+                },
+            }
+        }, function(ret, err) {
+            if (ret) {
+                alert(JSON.stringify(ret));
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+    }
+
+    function list_C(a) {
+      console.log(JSON.stringify(a))
+        var html = '<ul class="aui-list aui-media-list">';
+        var child_html = '';
+        var data_lists = a.data;
+
+        data_lists.map(function(el, i) {
+          console.log(el.cid)
+            if (el.cid == 1) {
+                child_html = list_C(el.chlid);
+            }
+
+            html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '">' +
+                '<div class="aui-media-list-item-inner">' +
+                '<div class="aui-list-item-media" style="width: 3rem;">' +
+                '<img src="' + (el.avatar || '../image/suipai/bg.jpg') + '" class="aui-img-round" >' +
+                '</div>' +
+                '<div class="aui-list-item-inner">' +
+                '<div class="aui-list-item-text">' +
+                '<div class="aui-list-item-title aui-font-size-12"><b>' + (el.nickname || '用户' + el.number) + '</b></div>' +
+                '<div class="aui-list-item-right"><i class="iconfont icon-heart"></i></div>' +
+                '</div>' +
+                '<div class="aui-list-item-text">' +
+                '<div class="aui-list-item-title aui-font-size-14">' + el.content + ' <span class="time">' + el.created_at + '</span></div>' +
+                '<div class="aui-list-item-right heart-text">' + (el.linkNumber || 0) + '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                child_html +
+                '</li>';
+        })
+        html += '</ul>';
+        return html;
+    }
+
+    function getComList() {
+      toast.loading({
+          title: "加载中",
+          duration: 2000
+      });
+        api.ajax({
+            url: 'http://wstmart.anaf.cn/apishop/video/comment_list',
+            method: 'get',
+            data: {
+                values: {
+                    'video_id': parse.video
+                }
+            }
+        }, function(ret, err) {
+            if(ret.data.data.length >0){
+            var data_list = ret.data.data;
+            var cmt = document.getElementById('commitList');
+            var html = '';
+            $api.text($api.dom($api.byId('header'), '.aui-title'), ret.data.total + '评论')
+            data_list.map(function(el, i) {
+
+                var child_html = '';
+                if (el.cid == 1) {
+                    child_html = list_C(el.chlid);
+                }
+                console.error(JSON.stringify(el))
+                html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '">' +
+                    '<div class="aui-media-list-item-inner">' +
+                    '<div class="aui-list-item-media" style="width: 3rem;">' +
+                    '<img src="' + (el.avatar || '../image/suipai/bg.jpg') + '" class="aui-img-round" >' +
+                    '</div>' +
+                    '<div class="aui-list-item-inner">' +
+                    '<div class="aui-list-item-text">' +
+                    '<div class="aui-list-item-title aui-font-size-12"><b>' + (el.nickname || '用户' + el.number) + '</b></div>' +
+                    '<div class="aui-list-item-right"><i class="iconfont icon-heart"></i></div>' +
+                    '</div>' +
+                    '<div class="aui-list-item-text">' +
+                    '<div class="aui-list-item-title aui-font-size-14">' + el.content + ' <span class="time">' + el.created_at + '</span></div>' +
+                    '<div class="aui-list-item-right heart-text">' + (el.linkNumber || 0) + '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    child_html +
+                    '</li>';
+            });
+            $api.append(cmt, html);
+
+            toast.hide();
+          }
+        });
+    }
+    
+    function addComList() {
+        var data = {};
+        $api.post('http://wstmart.anaf.cn/apishop/video/send_comment', {
+            values: data
+        }, function(ret, err) {
+            console.log(JSON.stringify(ret))
+        })
+    }
+</script>

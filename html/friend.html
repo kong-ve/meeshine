@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>好友</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css" />
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/friend.css" />
+</head>
+
+<body>
+    <header id="aui-header" class="aui-bar aui-bar-nav">
+        <div class="aui-pull-left aui-btn" onclick="openCamera()">
+            <span class="aui-iconfont aui-icon-camera"></span>
+            <span class="camera-text">随拍</span>
+        </div>
+        <div class="aui-title">
+            <div class="aui-tab" id="tab-Aui">
+                <div class="aui-tab-item tapmode aui-active" >好友</div>
+                <div class="aui-tab-item tapmode" >关注</div>
+            </div>
+        </div>
+        <div class="aui-pull-right aui-btn">
+            <div class="aui-pull-right aui-btn" onclick="openFriend()">
+                <span class="camera-text">好友列表</span>
+            </div>
+        </div>
+    </header>
+    <div id="myInfo">
+        <section class="aui-suipai">
+            <div class="aui-row">
+                <div class="sui-xs-4">
+                    <div class="suipai">
+                      <img src="../image/suipai/bg.jpg"/>
+                    </div>
+                    <div class="f-suipai">
+                        <i class="aui-iconfont aui-icon-plus"></i>
+                    </div>
+                    <div class="suipai-title">我的随拍</div>
+                </div>
+                <!-- <div class="sui-xs-4" >
+                    <div class="suipai">
+                        <img src="../image/suipai/bg.jpg"/>
+                    </div>
+                    <div class="f-suipai">
+                        <i class="aui-iconfont aui-icon-gear"></i>
+                    </div>
+                     <div class="suipai-title">随拍功能</div>
+                </div> -->
+
+            </div>
+        </section>
+    </div>
+    <div id="main">
+
+        <div id="friendsInfo">
+          <section class="aui-content-padded">
+    <div class="aui-card-list">
+        <div class="aui-card-list-content-padded">
+            暂无好友动态
+        </div>
+        <div class="aui-card-list-footer-c">
+            快去寻找更多可能认识的人吧
+        </div>
+    </div>
+</section>
+        </div>
+        <div id="seeNewFriend">
+            <div class="aui-card-list">
+                <div class="aui-card-list-header">
+                    <div><span class="aui-text-parmary"> 发现好友</span></div>
+                    <i class="aui-iconfont aui-icon-more"></i>
+                </div>
+                <div class="aui-card-list-content">
+                    <ul class="aui-list aui-media-list">
+
+                        <li class="aui-list-item aui-list-item-middle">
+                            <div class="aui-media-list-item-inner">
+                                <div class="aui-list-item-media" style="width: 3rem;">
+                                    <img src="../image/share/wx.png" class="aui-img-round">
+                                </div>
+                                <div class="aui-list-item-text aui-font-size-18">
+                                    快速添加微信好友
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div id="ListFriends">
+          <div class="aui-card-list">
+            <div class="aui-card-list-header"><span class="aui-text-parmary"><b>全部推荐 <i class="aui-iconfont aui-icon-info"></i></b></span></div>
+              <div class="aui-card-list-content">
+                <ul class="aui-list aui-media-list">
+                  <!-- <li class="aui-list-item aui-list-item-middle">
+                      <div class="aui-media-list-item-inner">
+                          <div class="aui-list-item-media" style="width: 3rem;height:3rem;">
+                              <img src="../image/suipai/bg.jpg" class="aui-img-round">
+                          </div>
+                        <div class="aui-list-item-inner">
+                              <div class="aui-list-item-text">
+                                  <div class="aui-list-item-title aui-font-size-18 color-snow">el.nickname</div>
+                              </div>
+                              <div class="aui-btn aui-btn-danger" id="btn_right">关注</div>
+                              <div class="aui-list-item-text">
+                                  通讯录好友
+                             </div>
+                            <div class="aui-list-item-text">
+                                  作品:0 粉丝:200
+                              </div>
+                          </div>
+                      </div>
+                  </li> -->
+                </ul>
+
+              </div>
+          </div>
+        </div>
+    </div>
+    <section class="aui-hide" id="edList">
+      <div class="aui-card-list">
+          <div class="aui-card-list-header aui-card-list-user aui-border-b">
+              <div class="aui-card-list-user-avatar">
+                  <img src="../image/demo4.png" class="aui-img-round" />
+              </div>
+              <div class="aui-card-list-user-name">
+                  <div>AUI</div>
+                  <small>1天前</small>
+              </div>
+              <div class="aui-card-list-user-info">北京朝阳</div>
+          </div>
+          <div class="aui-card-list-content-padded">
+              <img src="../image/l2.png" />
+          </div>
+          <div class="aui-card-list-footer aui-border-t">
+              <div><i class="aui-iconfont aui-icon-note"></i> 666</div>
+              <div><i class="aui-iconfont aui-icon-laud"></i> 888</div>
+              <div><i class="aui-iconfont aui-icon-star"></i> 888</div>
+          </div>
+      </div>
+    </section>
+</body>
+
+</html>
+<script src="../script/api.js"></script>
+<script src="../script/aui-tab.js"></script>
+<script src="../script/friend.js"></script>
+<script>
+    apiready = function() {
+      document.querySelector('body').style.height = api.frameHeight+'px';
+
+        var header = document.querySelector('#aui-header');
+        $api.fixStatusBar(header);
+        api.setStatusBarStyle({
+            style: 'light',
+        });
+          console.log($api.offset(header).h)
+        $api.css($api.byId('myInfo'),'padding-top:'+$api.offset(header).h+'px');
+        getFriendList();
+    }
+    var tab = new auiTab({
+        element: document.getElementById("tab-Aui"),
+        index: 1,
+        repeatClick: false
+    }, function(ret) {
+        switch (ret.index) {
+            case 1:
+                if ($api.hasCls($api.byId('main'), 'aui-hide')) {
+                    $api.removeCls($api.byId('main'), 'aui-hide');
+                }
+                if (!$api.hasCls($api.byId('edList'), 'aui-hide')) {
+                    $api.addCls($api.byId('edList'), 'aui-hide');
+                }
+                break;
+            case 2:
+            if ($api.hasCls($api.byId('edList'), 'aui-hide')) {
+                $api.removeCls($api.byId('edList'), 'aui-hide');
+            }
+            if (!$api.hasCls($api.byId('main'), 'aui-hide')) {
+                $api.addCls($api.byId('main'), 'aui-hide');
+            }
+                break;
+        }
+    });
+
+
+
+</script>

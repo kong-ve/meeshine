@@ -1,0 +1,548 @@
+html,body{
+    height: 100%;
+}
+.model-aui {
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0);
+    overflow: hidden;
+    position: fixed;
+}
+
+.sell-model-aui {
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    background: rgba(0, 0, 0, 0);
+    overflow: hidden;
+    position: fixed;
+}
+#likeBtn{
+top:40%;
+z-index: 11;
+}
+#shareBtn{
+  top:50%;
+  z-index:11;
+}
+#commitBtn{
+  top:60%;
+  z-index:11;
+}
+#shopcartBtn{
+  top:90%;
+  z-index:11;
+}
+#footer {
+    background-color: #000 !important;
+    position: fixed;
+    bottom: 0;
+    z-index: 999999;
+}
+#footer>#tabbar5>.aui-iconfont {
+    position: relative;
+    background-color: #fff;
+    z-index: 20;
+    top: 0.1rem;
+    height: 1.2rem;
+    font-size: 1rem;
+    line-height: 1rem;
+    color: #000;
+    font-weight: bold;
+}
+#footer>#tabbar5>.center-nav {
+  border: .5px solid #fff;
+    padding: .5rem .5rem;
+    border-radius: 25%;
+    background-color: #ffffff;
+    font-size: x-large;
+    font-weight: bold;
+    color: #000;
+    z-index: 99999 !important;
+    max-width: 1rem;
+    font-style: normal;
+}
+
+#footer>.aui-active {
+    color: #fff;
+    padding-right: .3vh;
+}
+
+#footer>.aui-active>.aui-bar-tab-label>span {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 1vh;
+}
+
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+}
+.rightPaneShow{
+  overflow: hidden;
+  animation: panestart 0.5s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes panestart {
+  from{
+    transform: translateX(0px);
+  }
+  to{
+    transform: translateX(-60%);
+  }
+}
+.showPlish{
+  animation: plusRoute 0.5s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes plusRoute {
+  0%{
+    transform: rotate(0deg);
+  }
+  50%{
+    transform: rotate(90deg);
+  }
+  90%{
+    transform: rotate(180deg);
+  }
+  100%{
+    transform: rotate(180deg);
+    opacity: 0;
+  }
+}
+.showSuccess i:first-child{
+  display: none !important;
+}
+.showSuccess i:not(first-child){
+  display: block !important;
+}
+#select{
+
+  z-index:9999;
+}
+.rightPaneHide{
+  animation: paneend 0.5s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes paneend {
+  from{
+    transform: translateX(-60%);
+  }
+  to{
+    transform: translateX(0px);
+  }
+}
+.leftPaneShow{
+  overflow: hidden;
+  animation: ssstart 0.5s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes ssstart {
+  from{
+    transform: translateX(0px);
+  }
+  to{
+    transform: translateX(60%);
+  }
+}
+.leftPaneHide{
+  animation: ssend 0.5s ease-in-out 0s 1 alternate forwards;
+}
+@keyframes ssend {
+  from{
+    transform: translateX(60%);
+  }
+  to{
+    transform: translateX(0px);
+  }
+}
+/*框架*/
+
+#slip {
+    transform: translate3d(0px, 0px, 0px);
+}
+
+.swipe-wrap {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.swipe {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    z-index:1
+}
+
+.swipe-box {
+    width: 100%;
+    z-index: 2;
+    overflow: hidden;
+}
+
+.video_max {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+    /*object-fit: fill;*/
+    object-fit: cover;
+}
+
+#aui-header {
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    /* Firefox 3.6 - 15 */
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.1));
+    /* 标准的语法 */
+    position: fixed;
+    top: 0
+}
+
+.swipe-box>#fixmessage_info {
+    position: relative;
+    left: 0;
+    float: left;
+    z-index: 10;
+    color: #fff;
+}
+
+.swipe-box>#fixmessage_info>.username {
+    margin: 0;
+    float: right;
+    margin-bottom: 2em;
+    right: 0;
+    z-index: 11;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+#aui-header>.aui-pull-left>.camera-text {
+    font-size: 10px;
+    padding-left: .5vh;
+    padding-top: .5vh;
+    font-family: '微软雅黑';
+}
+
+#aui-header>.aui-title>.aui-tab {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+#aui-header>.aui-title>.aui-tab>.aui-tab-item {
+    color: #fff;
+}
+
+#aui-header>.aui-title>.aui-tab>.aui-active {
+    border-bottom: none;
+    font-weight: bold;
+    font-size: 18px;
+    color: #fff;
+}
+
+#aui-header>.aui-title>.aui-tab>#page_aui {
+    height: .9em;
+    width: .2em;
+    margin-top: .9em;
+    background: #fff;
+}
+
+#showPlay {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 45
+}
+
+#showPlay>span {
+    margin-top: 60%;
+    margin-left: 40%;
+    line-height: 8vh;
+    font-size: 5rem;
+}
+
+.play-video {
+    position: relative;
+    display: block;
+    height: 100%;
+    bottom: 100%;
+    color: white;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.3);
+    width: 100%;
+    font-size: 3rem !important;
+}
+
+.hide-video {
+    display: none;
+}
+
+.show-video {
+    display: block;
+}
+
+.icon-play:before {
+    position: absolute;
+    top: 17rem;
+    left: 7rem;
+}
+
+#share {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    bottom: 0;
+    background: #fff;
+    color: #000;
+    z-index: 1099;
+    display: none;
+}
+
+#share>ul li {
+    float: left;
+}
+.img-user {
+    width: 100%;
+    height: 100%;
+}
+.img-user img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.add-user i {
+    font-size: xx-small;
+    top: -.7rem;
+    position: relative;
+}
+#userBtn .btnbox .add-user{
+  position: relative;
+    top: -.5rem;
+    font-size: xx-small;
+    right: -.6rem;
+    background: red;
+    border-radius: 50%;
+    width: .9rem;
+    height: .9rem;
+}
+.icon-number-top {
+    position: relative;
+    bottom: 0.7rem;
+    right: .2rem;
+    min-width: 18px;
+}
+.border-white{
+  border: 1px solid #fff;
+}
+.img_max {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 98;
+    display: block;
+}
+
+.sample_content {
+    position: absolute;
+    background: rgba(0, 0, 0, 0);
+    bottom: 2.72rem;
+    width: 70%;
+    padding-left: .3rem;
+    min-height: 4.5rem;
+    max-height: 4.5rem;
+}
+.sample_content h6{
+  color: #fff;
+}
+.sample_content .ui-text {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+}
+.flex-btn{
+  z-index:1000;
+  position: absolute !important;
+  right:10px;
+  top:15rem
+}
+.flex_btn{
+  z-index: 1000;
+  position: relative;
+  right: 10px;
+  float: right;
+}
+.flex-btn-left{
+  z-index: 1000;
+  position: relative;
+  left: .1rem;
+}
+.flex_btn li{
+  padding-bottom: 1rem
+}
+#musicBtn{
+  position: fixed;
+  float: right;
+  right: 10px;
+  width: 48px;
+  height: 48px;
+  /*z-index: 9999;*/
+}
+.icon.iconfont.icon-share-big{
+  margin-left: -.5rem;
+}
+.icon-number {
+    position: relative;
+    top: -1.4rem;
+    min-width: 18px;
+}
+.btnbox {
+    /*background-color: #45ddd2;*/
+    color: #fff;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    line-height: 2.4rem;
+    text-align: center;
+    visibility: inherit;
+}
+.bg {
+    background: #d88630;
+}
+.icon {
+    font-size: xx-large;
+}
+.shopBtn{
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border-radius: 5%;
+    margin-left: 1rem;
+    width:auto;
+     display:inline-block !important;
+      display:inline;
+}
+.shopBtn span{
+  padding: .2rem;
+  padding-left: .5rem;
+}
+.shopBtn i{
+  color:orange
+}
+.ui-mask.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ui-mask.blur-light-android {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.ui-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s ease-in;
+    -webkit-backface-visibility: hidden;
+    z-index: 700;
+}
+
+.ui-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.25s ease-in;
+    -webkit-backface-visibility: hidden;
+    z-index: 700;
+}
+
+.page-e4cd19.share_mask .column_wrap {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 60px;
+}
+
+page-e4cd19.share_mask .column_wrap.active .column_content,
+.page-e4cd19.share_mask .column_wrap.active .close {
+    -webkit-animation: showMove ease 1;
+    animation: showMove ease 1;
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+}
+
+.page-e4cd19.share_mask .column_wrap .column_content {
+    width: 25%;
+    height: 80px;
+    text-align: center;
+    margin-bottom: 20px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+}
+
+.page-e4cd19.share_mask .column_wrap .column_content>.ui-view {
+    width: 100%;
+}
+
+.page-e4cd19.share_mask .column_wrap .column_content>.ui-view .ui-view {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-color: #41C451;
+    border-radius: 50%;
+    line-height: 50px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.page-e4cd19.share_mask .column_wrap .column_content>.ui-view .ui-text {
+    font-size: 14px;
+    color: #2C2C2C;
+}
+
+.page-e4cd19.share_mask .column_wrap.active .close {
+    -webkit-animation-duration: 0.6;
+    animation-duration: 0.6;
+}
+
+.page-e4cd19.share_mask .column_wrap.active .column_content,
+.page-e4cd19.share_mask .column_wrap.active .close {
+    -webkit-animation: showMove ease 1;
+    animation: showMove ease 1;
+    -webkit-transform: translate(0px, 0px);
+    transform: translate(0px, 0px);
+}
+
+.page-e4cd19.share_mask .column_wrap .close {
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}

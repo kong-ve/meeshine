@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+</head>
+
+<body>
+    <header class="aui-bar aui-bar-nav" id="header">
+        <div class="aui-pull-left aui-btn" onclick="closeFrame()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </div>
+        <div class="aui-title">修改</div>
+        <div class="aui-pull-right aui-btn" id="save" onclick="saveF()">
+            <span class="">保存</span>
+        </div>
+    </header>
+    <section>
+<div class="aui-content aui-margin-b-15">
+            <ul class="aui-list aui-form-list" id="editMessage">
+                <li class="aui-list-item">
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-label" id="editname">
+
+                        </div>
+                        <div class="aui-list-item-input" id="val-iput">
+                            <input type="text" placeholder="Name" id="editVal">
+                        </div>
+                    </div>
+                </li>
+            <ul>
+        </div>
+    </section>
+</body>
+
+</html>
+<script src="../script/api.js"></script>
+<script>
+var editM,parse;
+var data;
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+         editM = $api.byId('editMessage');
+         parse = api.pageParam;
+         data  =  JSON.parse(api.getGlobalData({key: 'userMesg'}));
+         console.log(JSON.stringify(data));
+         if(parse.name == 'introduce'){
+           $api.text($api.dom(header, '.aui-title'), '编辑' + parse.titles);
+           $api.text($api.dom(editM, '#editname'),  parse.titles);
+
+           $api.html($api.dom(editM, '#val-iput'),'<textarea id="editVal"></textarea>');
+           if(!data.introduce){
+              $api.attr($api.dom(editM, '#editVal'),  'placeholder',parse.val);
+           }else{
+              $api.val($api.dom(editM, '#editVal'),parse.val);
+           }
+
+         }else{
+           $api.text($api.dom(header, '.aui-title'), '编辑' + parse.titles);
+           $api.text($api.dom(editM, '#editname'),  parse.titles);
+           $api.val($api.dom(editM, '#editVal'),  parse.val);
+         }
+
+
+    };
+
+    function closeFrame() {
+        api.closeWin({
+            name: 'editMes'
+        });
+    }
+    function saveF() {
+      var d = {};
+      d[parse.name] = $api.val($api.dom(editM, '#editVal'));
+      console.log(data[parse.name]);
+      console.log(d[parse.name]);
+      data[parse.name] = $api.val($api.dom(editM, '#editVal'));
+      console.log(data[parse.name]);
+      api.ajax({
+          url: 'http://wstmart.anaf.cn/apihome/users/edit',
+          method: 'post',
+          data: {
+              values: d,
+          }
+      },function(ret, err){
+        console.log( JSON.stringify( ret ) );
+          if (ret) {
+              if(ret.status == 1){
+                console.log(JSON.stringify(data))
+                api.setGlobalData({
+                    key: 'userMesg',
+                    value: JSON.stringify(data)
+                });
+                var l = api.getGlobalData({key: 'userMesg'});
+                  console.log(JSON.stringify(l));
+                api.execScript({
+                    frameName: 'information_frm',
+                    script: 'MyInfo();'
+                });
+                closeFrame();
+              }
+          } else {
+              console.error( JSON.stringify( err ) );
+          }
+      });
+    }
+</script>
