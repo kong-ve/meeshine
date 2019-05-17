@@ -88,13 +88,11 @@
     }
 
     function list_C(a) {
-      console.log(JSON.stringify(a))
         var html = '<ul class="aui-list aui-media-list">';
         var child_html = '';
         var data_lists = a.data;
 
         data_lists.map(function(el, i) {
-          console.log(el.cid)
             if (el.cid == 1) {
                 child_html = list_C(el.chlid);
             }
@@ -147,7 +145,6 @@
                 if (el.cid == 1) {
                     child_html = list_C(el.chlid);
                 }
-                console.error(JSON.stringify(el))
                 html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '">' +
                     '<div class="aui-media-list-item-inner">' +
                     '<div class="aui-list-item-media" style="width: 3rem;">' +
@@ -173,7 +170,7 @@
           }
         });
     }
-    
+
     function addComList() {
         var data = {};
         $api.post('http://wstmart.anaf.cn/apishop/video/send_comment', {

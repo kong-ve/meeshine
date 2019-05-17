@@ -80,17 +80,11 @@
         <p class="aui-font-size-12 aui-text-center aui-margin-b-15">第三方账号登录</p>
         <div class="aui-grid" style="background: none;">
             <div class="aui-row">
-                <div class="aui-col-xs-4">
+                <div class="aui-col-xs-4" onclick="loginFackbook()">
                     <i class="iconfont icon-Facebook"></i>
                 </div>
-                <div class="aui-col-xs-4">
+                <div class="aui-col-xs-4" onclick="loginGoogle()">
                     <i class="iconfont icon-google"></i>
-                </div>
-                <div class="aui-col-xs-4">
-                    <i class="iconfont icon-ttww"></i>
-                </div>
-                <div class="aui-col-xs-4">
-                    <i class="iconfont icon-ins"></i>
                 </div>
             </div>
         </div>
@@ -111,7 +105,28 @@
         $api.removeAttr(img,'src');
         $api.attr(img,'src','http://wstmart.anaf.cn/home/index/getVerify');
     }
-
+    function loginFackbook() {
+      var facebook = api.require('facebook');
+      facebook.login({
+        appId: '2260718420859070',
+      },function(ret, err){
+           if(ret.status) {
+             api.alert({msg:JSON.stringify(ret)});
+           } else {
+              api.alert({msg:JSON.stringify(err)});
+           }
+     });
+    }
+    function loginGoogle() {
+      var google = api.require('google');
+google.signIn(function(ret, err) {
+    if (err) {
+        api.alert({msg:JSON.stringify(err)});
+    } else {
+        api.alert({msg:JSON.stringify(ret)});
+    }
+});
+    }
     function login() {
         var dataList = {};
         dataList.loginName = $api.val($api.byId('userName'));

@@ -75,7 +75,7 @@ function GetVideoList(List, container, swipe, foot_h) {
         el_child.src = v.goods_video_url;
         el_child.id = v.id;
         el_child.poster = v.imageUrl||'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png';
-        el_child.autoplay = false;
+        el_child.autoplay = true;
         el_child.loop = true;
         el_child.type = 'video/mp4';
         el_child.muted = true;
@@ -516,15 +516,7 @@ function userVideo(footer_h,container,l) {
       $api.text($api.dom($api.byId('shareBtn'), '.icon-number'),userData[0].share_sum);
       $api.text($api.dom($api.byId('commitBtn'), '.icon-number'),userData[0].comment_sum);
       $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'),0);
-      setTimeout(function(){
-        document.getElementById(userData[0].id).play();
         document.getElementById(userData[0].id).muted = false;
-        userData.map(function(v, i) {
-            if (i != 0) {
-                document.getElementById(v.id).play();
-            }
-        })
-      },500)
   }
   else{
     var list = ret.data.data;
@@ -623,63 +615,29 @@ function myInfoMes() {
     }
 function shareTos(id) {
     debugger
-//     if(id == 'facebook'){
-//       var facebook = api.require('facebook');
-//     facebook.shareLinked({
-//         url: ""+userData[page].goods_video_url+"",
-//         imgUrl: ""+userData[page].goods_video_url+"",
-//         description: 'app 跨平台开发工具',
-//         title: 'APICloud',
-//         quote: 'very good'
-//     }, function(ret, err){
-//          if(ret.status) {
-//            api.alert({msg:JSON.stringify(ret)});
-//          } else {
-//             api.alert({msg:JSON.stringify(err)});
-//          }
-//    });
-// }else{
-  document.getElementById(userData[page].id).pause();
-  var ShareSDKPlus = api.require('ShareSDKPlus');
-  ShareSDKPlus.shareContent({
-      "platform": $sharesdk.PlatformID[id],
-      "shareParams":{
-        "text" : "测试的文字",
-        "imageUrl" : "http://download.sdk.mob.com/206/4f8/dfc9ea27dd8bc4abfec865c38d/800_450_156.2.jpg",
-        "title" : "测试的标题",
-        "titleUrl" : ""+userData[page].goods_video_url+"",
-        "description" : "测试的描述",
-        "site" : "ShareSDK",
-        "siteUrl" : "http://www.mob.com",
-        "type" : $sharesdk.ContentType.Video
-      }
-  }, function(ret, err) {
-    var state = ret.state;
- switch(state)
- {
-     case $sharesdk.ResponseState.Success://1
-         api.toast({
-             msg: "分享成功",
-             location: 'middle'
-         });
-     break;
-     case $sharesdk.ResponseState.Fail://2
-         api.toast({
-             msg: "分享失败",
-             location: 'middle'
-         });
-     break;
-     case $sharesdk.ResponseState.Cancel://3
-         api.toast({
-             msg: "取消分享",
-             location: 'middle'
-     });
-     break;
-    default:
- }
-  })
-  document.getElementById(userData[page].id).play();
-// }
+    switch (id) {
+      case 'facebook':
+      var facebook = api.require('facebook');
+    facebook.shareLinked({
+        url: ""+userData[page].goods_video_url+"",
+        imgUrl: ""+userData[page].goods_video_url+"",
+        description: 'app 跨平台开发工具',
+        title: 'APICloud',
+        quote: 'very good'
+    }, function(ret, err){
+         if(ret.status) {
+           api.alert({msg:JSON.stringify(ret)});
+         } else {
+            api.alert({msg:JSON.stringify(err)});
+         }
+   });
+        break;
+      case 'googlePlus':
+      break;
+
+    }
+
+    }
 
 }
 
