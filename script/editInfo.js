@@ -33,7 +33,7 @@ function openSexList() {
     }
     var id = index-1;
     api.ajax({
-        url: 'http://wstmart.anaf.cn/apihome/users/edit',
+        url: 'http://wstmart.anhy.net/apihome/users/edit',
         method: 'post',
         data: {
             values: {

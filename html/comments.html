@@ -50,8 +50,8 @@
     var parse;
     apiready = function() {
         api.parseTapmode();
-        var header = $api.byId('header');
-        $api.fixStatusBar(header);
+        // var header = $api.byId('header');
+        // $api.fixStatusBar(header);
         var footer = $api.byId('footer');
         $api.fixTabBar(footer);
         parse = api.pageParam;
@@ -70,7 +70,7 @@
 
     function del_comment(id) {
         api.ajax({
-            url: '/apishop/video/del_comment',
+            url: 'http://wstmart.anhy.net/apishop/video/del_comment',
             method: 'post',
             data: {
                 values: {
@@ -126,7 +126,7 @@
           duration: 2000
       });
         api.ajax({
-            url: 'http://wstmart.anaf.cn/apishop/video/comment_list',
+            url: 'http://wstmart.anhy.net/apishop/video/comment_list',
             method: 'get',
             data: {
                 values: {
@@ -172,8 +172,11 @@
     }
 
     function addComList() {
-        var data = {};
-        $api.post('http://wstmart.anaf.cn/apishop/video/send_comment', {
+        var data = {
+          'video_id': parse.video,
+          'content':$api.val($api.byId('text'))
+        };
+        $api.post('http://wstmart.anhy.net/apishop/video/send_comment', {
             values: data
         }, function(ret, err) {
             console.log(JSON.stringify(ret))

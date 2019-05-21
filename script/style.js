@@ -41,7 +41,7 @@ function openCart() {
 
 function myInfoMes() {
     api.ajax({
-            url: 'http://wstmart.anaf.cn/apihome/users/index',
+            url: 'http://wstmart.anhy.net/apihome/users/index',
             method: 'get',
         },
         function(ret, err) {
@@ -64,7 +64,7 @@ function myInfoMes() {
     function isLogin(obj, url, index) {
 
         api.ajax({
-            url: 'http://wstmart.anaf.cn/apihome/users/index',
+            url: 'http://wstmart.anhy.net/apihome/users/index',
             method: 'get',
         }, function(ret, err) {
             // console.log(JSON.stringify(ret));

@@ -21,7 +21,7 @@
                       手机号
                   </div>
                   <div class="aui-list-item-input aui-padded-l-10">
-                      <input type="number" placeholder="输入用户名" id="userName" value="" class="loginName" maxlength="11">
+                      <input type="number" placeholder="输入手机号码" id="userName" value="" class="loginName" maxlength="11">
                   </div>
               </div>
           </li>
@@ -31,7 +31,7 @@
                       密码
                   </div>
                   <div class="aui-list-item-input aui-padded-l-10">
-                      <input type="password" placeholder="输入密码" id="password" value="123456" class="loginPwd">
+                      <input type="password" placeholder="输入密码" id="password" value="" class="loginPwd">
                   </div>
               </div>
           </li>
@@ -81,7 +81,7 @@ var toast = new auiToast();
         dataList.userPhoto ="";
         console.log(JSON.stringify(dataList))
         api.ajax({
-            url: 'http://wstmart.anaf.cn/apihome/users/add',
+            url: 'http://wstmart.anhy.net/apihome/users/add',
             method: 'post',
             data: {
               values:dataList

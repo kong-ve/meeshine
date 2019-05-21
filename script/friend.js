@@ -1,6 +1,6 @@
 function getFriendList() {
   api.ajax({
-    url:'http://wstmart.anaf.cn/apihome/users/get_follonw',
+    url:'http://wstmart.anhy.net/apihome/users/get_follonw',
     method:'get',
     data:{
       values:{
@@ -23,7 +23,7 @@ function openFriend() {
       name: 'firend_List',
       url: './add_friend_list.html',
   });
-  
+
 }
 function AddList(list) {
   console.log(JSON.stringify(list));

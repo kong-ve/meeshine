@@ -7,13 +7,16 @@
     <title>选择规格</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/local_win.css" />
     <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="../css/cart.css" />
+
   </head>
   <body>
+
     <header id="header">
       <div class="pic" onclick="pic_all()">
-        <img src="../image/suipai/bg.jpg"/>
+        <img src="../image/suipai/bg.jpg" onerror="this.src = '../image/suipai/bg.jpg'"/>
       </div>
       <div class="message-info">
         <div class="price-sum">￥ <span>1325</span></div>
@@ -61,7 +64,7 @@
               <div class="aui-bar-btn-item">
                   <input type="number" class="aui-input aui-text-center" value="1" >
               </div>
-              <div class="aui-bar-btn-item">
+              <div class="aui-bar-btn-item show">
                   <i class="aui-iconfont aui-icon-plus"></i>
               </div>
             </div>
@@ -70,6 +73,9 @@
         </div>
       </div>
     </div>
+    </section>
+    <section>
+
     </section>
     <footer class="aui-bar aui-bar-tab" id="footer">
 
@@ -91,10 +97,20 @@
 <script src="../script/home.js"></script>
 <script>
 var colorL =   document.getElementById('colorSelect').querySelectorAll('.aui-label');
+var select_id = 0;
 for(var el = 0;el<colorL.length;el++){
   console.log(JSON.stringify(colorL[el]));
   $api.addEvt(colorL[el],'click', function(){
+    for (var i =0;i<colorL.length;i++){
+      if(colorL[i] == this){
+        select_id = i;
+        // photoBrowser.setIndex({
+        //   index:i
+        // })
+        $api.dom($api.dom($api.byId('header'),'.pic'),'img').src = '../images/thumbs/1-'+(i+1)+'.jpg';
 
+      }
+    }
       var list = $api.dom($api.byId('colorSelect'),'.aui-active');
           $api.removeCls(list,'aui-active');
       $api.addCls(this, 'aui-active');
@@ -105,6 +121,7 @@ for(var el = 0;el<colorL.length;el++){
       $api.text(product,txt);
     });
 }
+// baguetteBox.run('.baguetteBoxOne');
 var photoBrowser;
 apiready= function() {
   api.parseTapmode();
@@ -126,25 +143,34 @@ function SelectList_all(){
 
 }
 function pic_all() {
-
-photoBrowser.open({
-images: [
-    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
-    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/1a73dd6a90a52b2aad1aafefbf977e4c.png',
-    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
-    'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/51fc1ddde9790c96a6986b74342a15e3.png'
-],
-bgColor: '#000'
-}, function(ret, err) {
-if (ret) {
-  if(ret.eventType == 'click'){
-    photoBrowser.close();
-  }
-    console.log(JSON.stringify(ret));
-} else {
-    console.error(JSON.stringify(err));
-}
+  // $api.removeCls($api.byId('picAll'), 'aui-hide');
+  // document.getElementById('picAll').querySelectorAll('a')[select_id].click();
+api.openWin({
+    name: 'pciAll',
+    url: './pic_All.html',
+    pageParam: {
+        len: select_id
+    }
 });
+
+// photoBrowser.open({
+// images: [
+//     'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
+//     'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/1a73dd6a90a52b2aad1aafefbf977e4c.png',
+//     'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
+//     'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/51fc1ddde9790c96a6986b74342a15e3.png'
+// ],
+// bgColor: 'rgba(0,0,0,0.8)'
+// }, function(ret, err) {
+// if (ret) {
+//   if(ret.eventType == 'click'){
+//     photoBrowser.close();
+//   }
+//     console.log(JSON.stringify(ret));
+// } else {
+//     console.error(JSON.stringify(err));
+// }
+// });
 }
 function closeFrame() {
   api.execScript({

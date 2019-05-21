@@ -32,7 +32,7 @@ function bigBg() {
 function LoginOut() {
     api.ajax(
       {
-        url: 'http://wstmart.anaf.cn/apihome/users/logout',
+        url: 'http://wstmart.anhy.net/apihome/users/logout',
         method: 'get',
     },
     function(ret, err) {

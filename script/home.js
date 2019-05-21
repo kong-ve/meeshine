@@ -12,7 +12,7 @@ function checkPC() {
 }
 function IS_star(videoId){
   api.ajax({
-      url: 'http://wstmart.anaf.cn/apihome/video/is_star',
+      url: 'http://wstmart.anhy.net/apihome/video/is_star',
       method: 'get',
       data: {
           values: {
@@ -56,12 +56,33 @@ function hideModel() {
   }
 }
 function searchForm() {
-  stopMusic();
-  api.openWin({
-      name: 'productList_win',
-      url: './productList_win.html',
-      pageParam: {
-          name: 'test'
+var val = $api.val($api.byId('search-input'));
+selectVideo(val);
+}
+function selectVideo(str_sel) {
+  api.ajax({
+      url: 'http://wstmart.anhy.net/apihome/video/video_list',
+      method: 'post',
+      data: {
+          values: {
+              str: str_sel,
+              search_type:0
+          },
+      }
+  },function(ret, err){
+      if (ret) {
+          alert( JSON.stringify( ret ) );
+          stopMusic();
+          api.openWin({
+              name: 'productList_win',
+              url: './productList_win.html',
+              pageParam: {
+                  dataList: ret.data
+              }
+          });
+
+      } else {
+          alert( JSON.stringify( err ) );
       }
   });
 
@@ -350,7 +371,7 @@ function RightPaneOpen() {
 }
 function addFlow(vl) {
   api.ajax({
-      url: 'http://wstmart.anaf.cn/apihome/users/follow',
+      url: 'http://wstmart.anhy.net/apihome/users/follow',
       method: 'post',
       data: {
           values: {
@@ -421,7 +442,7 @@ api.addEventListener({
 }
 function remFlow(vl) {
   api.ajax({
-      url: 'http://wstmart.anaf.cn/apihome/users/unfollow',
+      url: 'http://wstmart.anhy.net/apihome/users/unfollow',
       method: 'post',
       data: {
           values: {
@@ -466,7 +487,7 @@ function onAddFL(d) {
 }
 function  add_star(id) {
   api.ajax({
-      url: 'http://wstmart.anaf.cn/apihome/video/star',
+      url: 'http://wstmart.anhy.net/apihome/video/star',
       method: 'get',
       data: {
           values: {
@@ -498,7 +519,7 @@ function  add_star(id) {
 function userVideo(footer_h,container,l) {
 
   api.ajax({
-    url:'http://wstmart.anaf.cn/apihome/video/video_list',
+    url:'http://wstmart.anhy.net/apihome/video/video_list',
     method:'get',
     data:{
       values:{
@@ -595,7 +616,7 @@ function openShare() {
 }
 function myInfoMes() {
     api.ajax({
-            url: 'http://wstmart.anaf.cn/apihome/users/index',
+            url: 'http://wstmart.anhy.net/apihome/users/index',
             method: 'get',
         },
         function(ret, err) {
@@ -634,9 +655,6 @@ function shareTos(id) {
         break;
       case 'googlePlus':
       break;
-
-    }
-
     }
 
 }
@@ -657,7 +675,7 @@ function searchShow(el){
   $api.removeCls($api.byId('search'), 'aui-hide');
   $api.addCls($api.byId('aui-header'), 'aui-hide');
   $api.removeCls($api.byId('select-show'), 'aui-hide');
-$api.addEvt($api.byId('search'), 'keydown', searchKeyDown);
+// $api.addEvt($api.byId('search'), 'keydown', searchKeyDown);
 
 }
 function searchKeyDown(e){
