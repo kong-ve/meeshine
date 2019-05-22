@@ -655,27 +655,40 @@ function shareTos(id) {
         break;
       case 'googlePlus':
       var shareApi = api.require('ShareSDKPlus');
-      shareApi.authorize({
-    "platform": $sharesdk.PlatformID.GooglePlus
+      var shareParams =
+    {
+        "text" : "测试的文字",
+        "imageUrl" : "http://download.sdk.mob.com/206/4f8/dfc9ea27dd8bc4abfec865c38d/800_450_156.2.jpg",
+        "title" : "测试的标题",
+        "titleUrl" : "http://www.mob.com",
+        "description" : "测试的描述",
+        "site" : "ShareSDK",
+        "siteUrl" : "http://www.mob.com",
+        "type" : $sharesdk.ContentType.Auto
+    };
+
+shareApi.shareContent({
+    "platform": $sharesdk.PlatformID.GooglePlus,
+    "shareParams": shareParams
 },function(ret, err){
     var state = ret.state;
     switch(state)
     {
-        case $sharesdk.ResponseState.Success://1
+        case $sharesdk.ResponseState.Success:
             api.toast({
-                msg: "授权成功",
+                msg: "分享成功",
                 location: 'middle'
             });
         break;
-        case $sharesdk.ResponseState.Fail://2
+        case $sharesdk.ResponseState.Fail:
             api.toast({
-                msg: "授权失败",
+                msg: "分享失败",
                 location: 'middle'
             });
         break;
-        case $sharesdk.ResponseState.Cancel://3
+        case $sharesdk.ResponseState.Cancel:
             api.toast({
-                msg: "取消授权",
+                msg: "取消分享",
                 location: 'middle'
         });
         break;
