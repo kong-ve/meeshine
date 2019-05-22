@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta-data name="com.facebook.sdk.ApplicationId"value="fb2260718420859070"></meta-data>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <meta name="google-signin-client_id" content="929233012223-07rksf7mhkh78mupgmruehqqv7ogp66q.apps.googleusercontent.com">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
     <link rel="stylesheet" href="../feature/fonts/iconfont.css"/>
@@ -76,8 +78,10 @@
     <section class="aui-content-padded">
         <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" tapmode onclick="login()">登录</div>
     </section>
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <section class="aui-content-padded login-third">
         <p class="aui-font-size-12 aui-text-center aui-margin-b-15">第三方账号登录</p>
+
         <div class="aui-grid" style="background: none;">
             <div class="aui-row">
                 <div class="aui-col-xs-4" onclick="loginFackbook()">
@@ -92,13 +96,22 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script src="../script/aui-toast.js" charset="utf-8"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script type="text/javascript">
-    apiready = function() {
-        api.parseTapmode();
-        var param = api.pageParam;
-        console.log(JSON.stringify(param));
+function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
 
-    };
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
     var toast = new auiToast({
     })
     function changeImg(img) {
@@ -106,10 +119,20 @@
         $api.attr(img,'src','http://wstmart.anhy.net/home/index/getVerify');
     }
     function loginFackbook() {
+      console.log('facebook');
       var facebook = api.require('facebook');
+      facebook.isInstalled(function(ret, err) {
+    if (ret.installed) {
+        console.log("当前设备已安装facebook客户端");
+    } else {
+        console.log('当前设备未安装facebook客户端');
+    }
+});
       facebook.login({
         appId: '2260718420859070',
       },function(ret, err){
+    console.error(JSON.stringify(err));
+    console.error(JSON.stringify(ret));
            if(ret.status) {
              api.alert({msg:JSON.stringify(ret)});
            } else {

@@ -8,6 +8,7 @@
     <title>个人资料</title>
     <link rel="stylesheet" type="text/css" href="../css/api.css" />
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/iosSelect.css" />
     <link rel="stylesheet" type="text/css" href="../css/information.css" />
   </head>
   <body>
@@ -123,16 +124,40 @@
 </html>
 <script src="../script/api.js"></script>
 <script src="../script/editInfo.js"></script>
+<script src="../script/iosSelect.js"></script>
 <script src="../script/aui-toast.js" charset="utf-8"></script>
 
 <script>
 var toast = new auiToast({});
 var FNImageClip;
+var data,iosProvinces=[], iosCitys=[], iosCountys=[];;
   apiready =function(){
     api.parseTapmode();
      FNImageClip = api.require('FNImageClip');
     // console.log(api.winHeight)
     $api.css(document.body,'height:'+api.winHeight+'px');
+     data=api.readFile({
+      sync: true,
+      path: 'widget://res/city.json'
+  });
+  data = eval(data);
+         data.map(function(el,i){
+          iosProvinces.push({'id': el.id, 'value': el.name, 'parentId': '0'});
+          var data_one = el.sub;
+          for(var o=0;o<data_one.length;o++){
+          data_one[o]['parentId'] = el.id;
+          }
+          data_one.map(function(ev,j){
+              iosCitys.push({'id': ev.id, 'value': ev.name, 'parentId': ev.parentId});
+              var data_two = ev.sub;
+              for(var k=0;k<data_two.length;k++){
+                    data_two[k]['parentId'] = ev.id;
+              }
+              data_two.map(function(ew,z){
+              iosCountys.push({'id': ew.id, 'value': ew.name, 'parentId': ew.parentId});
+            })
+          });
+        });
     MyInfo();
   }
 </script>

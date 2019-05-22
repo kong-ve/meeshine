@@ -654,6 +654,34 @@ function shareTos(id) {
    });
         break;
       case 'googlePlus':
+      var shareApi = api.require('ShareSDKPlus');
+      shareApi.authorize({
+    "platform": $sharesdk.PlatformID.GooglePlus
+},function(ret, err){
+    var state = ret.state;
+    switch(state)
+    {
+        case $sharesdk.ResponseState.Success://1
+            api.toast({
+                msg: "授权成功",
+                location: 'middle'
+            });
+        break;
+        case $sharesdk.ResponseState.Fail://2
+            api.toast({
+                msg: "授权失败",
+                location: 'middle'
+            });
+        break;
+        case $sharesdk.ResponseState.Cancel://3
+            api.toast({
+                msg: "取消授权",
+                location: 'middle'
+        });
+        break;
+       default:
+    }
+});
       break;
     }
 
