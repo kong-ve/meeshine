@@ -36,10 +36,10 @@
             <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-label aui-border-r color-orange">
-                        用户名
+                        用户
                     </div>
                     <div class="aui-list-item-input aui-padded-l-10">
-                        <input type="text" placeholder="输入用户名" id="userName" value="" class="loginName">
+                        <input type="text" placeholder="输入用户email" id="userName" value="" class="loginName">
                     </div>
                 </div>
             </li>
@@ -177,6 +177,9 @@ google.signIn(function(ret, err) {
                 // $api.byId('codeImg').click();
 
                 }else {
+                  api.setGlobalData({
+                    'uid':ret.user_id
+                  })
                   toast.success({
                       title:ret.msg,
                       duration:2000

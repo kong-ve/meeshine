@@ -73,6 +73,7 @@ function selectVideo(str_sel) {
       if (ret) {
           alert( JSON.stringify( ret ) );
           stopMusic();
+          hideSelect();
           api.openWin({
               name: 'productList_win',
               url: './productList_win.html',
@@ -222,14 +223,14 @@ function GetVideoList(List, container, swipe, foot_h) {
             p++;
             userVideo(api.pageParam.foot,$api.byId('container'),p);
           }else{
-            document.getElementById(userData[page].id).pause();
+            $api.byId(userData[page].id).pause();
             page = this.page;
 
             if (document.getElementById(userData[this.page].id).muted == true) {
                 document.getElementById(userData[this.page].id).currentTime = 0;
                 document.getElementById(userData[this.page].id).muted = false;
             }
-            document.getElementById(userData[this.page].id).play();
+            $api.byId(userData[this.page].id).play();
             pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
 
         }
@@ -369,7 +370,7 @@ function RightPaneOpen() {
     hideModel();
   }
 }
-function addFlow(vl) {
+function addFlow(vl,el) {
   api.ajax({
       url: 'http://wstmart.anhy.net/apihome/users/follow',
       method: 'post',
@@ -381,6 +382,24 @@ function addFlow(vl) {
   },function(ret, err){
       if (ret) {
           alert( JSON.stringify( ret ) );
+          if(ret.status == 1){
+            $api.addCls($api.dom(el,'.add-user'), 'showPlish');
+            setTimeout(function(){
+            $api.removeCls($api.dom(el,'.add-user'),'showPlish');
+              $api.css($api.dom(el, '.add-user'),'color:#000;background:#fff;');
+            $api.addCls($api.dom(el,'.add-user'), 'showSuccess');
+            setTimeout(function () {
+                $api.removeAttr($api.dom(el, '.add-user'),'style');
+              $api.attr($api.dom(el,'.add-user'), 'hidden','hidden');
+            },500)
+          },500)
+        }else if(ret.status == -999) {
+          api.openWin({
+              name: 'login',
+              url: './login_win.html',
+          });
+
+        }
       } else {
           alert( JSON.stringify( err ) );
       }
@@ -471,17 +490,8 @@ stopMusic()
 function onAddFL(d) {
   var el = d;
   if(!$api.hasCls($api.dom(el,'.add-user'), 'showSuccess')){
-    addFlow($api.attr(el,'data-id'));
-      $api.addCls($api.dom(el,'.add-user'), 'showPlish');
-      setTimeout(function(){
-      $api.removeCls($api.dom(el,'.add-user'),'showPlish');
-        $api.css($api.dom(el, '.add-user'),'color:#000;background:#fff;');
-      $api.addCls($api.dom(el,'.add-user'), 'showSuccess');
-      setTimeout(function () {
-          $api.removeAttr($api.dom(el, '.add-user'),'style');
-        $api.attr($api.dom(el,'.add-user'), 'hidden','hidden');
-      },500)
-    },500)
+    addFlow($api.attr(el,'data-id'),el);
+
   }
 
 }
@@ -497,7 +507,7 @@ function  add_star(id) {
   },function(ret, err){
 
       if (ret) {
-        var el = $api.byId('likeBtn');
+        var el = document.getElementById('likeBtn');
         if(ret.status == 1){
           $api.css($api.dom(el, '.icon-heart'),'color:red;');
           $api.text($api.dom(el, '.icon-number'),Number($api.text($api.dom(el, '.icon-number')))+1);
@@ -532,11 +542,11 @@ function userVideo(footer_h,container,l) {
       userData = ret.data.data;
       IS_star(userData[0].id)
       GetVideoList(userData, container, '.swipe', footer_h);
-      $api.attr($api.dom($api.byId('userBtn'), 'img'),'src',userData[0].imgUrl||'../image/suipai/bg.jpg');
-      $api.text($api.dom($api.byId('likeBtn'), '.icon-number'),userData[0].star_sum);
-      $api.text($api.dom($api.byId('shareBtn'), '.icon-number'),userData[0].share_sum);
-      $api.text($api.dom($api.byId('commitBtn'), '.icon-number'),userData[0].comment_sum);
-      $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'),0);
+      $api.attr($api.dom(document.getElementById('userBtn'), 'img'),'src',userData[0].imgUrl||'../image/suipai/bg.jpg');
+      $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'),userData[0].star_sum);
+      $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'),userData[0].share_sum);
+      $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'),userData[0].comment_sum);
+      $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'),0);
         document.getElementById(userData[0].id).muted = false;
   }
   else{
@@ -545,6 +555,7 @@ function userVideo(footer_h,container,l) {
       for(var i =0;i<list.length;i++){
       userData.push(list[i]);
       }
+
       Slip(container).destroy();
         GetVideoList(list, container, '.swipe', footer_h);
         IS_star(userData[page+1].id);
@@ -635,7 +646,6 @@ function myInfoMes() {
         })
     }
 function shareTos(id) {
-    debugger
     switch (id) {
       case 'facebook':
       var facebook = api.require('facebook');

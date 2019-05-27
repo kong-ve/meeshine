@@ -30,7 +30,18 @@
         </a>
         <div class="aui-title">列表</div>
     </header>
-
+    <div class="aui-tab" id="classify-list">
+            <div class="aui-tab-item tapmode aui-active">Item1</div>
+            <div class="aui-tab-item tapmode">Item2</div>
+            <div class="aui-tab-item tapmode">Item3</div>
+            <div class="aui-tab-item tapmode">Item4</div>
+            <div class="aui-tab-item tapmode">Item2</div>
+            <div class="aui-tab-item tapmode">Item3</div>
+            <div class="aui-tab-item tapmode">Item4</div>
+            <div class="aui-tab-item tapmode">Item2</div>
+            <div class="aui-tab-item tapmode">Item3</div>
+            <div class="aui-tab-item tapmode">Item4</div>
+        </div>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript">
@@ -40,14 +51,14 @@
         $api.fixStatusBar(header);
         var headerPos = $api.offset(header);
         var body_h = $api.offset($api.dom('body')).h;
-        // var classifyListH = $api.offset($api.byId('classify-list')).h;
+        var classifyListH = $api.offset($api.byId('classify-list')).h;
         api.openFrame({
             name: 'productList_frm',
             url: 'productList_frm.html',
             bounces: true,
             rect: {
                 x: 0,
-                y: headerPos.h,
+                y: headerPos.h+classifyListH,
                 h: 'auto',
                 w: 'auto'
             },pageParam:{
@@ -58,7 +69,7 @@
     function closeWin(){
       api.execScript({
           frameName: 'home',
-          script: 'stopMusic();hideSelect();'
+          script: 'stopMusic();'
       });
 
         api.closeWin({

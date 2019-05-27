@@ -171,7 +171,7 @@
         api.parseTapmode();
         var header = $api.byId('aui-header');
         $api.fixStatusBar(header);
-        $api.css($api.byId('search'),'margin-top:'+api.safeArea.top+'px');
+        $api.css(document.getElementById('search'),'margin-top:'+api.safeArea.top+'px');
         api.setStatusBarStyle({
             style: 'light',
         });

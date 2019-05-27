@@ -48,12 +48,15 @@
 <script>
     var toast = new auiToast({});
     var parse;
+    var child_click = false;
+    let login = false;
     apiready = function() {
         api.parseTapmode();
         // var header = $api.byId('header');
         // $api.fixStatusBar(header);
         var footer = $api.byId('footer');
         $api.fixTabBar(footer);
+        myInfoMes();
         parse = api.pageParam;
         console.log(JSON.stringify(parse));
         getComList();
@@ -97,7 +100,7 @@
                 child_html = list_C(el.chlid);
             }
 
-            html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '">' +
+            html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '" onclick="del_click(this,true)">' +
                 '<div class="aui-media-list-item-inner">' +
                 '<div class="aui-list-item-media" style="width: 3rem;">' +
                 '<img src="' + (el.avatar || '../image/suipai/bg.jpg') + '" class="aui-img-round" >' +
@@ -139,13 +142,14 @@
             var cmt = document.getElementById('commitList');
             var html = '';
             $api.text($api.dom($api.byId('header'), '.aui-title'), ret.data.total + '评论')
+            console.log(JSON.stringify(data_list))
             data_list.map(function(el, i) {
 
                 var child_html = '';
                 if (el.cid == 1) {
-                    child_html = list_C(el.chlid);
+                    child_html = list_C(el.chlid,1);
                 }
-                html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '">' +
+                html += '<li class="aui-list-item aui-list-item-middle" id="' + el.id + '" onclick="del_click(this)">' +
                     '<div class="aui-media-list-item-inner">' +
                     '<div class="aui-list-item-media" style="width: 3rem;">' +
                     '<img src="' + (el.avatar || '../image/suipai/bg.jpg') + '" class="aui-img-round" >' +
@@ -165,10 +169,72 @@
                     '</li>';
             });
             $api.append(cmt, html);
-
-            toast.hide();
+          toast.hide();
+          }else{
+            $api.text($api.dom($api.byId('header'), '.aui-title'), ret.data.total + '评论')
+              var cmt = document.getElementById('commitList');
+            $api.append(cmt, '<li class="aui-list-item aui-list-item-middle"><h6>暂无评论</h6></li>');
+              toast.hide();
           }
-        });
+        })
+    }
+function del_click(d,bl) {
+  if(!login){
+    api.openWin({
+        name: 'login',
+        url: './login_win.html',
+    });
+    return;
+  }
+  if(bl){
+    child_click = true;
+  }
+  if(!bl && child_click == true){
+    child_click = false;
+    return false;
+  }
+      api.actionSheet({
+        // cancelTitle: '这里是取消按钮',
+        buttons: ['回复','删除']
+    }, function(ret, err) {
+      console.log(JSON.stringify(ret));
+        var index = ret.buttonIndex;
+        if(index == 3){
+          return false;
+        }else if(index == 2){
+          var id = d.id;
+          del_comment(id);
+          var par = d.parentNode;
+          $api.remove(d);
+          if(par.childNodes.length == 0){
+            $api.remove(par);
+          }
+        }
+
+    });
+}
+function myInfoMes() {
+    api.ajax({
+            url: 'http://wstmart.anhy.net/apihome/users/index',
+            method: 'get',
+        },
+        function(ret, err) {
+            // console.log(JSON.stringify(ret));
+            if (ret.status == 1) {
+                var list = ret.data;
+                api.setGlobalData({
+                    key: 'userMesg',
+                    value: JSON.stringify(ret.data)
+                });
+                login = true;
+            } else if (ret.status == -999) {
+                api.setGlobalData({
+                    key: 'userMesg',
+                    value: ''
+                });
+                login = false;
+            }
+        })
     }
 
     function addComList() {

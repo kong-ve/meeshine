@@ -52,21 +52,10 @@
     font-size: 0.75em;
     color: #666;
 }
+
 	</style>
 </head>
 <body>
-  <div class="aui-tab" id="classify-list">
-          <div class="aui-tab-item tapmode aui-active">Item1</div>
-          <div class="aui-tab-item tapmode">Item2</div>
-          <div class="aui-tab-item tapmode">Item3</div>
-          <div class="aui-tab-item tapmode">Item4</div>
-          <div class="aui-tab-item tapmode">Item2</div>
-          <div class="aui-tab-item tapmode">Item3</div>
-          <div class="aui-tab-item tapmode">Item4</div>
-          <div class="aui-tab-item tapmode">Item2</div>
-          <div class="aui-tab-item tapmode">Item3</div>
-          <div class="aui-tab-item tapmode">Item4</div>
-      </div>
   <div class="aui-content">
       <ul class="aui-waterfall" id="aui-waterfall">
           <li>
@@ -189,11 +178,12 @@
 <script type="text/javascript">
     apiready = function(){
         api.parseTapmode();
-        $aui.waterfall($api.byId("aui-waterfall"),{
-            col:2,//列数
-            padding:10,//容器内边距
-            space:10//列间距
-        });
+
     };
+    $aui.waterfall($api.byId("aui-waterfall"),{
+        col:2,//列数
+        padding:10,//容器内边距
+        space:10//列间距
+    });
 </script>
 </html>

@@ -17,6 +17,15 @@
   body{
     overflow-x: hidden;
   }
+  .title-card img{
+    width: 35px;
+    height: 30px;
+    float: left;
+    border-radius: 50%
+  }
+  .aui-card-list-content .aui-list-view-cell:last-child:after {
+    	border-bottom: 0;
+  }
 </style>
 <body>
   <div>
@@ -28,11 +37,15 @@
     </header>
   </div>
     <section id="main">
-      <div class="aui-content">
-        
+      <div class="aui-content aui-card-list">
+        <div class="aui-card-list-header">
+            <div class="title-card"><input id="heder" class="aui-pull-left aui-radio" type="checkbox" name="demo" data-check="demo1" onclick="product_header(this)"><img class="aui-img-round aui-padded-l-5" src="../image/suipai/bg.jpg"/><span class="aui-padded-l-5 aui-padded-t-5 aui-font-size-14">店铺名</span></div>
+        </div>
+        <div class="aui-card-list-content">
           <ul class="aui-list-view">
               <li class="aui-list-view-cell aui-img aui-counter-list">
-                  <input class="aui-pull-left aui-radio" type="checkbox" name="demo">
+                  <div class="aui-swipe-handle">
+                    <input class="aui-pull-left aui-radio" type="checkbox" name="demo"data-check="demo1">
                   <img class="aui-img-object aui-pull-left" src="../image/demo4.png">
                   <div class="aui-img-body">
                       计数列表
@@ -45,9 +58,12 @@
                           </div>
                       </div>
                   </div>
+                </div>
+                  <div class="aui-swipe-right-btn aui-bg-danger">删除</div>
               </li>
               <li class="aui-list-view-cell aui-img aui-counter-list">
-                  <input class="aui-pull-left aui-radio aui-radio-warning" type="checkbox" name="demo" checked>
+                <div class="aui-swipe-handle">
+                  <input class="aui-pull-left aui-radio aui-radio-warning" type="checkbox" name="demo"data-check="demo1" checked>
                   <img class="aui-img-object aui-pull-left" src="../image/demo5.png">
                   <div class="aui-img-body">
                       计数列表
@@ -60,9 +76,12 @@
                           </div>
                       </div>
                   </div>
+                </div>
+                <div class="aui-swipe-right-btn aui-bg-danger">删除</div>
               </li>
               <li class="aui-list-view-cell aui-img aui-counter-list">
-                  <input class="aui-pull-left aui-radio" type="checkbox" name="demo">
+                <div class="aui-swipe-handle">
+                  <input class="aui-pull-left aui-radio" type="checkbox" name="demo"data-check="demo1">
                   <img class="aui-img-object aui-pull-left" src="../image/demo2.png">
                   <div class="aui-img-body">
                       计数列表
@@ -75,16 +94,19 @@
                           </div>
                       </div>
                   </div>
+                </div>
+                <div class="aui-swipe-right-btn aui-bg-danger">删除</div>
               </li>
           </ul>
+        </div>
       </div>
   </section>
     <footer class="aui-bar aui-bar-tab" id="footer">
       <div class="aui-bar-tab-item" style="width:70%;">
         <div class="aui-bar-tab-item sellAll" tapmode>
-            <label><input class="aui-radio" type="checkbox" name="checkbox"></label>
+            <label><input class="aui-radio" type="checkbox" name="checkbox" onclick="SelectList_all(this)"></label>
         </div>
-        <div class="aui-bar-tab-item selectNumber" tapmode>
+        <div class="aui-bar-tab-item selectNumber" tapmode >
             <div class="aui-bar-tab-label aui-text-defalut">全选</div>
         </div>
         <div class="aui-bar-tab-item priceSum" tapmode>
@@ -99,11 +121,46 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/aui-list-swipe.js"></script>
 <script>
-var swipe = new ListSwipe();
+
     apiready = function() {
         api.parseTapmode();
         var header  = $api.byId('header');
         $api.fixStatusBar(header);
         $api.css(document.body,'height:'+api.frameHeight+'px');
     }
+    var swipe = new ListSwipe();
+    function SelectList_all(d){
+      var a = $api.domAll('input[type="checkbox"]');
+        for(var i = 0;i<a.length;i++){
+          a[i].checked = d.checked;
+      }
+    }
+    function product_header(d) {
+      var a = $api.domAll('input[data-check="'+$api.attr(d,'data-check')+'"]');
+        for(var i = 0;i<a.length;i++){
+          a[i].checked = d.checked;
+      }
+    }
+    var a =$api.domAll('.aui-counter-plus');
+    for(var i = 0;i<a.length;i++){
+      $api.addEvt(a[i], 'touchstart',plusclick);
+    }
+function minusclick() {
+  var par = this.parentNode;
+  var vl = $api.val($api.dom(par,'.aui-counter-input'));
+  if(vl == 2){
+    $api.addCls(this, 'aui-disabled');
+      $api.rmEvt($api.dom(par,'.aui-counter-minus'), 'touchstart',minusclick)
+  }
+  $api.val($api.dom(par,'.aui-counter-input'),Number(vl)-1);
+}
+function plusclick() {
+  var par = this.parentNode;
+  var vl = $api.val($api.dom(par,'.aui-counter-input'));
+  if(vl == 1){
+    $api.removeCls($api.dom(par,'.aui-counter-minus'), 'aui-disabled');
+    $api.addEvt($api.dom(par,'.aui-counter-minus'), 'touchstart',minusclick)
+  }
+  $api.val($api.dom(par,'.aui-counter-input'),Number(vl)+1);
+}
 </script>

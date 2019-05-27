@@ -31,7 +31,7 @@ function openCart() {
             w: 'auto',
             h: body_h - footer_h
         },
-        bounces: true,
+        bounces: false,
         bgColor: 'rgba(0,0,0,0.3)',
         vScrollBarEnabled: true,
         hScrollBarEnabled: true

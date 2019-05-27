@@ -89,7 +89,7 @@
                 <div class="aui-bar-tab-label aui-text-warning">购物车</div>
             </div> -->
       <div class="cartbtn aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;">加入购物车</div>
-            <div class="buybtn aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;">立即购买</div>
+            <div class="buybtn aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;" onclick="order()">立即购买</div>
         </footer>
   </body>
 </html>
@@ -139,8 +139,16 @@ apiready= function() {
 
 
 }
-function SelectList_all(){
 
+function order() {
+  api.openWin({
+      name: 'addOrder',
+      url: './addOrder.html',
+      pageParam:{
+        first:api.frameName,
+        firstType:'frame',
+      }
+  });
 }
 function pic_all() {
   // $api.removeCls($api.byId('picAll'), 'aui-hide');
