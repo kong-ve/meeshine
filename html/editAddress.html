@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+	<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+	<link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <title></title>
+  </head>
+  <body>
+    <header class="aui-bar aui-bar-nav aui-bar-light" id="header">
+            <div class="aui-pull-left aui-btn" onclick="closeWin()">
+                <span class="aui-iconfont aui-icon-left"></span>
+            </div>
+            <div class="aui-title">编辑地址</div>
+        </header>
+    <ul class="aui-list aui-form-list">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                        <div class="aui-list-item-label">姓名</div>
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="username">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                      <div class="aui-list-item-label-icon">
+                          <div class="aui-list-item-label">手机</div>
+                      </div>
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="number" placeholder="phone" name="phone">
+                    </div>
+
+                </div>
+
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label-icon">
+                      <div class="aui-list-item-label-icon">
+                          <div class="aui-list-item-label">地址</div>
+                      </div>
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="address" name="adress">
+                    </div>
+                    <div class="aui-list-item-label-icon">
+                        <i class="aui-iconfont aui-icon-location"></i>
+                    </div>
+                </div>
+
+            </li>
+
+        </ul>
+        <ul class="aui-list aui-list-in aui-margin-t-15">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">设为默认</div>
+                    <div class="aui-list-item-right">
+                      <input type="checkbox" class="aui-switch">
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <footer class="aui-bar aui-bar-tab" id="footer">
+            <div class="aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;">保存</div>
+        </footer>
+  </body>
+</html>
+<script src="../script/api.js" charset="utf-8"></script>
+<script>
+var param;
+apiready = function () {
+  api.parseTapmode();
+  param = api.pageParam;
+
+  var header = $api.byId('header');
+  var footer = $api.byId('footer');
+  $api.fixStatusBar(header);
+  $api.fixTabBar(footer);
+
+  if(param.title){
+      $api.text($api.dom(header,'.aui-header'),param.title);
+  }
+}
+function closeWin() {
+  api.closeWin({
+
+  });
+
+}
+</script>

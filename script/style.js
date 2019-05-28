@@ -43,6 +43,7 @@ function myInfoMes() {
     api.ajax({
             url: 'http://wstmart.anhy.net/apihome/users/index',
             method: 'get',
+
         },
         function(ret, err) {
             // console.log(JSON.stringify(ret));
@@ -69,6 +70,7 @@ function myInfoMes() {
         }, function(ret, err) {
             // console.log(JSON.stringify(ret));
             if (err) {
+              console.log(JSON.stringify(err));
                 toast.fail({
                     title: '网络出现问题',
                     duration: 2000

@@ -58,13 +58,13 @@
               <!-- <div class="btn-add"><i class="aui-iconfont aui-icon-minus"></i></div>
               <div class="num"><input value="1" class="number-add"/></div>
               <div class="btn-add show"><i class="aui-iconfont aui-icon-plus"></i></div> -->
-              <div class="aui-bar-btn-item">
-                  <i class="aui-iconfont aui-icon-minus"></i>
+              <div class="aui-bar-btn-item minus">
+                  <i class="aui-disabled aui-iconfont aui-icon-minus"></i>
               </div>
               <div class="aui-bar-btn-item">
-                  <input type="number" class="aui-input aui-text-center" value="1" >
+                  <input type="number" id="num" class="aui-input aui-text-center" value="1" >
               </div>
-              <div class="aui-bar-btn-item show">
+              <div class="aui-bar-btn-item show plus">
                   <i class="aui-iconfont aui-icon-plus"></i>
               </div>
             </div>
@@ -137,9 +137,29 @@ apiready= function() {
     }
 
 
-
 }
+var num = $api.val($api.byId('num'));
+if(num == 1){
+  $api.addEvt($api.dom('.plus'), 'touchstart',addNum);
+}
+function addNum() {
+  var vl = $api.val($api.byId('num'));
+  if(vl == 1){
 
+    $api.removeCls($api.dom('.aui-icon-minus'), 'aui-disabled');
+    $api.addEvt($api.dom('.minus'), 'touchstart',removeNum);
+  }
+    $api.val($api.byId('num'),Number(vl)+1);
+}
+function removeNum() {
+  var vl = $api.val($api.byId('num'));
+    if(vl == 2){
+
+        $api.addCls($api.dom('.aui-icon-minus'), 'aui-disabled');
+          $api.rmEvt($api.dom('.minus'), 'touchstart',removeNum);
+    }
+      $api.val($api.byId('num'),Number(vl)-1);
+}
 function order() {
   api.openWin({
       name: 'addOrder',

@@ -15,7 +15,7 @@
     </header>
     <footer class="aui-bar aui-bar-tab" id="footer">
         <div class="aui-bar-tab-item aui-padded-l-15 aui-padded-r-15">
-            <div class="aui-btn aui-btn-block aui-btn-sm aui-btn-info"><i class="aui-iconfont aui-icon-plus aui-font-size-16"></i>新增地址</div>
+            <div class="aui-btn aui-btn-block aui-btn-sm aui-btn-info" onclick="add()"><i class="aui-iconfont aui-icon-plus aui-font-size-16"></i>新增地址</div>
         </div>
     </footer>
 </body>
@@ -47,6 +47,17 @@
     function closeWin(){
         api.closeWin({
         });
+    }
+    function add() {
+      var title = param.select == true?'编辑收货地址':'新增收货地址';
+      api.openWin({
+          name: 'addAddress',
+          url: './editAddress.html',
+          pageParam:{
+            'title':title
+          }
+      });
+
     }
 </script>
 </html>

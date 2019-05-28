@@ -134,7 +134,9 @@ pre {
   margin-top: 2rem;
   padding-left: 33%;
 }
-
+.aui-bar-btn-item i:not(.aui-disabled){
+  color: #000
+}
 .price-sum {
     color: red;
     font-size: small;

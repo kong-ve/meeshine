@@ -10,84 +10,89 @@ function checkPC() {
     }
     return flag;
 }
-function IS_star(videoId){
-  api.ajax({
-      url: 'http://wstmart.anhy.net/apihome/video/is_star',
-      method: 'get',
-      data: {
-          values: {
-              video_id: videoId
-          },
-      }
-  },function(ret, err){
 
-      if (ret) {
-        var el = $api.byId('likeBtn');
-        if(ret.status == 1){
-          $api.css($api.dom(el, '.icon-heart'),'color:red;');
-        }else{
-          $api.removeAttr($api.dom(el, '.icon-heart'),'style');
+function IS_star(videoId) {
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/video/is_star',
+        method: 'get',
+        data: {
+            values: {
+                video_id: videoId
+            },
         }
-      } else {
-          console.log( JSON.stringify( err ) );
-      }
-  });
+    }, function(ret, err) {
 
-}
-function hideModel() {
-  var el = $api.byId('model-aui');
-  if(paneName != ''){
-    api.closeFrame({
-        name: paneName
+        if (ret) {
+            var el = $api.byId('likeBtn');
+            if (ret.status == 1) {
+                $api.css($api.dom(el, '.icon-heart'), 'color:red;');
+            } else {
+                $api.removeAttr($api.dom(el, '.icon-heart'), 'style');
+            }
+        } else {
+            console.log(JSON.stringify(err));
+        }
     });
-    // $api.removeCls(document.body, paneName+'Show');
-    // $api.addCls(document.body, paneName+'Hide');
-  setTimeout(function(){
-    $api.addCls($api.byId('model-show'), 'aui-hide');
-    paneName = '';
-    document.getElementById('userBtn').style.display = 'block';
-    document.getElementById('likeBtn').style.display = 'block';
-    document.getElementById('shareBtn').style.display = 'block';
-    document.getElementById('commitBtn').style.display = 'block';
-    document.getElementById('shopcartBtn').style.display = 'block';
-  },100)
 
-    // document.getElementById('sellBtn').style.display = 'block';
-  }
 }
+
+function hideModel() {
+    var el = $api.byId('model-aui');
+    if (paneName != '') {
+        api.closeFrame({
+            name: paneName
+        });
+        // $api.removeCls(document.body, paneName+'Show');
+        // $api.addCls(document.body, paneName+'Hide');
+        setTimeout(function() {
+            $api.addCls($api.byId('model-show'), 'aui-hide');
+            paneName = '';
+            document.getElementById('userBtn').style.display = 'block';
+            document.getElementById('likeBtn').style.display = 'block';
+            document.getElementById('shareBtn').style.display = 'block';
+            document.getElementById('commitBtn').style.display = 'block';
+            document.getElementById('shopcartBtn').style.display = 'block';
+        }, 100)
+
+        // document.getElementById('sellBtn').style.display = 'block';
+    }
+}
+
 function searchForm() {
-var val = $api.val($api.byId('search-input'));
-selectVideo(val);
+    var val = $api.val($api.byId('search-input'));
+    selectVideo(val);
 }
+
 function selectVideo(str_sel) {
-  api.ajax({
-      url: 'http://wstmart.anhy.net/apihome/video/video_list',
-      method: 'post',
-      data: {
-          values: {
-              str: str_sel,
-              search_type:0
-          },
-      }
-  },function(ret, err){
-      if (ret) {
-          alert( JSON.stringify( ret ) );
-          stopMusic();
-          hideSelect();
-          api.openWin({
-              name: 'productList_win',
-              url: './productList_win.html',
-              pageParam: {
-                  dataList: ret.data
-              }
-          });
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/video/video_list',
+        method: 'post',
+        data: {
+            values: {
+                str: str_sel,
+                search_type: 0
+            },
+        }
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+            stopMusic();
+            hideSelect();
+            api.openWin({
+                name: 'productList_win',
+                url: './productList_win.html',
+                pageParam: {
+                    dataList: ret.data
+                }
+            });
 
-      } else {
-          alert( JSON.stringify( err ) );
-      }
-  });
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
 
 }
+
 function GetVideoList(List, container, swipe, foot_h) {
     List.map(function(v, i) {
         var el = document.createElement('div');
@@ -96,7 +101,7 @@ function GetVideoList(List, container, swipe, foot_h) {
         el.className = 'swipe-box';
         el_child.src = v.goods_video_url;
         el_child.id = v.id;
-        el_child.poster = v.imageUrl||'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png';
+        el_child.poster = v.imageUrl || 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png';
         el_child.autoplay = true;
         el_child.loop = true;
         el_child.type = 'video/mp4';
@@ -112,30 +117,30 @@ function GetVideoList(List, container, swipe, foot_h) {
         el_child.setAttribute('x5-video-orientation', "portraint")
         el_child.className = 'video_max';
         el_child.codecs = "avc1.42E01E, mp4a.40.2"
-        // var btn_shopping = document.createElement('div');
-        // btn_shopping.className = 'shopBtn';
-        // var i_shop = document.createElement('i');
-        // i_shop.className = 'iconfont icon-shop-cart-white';
-        // var span_shop = document.createElement('span');
-        // span_shop.innerText = '123456789';
-        // btn_shopping.appendChild(i_shop);
-        // btn_shopping.appendChild(span_shop);
+            // var btn_shopping = document.createElement('div');
+            // btn_shopping.className = 'shopBtn';
+            // var i_shop = document.createElement('i');
+            // i_shop.className = 'iconfont icon-shop-cart-white';
+            // var span_shop = document.createElement('span');
+            // span_shop.innerText = '123456789';
+            // btn_shopping.appendChild(i_shop);
+            // btn_shopping.appendChild(span_shop);
         var div_text = document.createElement('div');
         div_text.className = "sample_content ui-view";
         div_text.id = 'fixmessage_info';
 
         var user_name = document.createElement('h6');
-        user_name.innerText = v.nickname||'用户'+v.number;
+        user_name.innerText = v.nickname || '用户' + v.number;
         div_text.appendChild(user_name);
         var text_span = document.createElement('span');
         text_span.className = "ui-text";
         text_span.style.cssVal = "display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;";
-        text_span.innerText = v.content||'暂无介绍';
+        text_span.innerText = v.content || '暂无介绍';
         div_text.appendChild(text_span);
         if (api.safeArea.top != 44) {
             div_text.style.bottom = (foot_h + 40) + 'px';
         } else {
-            div_text.style.bottom = (foot_h+10) + 'px';
+            div_text.style.bottom = (foot_h + 10) + 'px';
         }
         // div_text.style.bottom = (foot_h+10) + 'px';
         el.appendChild(el_child);
@@ -194,10 +199,10 @@ function GetVideoList(List, container, swipe, foot_h) {
     }).move(function(event) {
         moveIsTrue = true;
         document.getElementById('userBtn').style.display = 'none';
-        $api.removeCls($api.dom(document.getElementById('userBtn'),'.add-user'),'showSuccess')
-        $api.removeAttr($api.dom(document.getElementById('userBtn'),'.add-user'),'hidden')
+        $api.removeCls($api.dom(document.getElementById('userBtn'), '.add-user'), 'showSuccess')
+        $api.removeAttr($api.dom(document.getElementById('userBtn'), '.add-user'), 'hidden')
         document.getElementById('likeBtn').style.display = 'none';
-        $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'),'style');
+        $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'), 'style');
         document.getElementById('shareBtn').style.display = 'none';
         document.getElementById('commitBtn').style.display = 'none';
         document.getElementById('shopcartBtn').style.display = 'none';
@@ -219,44 +224,44 @@ function GetVideoList(List, container, swipe, foot_h) {
                 return false;
             }
         } else {
-          if((page+1) == userData.length && moveIsTrue){
-            p++;
-            userVideo(api.pageParam.foot,$api.byId('container'),p);
-          }else{
-            $api.byId(userData[page].id).pause();
-            page = this.page;
+            if ((page + 1) == userData.length && moveIsTrue) {
+                p++;
+                userVideo(api.pageParam.foot, $api.byId('container'), p);
+            } else {
+                $api.byId(userData[page].id).pause();
+                page = this.page;
 
-            if (document.getElementById(userData[this.page].id).muted == true) {
-                document.getElementById(userData[this.page].id).currentTime = 0;
-                document.getElementById(userData[this.page].id).muted = false;
+                if (document.getElementById(userData[this.page].id).muted == true) {
+                    document.getElementById(userData[this.page].id).currentTime = 0;
+                    document.getElementById(userData[this.page].id).muted = false;
+                }
+                $api.byId(userData[this.page].id).play();
+                pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
+
             }
-            $api.byId(userData[this.page].id).play();
-            pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
-
+            if (moveIsTrue) {
+                IS_star(userData[this.page].id);
+                document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
+                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
+                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
+                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
+                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                setTimeout(function() {
+                    document.getElementById('userBtn').style.display = 'block';
+                    document.getElementById('likeBtn').style.display = 'block';
+                    document.getElementById('shareBtn').style.display = 'block';
+                    document.getElementById('commitBtn').style.display = 'block';
+                    document.getElementById('shopcartBtn').style.display = 'block';
+                    // document.getElementById('sellBtn').style.display = 'block';
+                }, 500)
+            }
         }
-        if (moveIsTrue) {
-          IS_star(userData[this.page].id);
-            document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
-            $api.text($api.dom($api.byId('likeBtn'), '.icon-number'),userData[this.page].star_sum);
-            $api.text($api.dom($api.byId('shareBtn'), '.icon-number'),userData[this.page].share_sum);
-            $api.text($api.dom($api.byId('commitBtn'), '.icon-number'),userData[this.page].comment_sum);
-            $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'),'sold:'+0);
-            setTimeout(function() {
-                document.getElementById('userBtn').style.display = 'block';
-                document.getElementById('likeBtn').style.display = 'block';
-                document.getElementById('shareBtn').style.display = 'block';
-                document.getElementById('commitBtn').style.display = 'block';
-                document.getElementById('shopcartBtn').style.display = 'block';
-                // document.getElementById('sellBtn').style.display = 'block';
-            }, 500)
-        }
-      }
     });
     Slip(container, "x").slider().end(function() {
-      if(moveIsTrue == true){
-        return false;
-      }
-        if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1 ) {
+        if (moveIsTrue == true) {
+            return false;
+        }
+        if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1) {
             LefePaneOpen();
         }
         if (this.orient.indexOf('left') != -1 && this.orient.indexOf('right') == -1) {
@@ -266,358 +271,417 @@ function GetVideoList(List, container, swipe, foot_h) {
 
 
 }
-function VideoPlaying(){
-  if (document.getElementById(userData[page].id).paused) {
-      document.getElementById(userData[page].id).play();
-      document.getElementById(userData[page].id).muted = false;
 
-      $api.removeCls(pages[page].querySelector('.play-video'), 'show-video');
-      $api.addCls(pages[page].querySelector('.play-video'), 'hide-video');
-  } else {
-      document.getElementById(userData[page].id).pause();
-      $api.removeCls(pages[page].querySelector('.play-video'), 'hide-video');
-      $api.addCls(pages[page].querySelector('.play-video'), 'show-video');
-  }
+function VideoPlaying() {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    if (document.getElementById(userData[page].id).paused) {
+        document.getElementById(userData[page].id).play();
+        document.getElementById(userData[page].id).muted = false;
+
+        $api.removeCls(pages[page].querySelector('.play-video'), 'show-video');
+        $api.addCls(pages[page].querySelector('.play-video'), 'hide-video');
+    } else {
+        document.getElementById(userData[page].id).pause();
+        $api.removeCls(pages[page].querySelector('.play-video'), 'hide-video');
+        $api.addCls(pages[page].querySelector('.play-video'), 'show-video');
+    }
 }
+
 function LefePaneOpen() {
-  if(paneName == ''){
-  api.openFrame({
-      name: 'leftPane',
-      url: './menu.html',
-      rect: {
-          x: 0,
-          y: 0,
-          w: api.frameWidth * 0.5,
-          h: 'auto'
-      },
-      // animation:{
-      //   type:'movein',
-      //   subType:'from_left',
-      //   duration:300
-      // },
-      bounces: true,
-      bgColor: 'rgba(0,0,0,0)',
-      vScrollBarEnabled: true,
-      hScrollBarEnabled: true
-  });
-  paneName = 'leftPane';
-  document.body.className = '';
-  // $api.addCls(document.body, 'leftPaneShow');
-  $api.removeCls($api.byId('model-show'), 'aui-hide');
-  document.getElementById('userBtn').style.display = 'none';
-  document.getElementById('likeBtn').style.display = 'none';
-  document.getElementById('shareBtn').style.display = 'none';
-  document.getElementById('commitBtn').style.display = 'none';
-  document.getElementById('shopcartBtn').style.display = 'none';
-  // $api.addEvt($api.byId('model-show'), 'swipeleft', hideModel);
-  api.addEventListener({
-          name: 'swipeleft'
-      }, function(ret, err) {
-          hideModel()
-          });
-        }else{
-          hideModel();
-        }
+    if (paneName == '') {
+        api.openFrame({
+            name: 'leftPane',
+            url: './menu.html',
+            rect: {
+                x: 0,
+                y: 0,
+                w: api.frameWidth * 0.5,
+                h: 'auto'
+            },
+            // animation:{
+            //   type:'movein',
+            //   subType:'from_left',
+            //   duration:300
+            // },
+            bounces: true,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: true,
+            hScrollBarEnabled: true
+        });
+        paneName = 'leftPane';
+        document.body.className = '';
+        // $api.addCls(document.body, 'leftPaneShow');
+        $api.removeCls($api.byId('model-show'), 'aui-hide');
+        document.getElementById('userBtn').style.display = 'none';
+        document.getElementById('likeBtn').style.display = 'none';
+        document.getElementById('shareBtn').style.display = 'none';
+        document.getElementById('commitBtn').style.display = 'none';
+        document.getElementById('shopcartBtn').style.display = 'none';
+        // $api.addEvt($api.byId('model-show'), 'swipeleft', hideModel);
+        api.addEventListener({
+            name: 'swipeleft'
+        }, function(ret, err) {
+            hideModel()
+        });
+    } else {
+        hideModel();
+    }
 }
-function playingVideo() {
-  if (document.getElementById(userData[this.page].id).paused) {
-      document.getElementById(userData[this.page].id).play();
-      document.getElementById(userData[this.page].id).muted = false;
 
-      $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
-      $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
-  }
+function playingVideo() {
+    if (document.getElementById(userData[this.page].id).paused) {
+        document.getElementById(userData[this.page].id).play();
+        document.getElementById(userData[this.page].id).muted = false;
+
+        $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
+        $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+    }
 }
+
 function RightPaneOpen() {
-  if(paneName == ''){
-    api.openFrame({
-        name: 'rightPane',
-        url: './shopCart.html',
-        rect: {
-            x: api.frameWidth * 0.3,
-            y: 0,
-            w: 'auto',
-            h: 'auto'
-        },
-        // animation:{
-        //   type:'movein',
-        //   subType:'from_right',
-        //   duration:300
-        // },
-        bounces: false,
-        bgColor: 'rgba(0,0,0,0)',
-        vScrollBarEnabled: false,
-        scrollEnabled:false,
-        hScrollBarEnabled: false
-    });
-    paneName = 'rightPane';
-    document.body.className = '';
-    document.getElementById('userBtn').style.display = 'none';
-    document.getElementById('likeBtn').style.display = 'none';
-    document.getElementById('shareBtn').style.display = 'none';
-    document.getElementById('commitBtn').style.display = 'none';
-    document.getElementById('shopcartBtn').style.display = 'none';
-    // $api.addCls(document.body, 'rightPaneShow');
-    $api.removeCls($api.byId('model-show'), 'aui-hide');
-    // $api.addEvt($api.byId('model-show'), 'swiperight', hideModel);
-    api.addEventListener({
+    if (paneName == '') {
+        api.openFrame({
+            name: 'rightPane',
+            url: './shopCart.html',
+            rect: {
+                x: api.frameWidth * 0.3,
+                y: 0,
+                w: 'auto',
+                h: 'auto'
+            },
+            // animation:{
+            //   type:'movein',
+            //   subType:'from_right',
+            //   duration:300
+            // },
+            bounces: false,
+            bgColor: 'rgba(0,0,0,0)',
+            vScrollBarEnabled: false,
+            scrollEnabled: false,
+            hScrollBarEnabled: false
+        });
+        paneName = 'rightPane';
+        document.body.className = '';
+        document.getElementById('userBtn').style.display = 'none';
+        document.getElementById('likeBtn').style.display = 'none';
+        document.getElementById('shareBtn').style.display = 'none';
+        document.getElementById('commitBtn').style.display = 'none';
+        document.getElementById('shopcartBtn').style.display = 'none';
+        // $api.addCls(document.body, 'rightPaneShow');
+        $api.removeCls($api.byId('model-show'), 'aui-hide');
+        // $api.addEvt($api.byId('model-show'), 'swiperight', hideModel);
+        api.addEventListener({
             name: 'swiperight'
         }, function(ret, err) {
             hideModel();
-            });
+        });
 
-  }else{
-    hideModel();
-  }
+    } else {
+        hideModel();
+    }
 }
-function addFlow(vl,el) {
-  api.ajax({
-      url: 'http://wstmart.anhy.net/apihome/users/follow',
-      method: 'post',
-      data: {
-          values: {
-              id: vl
-          },
-      }
-  },function(ret, err){
-      if (ret) {
-          alert( JSON.stringify( ret ) );
-          if(ret.status == 1){
-            $api.addCls($api.dom(el,'.add-user'), 'showPlish');
-            setTimeout(function(){
-            $api.removeCls($api.dom(el,'.add-user'),'showPlish');
-              $api.css($api.dom(el, '.add-user'),'color:#000;background:#fff;');
-            $api.addCls($api.dom(el,'.add-user'), 'showSuccess');
-            setTimeout(function () {
-                $api.removeAttr($api.dom(el, '.add-user'),'style');
-              $api.attr($api.dom(el,'.add-user'), 'hidden','hidden');
-            },500)
-          },500)
-        }else if(ret.status == -999) {
-          api.openWin({
-              name: 'login',
-              url: './login_win.html',
-          });
 
+function addFlow(vl, el) {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/users/follow',
+        method: 'post',
+        data: {
+            values: {
+                id: vl
+            },
         }
-      } else {
-          alert( JSON.stringify( err ) );
-      }
-  });
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+            if (ret.status == 1) {
+                $api.addCls($api.dom(el, '.add-user'), 'showPlish');
+                setTimeout(function() {
+                    $api.removeCls($api.dom(el, '.add-user'), 'showPlish');
+                    $api.css($api.dom(el, '.add-user'), 'color:#000;background:#fff;');
+                    $api.addCls($api.dom(el, '.add-user'), 'showSuccess');
+                    setTimeout(function() {
+                        $api.removeAttr($api.dom(el, '.add-user'), 'style');
+                        $api.attr($api.dom(el, '.add-user'), 'hidden', 'hidden');
+                    }, 500)
+                }, 500)
+            } else if (ret.status == -999) {
+                api.openWin({
+                    name: 'login',
+                    url: './login_win.html',
+                });
+
+            }
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
 
 }
+
 function hideCom() {
 
-  api.closeFrame({
-      name: 'comments'
-  });
-api.execScript({
-    frameName: 'home',
-    script: 'removeEl();'
-});
+    api.closeFrame({
+        name: 'comments'
+    });
+    api.execScript({
+        frameName: 'home',
+        script: 'removeEl();'
+    });
 
 
 }
+
 function removeEl() {
-  setTimeout(function() {
-    $api.addCls($api.byId('com-show'),'aui-hide');
-  },100)
+    setTimeout(function() {
+        $api.addCls($api.byId('com-show'), 'aui-hide');
+    }, 100)
 
 }
-function openCom(){
-  playingVideo();
-  $api.removeCls($api.byId('com-show'),'aui-hide');
-  api.openFrame({
-      name: 'comments',
-      url:'./comments.html',
-      animation:{
-        type:"movein",                //动画类型（详见动画类型常量）
-  subType:"from_bottom",       //动画子类型（详见动画子类型常量）
-  duration:300                //动画过渡时间，默认300毫秒
-      },
-      rect: {
-          y: api.frameHeight/2,
-          x: 0,
-          w: 'auto',
-          h:'auto'
-      },
-      pageParam:{
-        video:userData[page].id
-      },
-      bounces: false,
-      bgColor: 'rgba(0,0,0,0.3)',
-      vScrollBarEnabled: true,
-      hScrollBarEnabled: true,
-  });
-api.addEventListener({
-    name:'swipedown'
-}, function(ret, err){
-   hideCom();
-   api.removeEventListener({
-       name: 'swipedown'
-   });
-});
 
-}
-function remFlow(vl) {
-  api.ajax({
-      url: 'http://wstmart.anhy.net/apihome/users/unfollow',
-      method: 'post',
-      data: {
-          values: {
-              id: vl
-          },
-      }
-  },function(ret, err){
-      if (ret) {
-          alert( JSON.stringify( ret ) );
-      } else {
-          alert( JSON.stringify( err ) );
-      }
-  });
-}
-function heartLike(){
-  add_star(userData[page].id);
-}
-
-function hideSell(){
-$api.addCls($api.byId('sell-model-show'), 'aui-hide');
-api.closeFrame({
-    name: 'sellDtail'
-});
-stopMusic()
-}
-function onAddFL(d) {
-  var el = d;
-  if(!$api.hasCls($api.dom(el,'.add-user'), 'showSuccess')){
-    addFlow($api.attr(el,'data-id'),el);
-
-  }
-
-}
-function  add_star(id) {
-  api.ajax({
-      url: 'http://wstmart.anhy.net/apihome/video/star',
-      method: 'get',
-      data: {
-          values: {
-              video_id: id
-          },
-      }
-  },function(ret, err){
-
-      if (ret) {
-        var el = document.getElementById('likeBtn');
-        if(ret.status == 1){
-          $api.css($api.dom(el, '.icon-heart'),'color:red;');
-          $api.text($api.dom(el, '.icon-number'),Number($api.text($api.dom(el, '.icon-number')))+1);
-        }else if(ret.status == 0){
-          $api.removeAttr($api.dom(el, '.icon-heart'),'style');
-          $api.text($api.dom(el, '.icon-number'),Number($api.text($api.dom(el, '.icon-number')))-1);
-        }else if(ret.status == -999) {
-          api.openWin({
-              name: 'login',
-              url: './login_win.html',
-          });
-        }
-      } else {
-          alert( JSON.stringify( err ) );
-      }
-  });
-
-}
-function userVideo(footer_h,container,l) {
-
-  api.ajax({
-    url:'http://wstmart.anhy.net/apihome/video/video_list',
-    method:'get',
-    data:{
-      values:{
-        'page':l+1
-      }
+function openCom() {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
     }
-  },function (ret,err) {
-
-    if(userData.length == 0){
-      userData = ret.data.data;
-      IS_star(userData[0].id)
-      GetVideoList(userData, container, '.swipe', footer_h);
-      $api.attr($api.dom(document.getElementById('userBtn'), 'img'),'src',userData[0].imgUrl||'../image/suipai/bg.jpg');
-      $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'),userData[0].star_sum);
-      $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'),userData[0].share_sum);
-      $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'),userData[0].comment_sum);
-      $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'),0);
-        document.getElementById(userData[0].id).muted = false;
-  }
-  else{
-    var list = ret.data.data;
-    if(list.length > 0){
-      for(var i =0;i<list.length;i++){
-      userData.push(list[i]);
-      }
-
-      Slip(container).destroy();
-        GetVideoList(list, container, '.swipe', footer_h);
-        IS_star(userData[page+1].id);
-        $api.attr($api.dom($api.byId('userBtn'), 'img'),'src',userData[page+1].imgUrl||'../image/suipai/bg.jpg');
-        $api.text($api.dom($api.byId('likeBtn'), '.icon-number'),userData[page+1].star_sum);
-        $api.text($api.dom($api.byId('shareBtn'), '.icon-number'),userData[page+1].share_sum);
-        $api.text($api.dom($api.byId('commitBtn'), '.icon-number'),userData[page+1].comment_sum);
-        $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'),'sold:'+0);
-      Slip.jump(page+1);
-    }
-    }
-
-})
-
-}
-function openSell() {
-  playingVideo();
-    var detail = userData[page];
-stopMusic()
+    playingVideo();
+    $api.removeCls($api.byId('com-show'), 'aui-hide');
     api.openFrame({
-        name: 'sellDtail',
-        url:'./addCartInfo.html',
-        animation:{
-          type:"movein",                //动画类型（详见动画类型常量）
-    subType:"from_bottom",       //动画子类型（详见动画子类型常量）
-    duration:300                //动画过渡时间，默认300毫秒
+        name: 'comments',
+        url: './comments.html',
+        animation: {
+            type: "movein", //动画类型（详见动画类型常量）
+            subType: "from_bottom", //动画子类型（详见动画子类型常量）
+            duration: 300 //动画过渡时间，默认300毫秒
         },
         rect: {
-            y: api.frameHeight*0.25,
+            y: api.frameHeight / 2,
             x: 0,
             w: 'auto',
-            h:'auto'
+            h: 'auto'
         },
         pageParam: {
-            details: detail,
-            video: detail.video_url,
-            img: detail.imageUrl,
-            id: detail.id,
-            timestart: document.getElementById(detail.id).currentTime,
-            frameNames:api.frameName,
-            "ids":'all'
+            video: userData[page].id
         },
         bounces: false,
         bgColor: 'rgba(0,0,0,0.3)',
         vScrollBarEnabled: true,
         hScrollBarEnabled: true,
     });
+    api.addEventListener({
+        name: 'swipedown'
+    }, function(ret, err) {
+        hideCom();
+        api.removeEventListener({
+            name: 'swipedown'
+        });
+    });
 
-  $api.removeCls($api.byId('sell-model-show'), 'aui-hide');
+}
+
+function remFlow(vl) {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/users/unfollow',
+        method: 'post',
+        data: {
+            values: {
+                id: vl
+            },
+        }
+    }, function(ret, err) {
+        if (ret) {
+            alert(JSON.stringify(ret));
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+}
+
+function heartLike() {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    add_star(userData[page].id);
+}
+
+function hideSell() {
+    $api.addCls($api.byId('sell-model-show'), 'aui-hide');
+    api.closeFrame({
+        name: 'sellDtail'
+    });
+    stopMusic()
+}
+
+function onAddFL(d) {
+    var el = d;
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    if (!$api.hasCls($api.dom(el, '.add-user'), 'showSuccess')) {
+        addFlow($api.attr(el, 'data-id'), el);
+
+    }
+
+}
+
+function add_star(id) {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/video/star',
+        method: 'get',
+        data: {
+            values: {
+                video_id: id
+            },
+        }
+    }, function(ret, err) {
+
+        if (ret) {
+            var el = document.getElementById('likeBtn');
+            if (ret.status == 1) {
+                $api.css($api.dom(el, '.icon-heart'), 'color:red;');
+                $api.text($api.dom(el, '.icon-number'), Number($api.text($api.dom(el, '.icon-number'))) + 1);
+            } else if (ret.status == 0) {
+                $api.removeAttr($api.dom(el, '.icon-heart'), 'style');
+                $api.text($api.dom(el, '.icon-number'), Number($api.text($api.dom(el, '.icon-number'))) - 1);
+            } else if (ret.status == -999) {
+                api.openWin({
+                    name: 'login',
+                    url: './login_win.html',
+                });
+            }
+        } else {
+            alert(JSON.stringify(err));
+        }
+    });
+
+}
+
+function userVideo(footer_h, container, l) {
+
+    api.ajax({
+        url: 'http://wstmart.anhy.net/apihome/video/video_list',
+        method: 'get',
+        data: {
+            values: {
+                'page': l + 1
+            }
+        }
+    }, function(ret, err) {
+        if (err) {
+            alert(JSON.stringify(err));
+            return;
+        }
+        if (userData.length == 0) {
+            userData = ret.data.data;
+            IS_star(userData[0].id)
+            GetVideoList(userData, container, '.swipe', footer_h);
+            $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
+            $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'), userData[0].star_sum);
+            $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
+            $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
+            $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
+            document.getElementById(userData[0].id).muted = false;
+        } else {
+            var list = ret.data.data;
+            if (list.length > 0) {
+                for (var i = 0; i < list.length; i++) {
+                    userData.push(list[i]);
+                }
+
+                Slip(container).destroy();
+                GetVideoList(list, container, '.swipe', footer_h);
+                IS_star(userData[page + 1].id);
+                $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', userData[page + 1].imgUrl || '../image/suipai/bg.jpg');
+                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[page + 1].star_sum);
+                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
+                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
+                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                Slip.jump(page + 1);
+            }
+        }
+
+    })
+
+}
+
+function openSell() {
+    var l = {};
+    if (userData.length > 0) {
+        var detail = userData[page];
+        l = {
+            details: detail,
+            video: detail.video_url,
+            img: detail.imageUrl,
+            id: detail.id,
+            timestart: document.getElementById(detail.id).currentTime,
+            frameNames: api.frameName,
+            "ids": 'all'
+        }
+        playingVideo();
+        stopMusic()
+    } else {
+        l = {
+            "ids": 'all'
+        }
+    }
+
+    api.openFrame({
+        name: 'sellDtail',
+        url: './addCartInfo.html',
+        animation: {
+            type: "movein", //动画类型（详见动画类型常量）
+            subType: "from_bottom", //动画子类型（详见动画子类型常量）
+            duration: 300 //动画过渡时间，默认300毫秒
+        },
+        rect: {
+            y: api.frameHeight * 0.25,
+            x: 0,
+            w: 'auto',
+            h: 'auto'
+        },
+        pageParam: l,
+        bounces: false,
+        bgColor: 'rgba(0,0,0,0.3)',
+        vScrollBarEnabled: true,
+        hScrollBarEnabled: true,
+    });
+
+    $api.removeCls($api.byId('sell-model-show'), 'aui-hide');
 
     setTimeout(function() {
-      api.bringFrameToFront({
-          from: 'sellDtail'
-      });
-    },1000)
+        api.bringFrameToFront({
+            from: 'sellDtail'
+        });
+    }, 1000)
 
 }
-function openMusic(){
-  stopMusic()
+
+function openMusic() {
+    stopMusic()
 }
+
 function openShare() {
-  playingVideo();
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
+    playingVideo();
     var share = document.getElementById('share');
     if (share.style.display == 'none') {
         share.style.display = 'block';
@@ -625,6 +689,7 @@ function openShare() {
         share.style.display = 'none';
     }
 }
+
 function myInfoMes() {
     api.ajax({
             url: 'http://wstmart.anhy.net/apihome/users/index',
@@ -644,96 +709,107 @@ function myInfoMes() {
                 });
             }
         })
-    }
+}
+
 function shareTos(id) {
     switch (id) {
-      case 'facebook':
-      var facebook = api.require('facebook');
-    facebook.shareLinked({
-        url: ""+userData[page].goods_video_url+"",
-        imgUrl: ""+userData[page].goods_video_url+"",
-        description: 'app 跨平台开发工具',
-        title: 'APICloud',
-        quote: 'very good'
-    }, function(ret, err){
-         if(ret.status) {
-           api.alert({msg:JSON.stringify(ret)});
-         } else {
-            api.alert({msg:JSON.stringify(err)});
-         }
-   });
-        break;
-      case 'googlePlus':
-      var shareApi = api.require('ShareSDKPlus');
-      var shareParams =
-    {
-        "text" : "测试的文字",
-        "imageUrl" : "http://download.sdk.mob.com/206/4f8/dfc9ea27dd8bc4abfec865c38d/800_450_156.2.jpg",
-        "title" : "测试的标题",
-        "titleUrl" : "http://www.mob.com",
-        "description" : "测试的描述",
-        "site" : "ShareSDK",
-        "siteUrl" : "http://www.mob.com",
-        "type" : $sharesdk.ContentType.Auto
-    };
+        case 'facebook':
+            var facebook = api.require('facebook');
+            facebook.shareLinked({
+                url: "" + userData[page].goods_video_url + "",
+                imgUrl: "" + userData[page].goods_video_url + "",
+                description: 'app 跨平台开发工具',
+                title: 'APICloud',
+                quote: 'very good'
+            }, function(ret, err) {
+                if (ret.status) {
+                    api.alert({
+                        msg: JSON.stringify(ret)
+                    });
+                } else {
+                    api.alert({
+                        msg: JSON.stringify(err)
+                    });
+                }
+            });
+            break;
+        case 'googlePlus':
+            var shareApi = api.require('ShareSDKPlus');
+            var shareParams = {
+                "text": "测试的文字",
+                "imageUrl": "http://download.sdk.mob.com/206/4f8/dfc9ea27dd8bc4abfec865c38d/800_450_156.2.jpg",
+                "title": "测试的标题",
+                "titleUrl": "http://www.mob.com",
+                "description": "测试的描述",
+                "site": "ShareSDK",
+                "siteUrl": "http://www.mob.com",
+                "type": $sharesdk.ContentType.Auto
+            };
 
-shareApi.shareContent({
-    "platform": $sharesdk.PlatformID.GooglePlus,
-    "shareParams": shareParams
-},function(ret, err){
-    var state = ret.state;
-    switch(state)
-    {
-        case $sharesdk.ResponseState.Success:
-            api.toast({
-                msg: "分享成功",
-                location: 'middle'
+            shareApi.shareContent({
+                "platform": $sharesdk.PlatformID.GooglePlus,
+                "shareParams": shareParams
+            }, function(ret, err) {
+                var state = ret.state;
+                switch (state) {
+                    case $sharesdk.ResponseState.Success:
+                        api.toast({
+                            msg: "分享成功",
+                            location: 'middle'
+                        });
+                        break;
+                    case $sharesdk.ResponseState.Fail:
+                        api.toast({
+                            msg: "分享失败",
+                            location: 'middle'
+                        });
+                        break;
+                    case $sharesdk.ResponseState.Cancel:
+                        api.toast({
+                            msg: "取消分享",
+                            location: 'middle'
+                        });
+                        break;
+                    default:
+                }
             });
-        break;
-        case $sharesdk.ResponseState.Fail:
-            api.toast({
-                msg: "分享失败",
-                location: 'middle'
-            });
-        break;
-        case $sharesdk.ResponseState.Cancel:
-            api.toast({
-                msg: "取消分享",
-                location: 'middle'
-        });
-        break;
-       default:
-    }
-});
-      break;
+            break;
     }
 
 }
 
 function stopMusic() {
+    if (userData.length < 1) {
+        console.log('err');
+        return;
+    }
     if (document.getElementById(userData[page].id).muted) {
         document.getElementById(userData[page].id).muted = false;
     } else {
         document.getElementById(userData[page].id).muted = true;
     }
 }
+
 function hideSelect() {
-  $api.addCls($api.byId('search'), 'aui-hide');
-  $api.removeCls($api.byId('aui-header'), 'aui-hide');
-  $api.addCls($api.byId('select-show'), 'aui-hide');
+    $api.addCls($api.byId('search'), 'aui-hide');
+    $api.removeCls($api.byId('aui-header'), 'aui-hide');
+    $api.addCls($api.byId('select-show'), 'aui-hide');
 }
-function searchShow(el){
-  $api.removeCls($api.byId('search'), 'aui-hide');
-  $api.addCls($api.byId('aui-header'), 'aui-hide');
-  $api.removeCls($api.byId('select-show'), 'aui-hide');
-// $api.addEvt($api.byId('search'), 'keydown', searchKeyDown);
+
+function searchShow(el) {
+    $api.removeCls($api.byId('search'), 'aui-hide');
+    $api.addCls($api.byId('aui-header'), 'aui-hide');
+    $api.removeCls($api.byId('select-show'), 'aui-hide');
+    // $api.addEvt($api.byId('search'), 'keydown', searchKeyDown);
 
 }
-function searchKeyDown(e){
-  if(e.keyCode == "13"){
-    hideSelect()
-  }
+
+function searchKeyDown(e) {
+    if (e.keyCode == "13") {
+        hideSelect()
+    }
 }
+
 function switchLoading(obj, url, text) {
     var frames = api.frames();
     var header = $api.byId('aui-header');
@@ -745,13 +821,13 @@ function switchLoading(obj, url, text) {
     // console.log(JSON.stringify(headerAct.length))
     // $api.removeCls(headerAct, 'aui-active');
     // $api.addCls(obj, 'aui-active');
-    if(api.frameName == 'home'){
-      stopMusic()
-    }else if(api.frameName == 'localList'){
-      api.execScript({
-    frameName: 'home',
-    script: 'openMusic();'
-});
+    if (api.frameName == 'home') {
+        stopMusic()
+    } else if (api.frameName == 'localList') {
+        api.execScript({
+            frameName: 'home',
+            script: 'openMusic();'
+        });
     }
 
     for (var i = 0; i < frames.length; i++) {

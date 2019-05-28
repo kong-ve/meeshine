@@ -27,11 +27,11 @@
             </div>
             <div class="aui-card-list-footer aui-border-t">
                 <div>
-                    <span class="aui-radio aui-checked aui-margin-r-5"></span>默认地址
+                      <input type="radio" checked name="demo" class="aui-radio aui-margin-r-5"/>默认地址
                 </div>
                 <div>
-                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑
-                    <i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除
+                    <span class="edit"><i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑</span>
+                    <span><i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除</span>
                 </div>
             </div>
         </div>
@@ -44,11 +44,11 @@
             </div>
             <div class="aui-card-list-footer aui-border-t">
                 <div>
-                    <span class="aui-radio aui-margin-r-5"></span>设为默认
+                    <input type="radio" name="demo" class="aui-radio aui-margin-r-5"/>设为默认
                 </div>
                 <div>
-                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑
-                    <i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除
+                    <span class="edit"><i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑</span>
+                    <span><i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除</span>
                 </div>
             </div>
         </div>
@@ -61,11 +61,11 @@
             </div>
             <div class="aui-card-list-footer aui-border-t">
                 <div>
-                    <span class="aui-radio aui-margin-r-5"></span>设为默认
+                      <input type="radio" name="demo" class="aui-radio aui-margin-r-5"/>设为默认
                 </div>
                 <div>
-                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑
-                    <i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除
+                    <span class="edit"><i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑</span>
+                    <span><i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除</span>
                 </div>
             </div>
         </div>
@@ -78,11 +78,11 @@
             </div>
             <div class="aui-card-list-footer aui-border-t">
                 <div>
-                    <span class="aui-radio aui-margin-r-5"></span>设为默认
+                      <input type="radio" name="demo" class="aui-radio aui-margin-r-5"/>设为默认
                 </div>
                 <div>
-                    <i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑
-                    <i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除
+                    <span class="edit"><i class="aui-iconfont aui-icon-edit aui-margin-r-5 aui-font-size-14"></i>编辑</span>
+                    <span><i class="aui-iconfont aui-icon-trash aui-margin-r-5 aui-margin-l-15 aui-font-size-14"></i>删除</span>
                 </div>
             </div>
         </div>
@@ -94,6 +94,29 @@ var param;
     apiready = function(){
         api.parseTapmode();
         param = api.pageParam;
+        if(param.select){
+          var list_card = document.querySelectorAll('.aui-card-list');
+          for(var j = 0;j<list_card.length;j++){
+          $api.addEvt(list_card[j],'click',function () {
+            console.log(1)
+          })
+        }
+        }
     };
+
+    var editList = document.querySelectorAll('.edit');
+    for(var i = 0;i<editList.length;i++){
+      $api.addEvt(editList[i], 'click', function () {
+        api.openWin({
+            name: 'editaddress',
+            url: './editAddress.html',
+            pageParam: {
+                id: '1'
+            }
+        });
+      });
+    }
+
+
 </script>
 </html>

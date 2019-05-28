@@ -21,7 +21,7 @@
                       邮箱
                   </div>
                   <div class="aui-list-item-input aui-padded-l-10">
-                      <input type="number" placeholder="输入email" id="userName" value="" class="loginName" >
+                      <input type="text" placeholder="输入email" id="email" value="" class="loginName" >
                   </div>
               </div>
           </li>
@@ -71,18 +71,28 @@ var toast = new auiToast();
         api.parseTapmode();
     };
     function register() {
-        var dataList = {};
-        dataList.phone = $api.val($api.byId('userName'));
-        dataList.userSex = $api.val($api.byId('userSex'));
-        dataList.loginPwd = $api.val($api.byId('password'));
-        dataList.isInform =1;
-        dataList.userStatus =1;
-        dataList.userId =0;
-        dataList.userPhoto ="";
+        var dataList = {
+          "Field name":"Field name",
+  "user_type":"C",
+  "company_id":"",
+  "status":"A",
+        };
+        dataList.email = $api.byId('email').value;
+        // dataList.userSex = $api.val($api.byId('userSex'));
+        dataList.password = $api.val($api.byId('password'));
+        // dataList.isInform =1;
+        // dataList.userStatus =1;
+        // dataList.userId =0;
+        // dataList.userPhoto ="";
         console.log(JSON.stringify(dataList))
+        var data = JSON.stringify(dataList)
         api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/add',
+            url: 'http://wstmart.anhy.net/api.php?_d=users',
             method: 'post',
+            headers:{
+              'X-Requested-With': 'XMLHttpRequest',
+              "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+            },
             data: {
               values:dataList
             }
@@ -108,7 +118,7 @@ var toast = new auiToast();
                 }
 
             } else {
-              console.log(JSON.stringify(err))
+              console.error(JSON.stringify(err))
               toast.fail({
                   title:"验证失败",
                   duration:2000
