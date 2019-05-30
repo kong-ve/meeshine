@@ -40,6 +40,9 @@ function openCart() {
 }
 
 function myInfoMes() {
+  var token = api.getGlobalData({
+    key:'token',
+  });
     api.ajax({
             url: 'http://wstmart.anhy.net/apihome/users/index',
             method: 'get',
@@ -61,16 +64,19 @@ function myInfoMes() {
             }
         })
     }
-
     function isLogin(obj, url, index) {
-
+      var token = api.getGlobalData({
+        key:'token',
+      });
+      console.log(token);
+      if(token){
         api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/index',
+            url: 'http://wstmart.anhy.net/index.php?dispatch=auth.token_login&token='+token,
             method: 'get',
         }, function(ret, err) {
             // console.log(JSON.stringify(ret));
             if (err) {
-              console.log(JSON.stringify(err));
+              alert(JSON.stringify(err));
                 toast.fail({
                     title: '网络出现问题',
                     duration: 2000
@@ -134,6 +140,12 @@ function myInfoMes() {
             }
 
         });
+      }else{
+        api.openWin({
+            name: 'login',
+            url: './html/login_win.html',
+        });
+      }
     }
 
     function randomSwitchBtn(obj, url, index) {
@@ -143,6 +155,13 @@ function myInfoMes() {
         } else {
             var frames = api.frames();
             for (var i = 0; i < frames.length; i++) {
+              if(frames[i].name == 'home'){
+                api.execScript({
+                    frameName: frames[i].name,
+                    script: 'stopMusic();'
+                });
+
+              }
                 api.setFrameAttr({
                     name: frames[i].name,
                     hidden: true

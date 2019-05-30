@@ -53,7 +53,7 @@
                     </div>
                 </div>
             </li>
-            <li class="aui-list-item">
+            <!-- <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-input" style="width: auto;">
                         <input type="text"  maxlength="4" placeholder="验证码" id="codeImg" class="verifyCode">
@@ -62,7 +62,7 @@
                         <div class="" style="width: 6rem;"><img src="http://wstmart.anhy.net/home/index/getVerify" onclick="changeImg(this)" id="img_code"/></div>
                     </div>
                 </div>
-            </li>
+            </li> -->
             <!-- <li class="aui-list-item">
                 <div class="aui-list-item-inner">
                     <div class="aui-list-item-input" style="width: auto;">
@@ -114,6 +114,37 @@ function onSignIn(googleUser) {
       }
     var toast = new auiToast({
     })
+    var token = api.getGlobalData({
+    key: 'token'
+});
+function getToken() {
+  var a = {
+      "email": "admin@admin.com",
+      "password":"123456"
+  };
+  a = JSON.stringify(a);
+  api.ajax({
+      url: 'http://wstmart.anhy.net/api.php?_d=AuthTokens',
+      method: 'post',
+      data: {
+          body:a
+      },
+      headers:{
+        'Content-Type': 'application/json'
+      }
+  },function(ret, err){
+      if (ret) {
+        api.setGlobalData({
+          key:'token',
+          value:ret.token
+        })
+          console.log( JSON.stringify( ret ) );
+      } else {
+          console.error( JSON.stringify( err ) );
+      }
+  });
+
+}
     function changeImg(img) {
         $api.removeAttr(img,'src');
         $api.attr(img,'src','http://wstmart.anhy.net/home/index/getVerify');
@@ -152,19 +183,23 @@ google.signIn(function(ret, err) {
     }
     function login() {
         var dataList = {};
-        dataList.loginName = $api.val($api.byId('userName'));
-        dataList.verifyCode = $api.val($api.byId('codeImg'));
-        dataList.loginPwd = $api.val($api.byId('password'));
-        dataList.rememberPwd ="";
+        dataList.email = $api.val($api.byId('userName'));
+        // dataList.verifyCode = $api.val($api.byId('codeImg'));
+        dataList.password = $api.val($api.byId('password'));
+        // dataList.rememberPwd ="";
         console.log(JSON.stringify(dataList))
+
         api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/checkLogin',
+            url: 'http://wstmart.anhy.net/api.php?_d=AuthTokens',
             method: 'post',
             data: {
-              values:dataList
+                body:JSON.stringify(dataList)
+            },
+            headers:{
+              'Content-Type': 'application/json'
             }
-        }, function(ret, err) {
-
+        },function(ret, err){
+          alert(JSON.stringify(ret))
             if (ret) {
                 // console.log(JSON.stringify(ret));
                 // alert( JSON.stringify( ret ) );
@@ -178,7 +213,8 @@ google.signIn(function(ret, err) {
 
                 }else {
                   api.setGlobalData({
-                    'uid':ret.user_id
+                    key:'token',
+                    value:ret.token
                   })
                   toast.success({
                       title:ret.msg,
