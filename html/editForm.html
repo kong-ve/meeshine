@@ -48,7 +48,7 @@ var data;
         $api.fixStatusBar(header);
          editM = $api.byId('editMessage');
          parse = api.pageParam;
-         data  =  JSON.parse(api.getGlobalData({key: 'userMesg'}));
+         data  =  JSON.parse(localStorage.getItem('userMesg'));
          console.log(JSON.stringify(data));
          if(parse.name == 'introduce'){
            $api.text($api.dom(header, '.aui-title'), '编辑' + parse.titles);
@@ -68,6 +68,7 @@ var data;
          }
 
 
+
     };
 
     function closeFrame() {
@@ -83,29 +84,35 @@ var data;
       data[parse.name] = $api.val($api.dom(editM, '#editVal'));
       console.log(data[parse.name]);
       api.ajax({
-          url: 'http://wstmart.anaf.cn/apihome/users/edit',
-          method: 'post',
+          url: 'http://wstmart.anhy.net/api.php?_d=userstate/1',
+          method: 'put',
           data: {
-              values: d,
+              body:JSON.stringify(d),
+          },
+          headers:{
+            'Content-Type': 'application/json'
           }
       },function(ret, err){
         console.log( JSON.stringify( ret ) );
           if (ret) {
-              if(ret.status == 1){
+
                 console.log(JSON.stringify(data))
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: JSON.stringify(data)
-                });
-                var l = api.getGlobalData({key: 'userMesg'});
+                localStorage.setItem('userMesg',JSON.stringify(data))
+                var l = localStorage.getItem('userMesg');
                   console.log(JSON.stringify(l));
                 api.execScript({
-                    frameName: 'information_frm',
+                  name:'EditInfo',
+                    frameName:'information_frm',
+                    script: 'MyInfo();'
+                });
+                api.execScript({
+                  name:'root',
+                    frameName: 'myinfo',
                     script: 'MyInfo();'
                 });
                 closeFrame();
-              }
-          } else {
+
+           }else {
               console.error( JSON.stringify( err ) );
           }
       });

@@ -125,7 +125,7 @@ for(var el = 0;el<colorL.length;el++){
 var photoBrowser;
 apiready= function() {
   api.parseTapmode();
-  photoBrowser = api.require('photoBrowser')
+  // photoBrowser = api.require('photoBrowser')
   var params = api.pageParam;
   var footer = 　$api.byId('footer');
       $api.fixTabBar(footer);
@@ -136,7 +136,13 @@ apiready= function() {
         $api.removeCls($api.dom(footer,'.cartBuy'),'cartbtn');
     }
 
-
+api.ajax({
+  url:'http://mv.anhy.net/index.php?dispatch=products.view&product_id=765&is_ajax=1',
+  method:'get',
+},function (ret,err) {
+  alert(JSON.stringify(ret));
+  console.error(err)
+})
 }
 var num = $api.val($api.byId('num'));
 if(num == 1){

@@ -40,51 +40,52 @@ function openCart() {
 }
 
 function myInfoMes() {
-  var token = api.getGlobalData({
-    key:'token',
-  });
+  var token = localStorage.getItem('token');
+  if(!token){
+    localStorage.setItem('userMesg', '');
+    return ;
+  }
     api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/index',
+            url: 'http://wstmart.anhy.net/api.php?_d=userstate',
             method: 'get',
-
+            headers:{
+              Cookie:token
+            }
         },
         function(ret, err) {
-            // console.log(JSON.stringify(ret));
-            if (ret.status == 1) {
-                var list = ret.data;
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: JSON.stringify(ret.data)
-                });
-            } else if (ret.status == -999) {
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: ''
-                });
+            if(err){
+              console.log(JSON.stringify(err))
+              localStorage.setItem('userMesg', '');
+              return ;
             }
+            if (ret) {
+                var list = ret;
+                console.log(JSON.stringify(list))
+                localStorage.setItem('userMesg', JSON.stringify(ret));
+                  localStorage.setItem('userId', ret.id);
+
+              }
         })
     }
     function isLogin(obj, url, index) {
-      var token = api.getGlobalData({
-        key:'token',
-      });
+      console.log(1);
+      var token = localStorage.getItem('token');
       console.log(token);
       if(token){
-        api.ajax({
-            url: 'http://wstmart.anhy.net/index.php?dispatch=auth.token_login&token='+token,
-            method: 'get',
-        }, function(ret, err) {
-            // console.log(JSON.stringify(ret));
-            if (err) {
-              alert(JSON.stringify(err));
-                toast.fail({
-                    title: '网络出现问题',
-                    duration: 2000
-                });
-                return false;
-            }
-            if (ret.status == 1) {
-              myInfoMes();
+        // api.ajax({
+        //     url: 'http://wstmart.anhy.net/index.php?dispatch=auth.token_login&token='+token+'&redirect_url=http://wstmart.anhy.net/api.php?_d=userstate',
+        //     method: 'get',
+        // }, function(ret, err) {
+        //     // console.log(JSON.stringify(ret));
+        //     if (err) {
+        //       // alert(JSON.stringify(ret));
+        //         toast.fail({
+        //             title: '网络出现问题',
+        //             duration: 2000
+        //         });
+        //         return false;
+        //     }
+        //     if (ret) {
                 var frames = api.frames();
                 for (var i = 0; i < frames.length; i++) {
                     api.setFrameAttr({
@@ -113,6 +114,7 @@ function myInfoMes() {
                         foot: footer_h,
                     },
                     bounces: false,
+                    reload:index == 'myinfo' ? true : false,
                     bgColor: 'rgba(0,0,0,0.3)',
                     vScrollBarEnabled: false,
                     hScrollBarEnabled: false,
@@ -132,14 +134,9 @@ function myInfoMes() {
                         })
                         // }
                 }, 1000)
-            } else if (ret.status == -999) {
-                api.openWin({
-                    name: 'login',
-                    url: './html/login_win.html',
-                });
-            }
+            // }
 
-        });
+        // });
       }else{
         api.openWin({
             name: 'login',

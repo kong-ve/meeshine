@@ -1,5 +1,6 @@
 function MyInfo() {
-  var data =  JSON.parse(api.getGlobalData({key: 'userMesg'}));
+  console.log('change')
+  var data = JSON.parse(localStorage.getItem('userMesg'));
   var list = data;
   for (var key in list) {
       if (list[key]) {
@@ -22,6 +23,7 @@ function MyInfo() {
   }
 }
 function openSexList() {
+  var token = localStorage.getItem('token');
   api.actionSheet({
     // cancelTitle: '这里是取消按钮',
     buttons: ['保密', '男', '女']
@@ -33,8 +35,11 @@ function openSexList() {
     }
     var id = index-1;
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/users/edit',
-        method: 'post',
+        url: 'http://wstmart.anhy.net/api.php?_d=userstate/'+api.getGlobalData({key:'userId'}),
+        method: 'put',
+        headers:{
+          Cookie:token
+        }
         data: {
             values: {
                 sex: index
@@ -77,7 +82,8 @@ function openEdit(type,title) {
       pageParam: {
           name: type,
           val:tx,
-          titles:title
+          titles:title,
+          frame:api.frameName
       }
   });
 

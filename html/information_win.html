@@ -43,7 +43,14 @@
     })
   };
   function closeWin(){
-    api.closeWin();
+    api.openFrame({
+        name: 'myinfo',
+        url: './my.html',
+    });
+
+    api.closeWin({
+      name:'EditInfo'
+    });
   }
   function saveImg() {
     $api.removeCls($api.byId('save'), 'aui-hide');

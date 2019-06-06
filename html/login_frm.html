@@ -4,18 +4,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
-    <meta-data name="com.facebook.sdk.ApplicationId"value="fb2260718420859070"></meta-data>
+    <meta-data name="com.facebook.sdk.ApplicationId" value="fb2260718420859070"></meta-data>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <meta name="google-signin-client_id" content="929233012223-07rksf7mhkh78mupgmruehqqv7ogp66q.apps.googleusercontent.com">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
-    <link rel="stylesheet" href="../feature/fonts/iconfont.css"/>
+    <link rel="stylesheet" href="../feature/fonts/iconfont.css" />
     <style>
         .login-third {
             margin-top: 3rem;
         }
-        .aui-toast{
-          z-index: 99;
+
+        .aui-toast {
+            z-index: 99;
         }
     </style>
 </head>
@@ -96,142 +97,133 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script src="../script/aui-toast.js" charset="utf-8"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 <script type="text/javascript">
-function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        var profile = googleUser.getBasicProfile();
-        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
-        console.log('Full Name: ' + profile.getName());
-        console.log('Given Name: ' + profile.getGivenName());
-        console.log('Family Name: ' + profile.getFamilyName());
-        console.log("Image URL: " + profile.getImageUrl());
-        console.log("Email: " + profile.getEmail());
+    var toast = new auiToast({})
+    var token = localStorage.getItem('token');
 
-        // The ID token you need to pass to your backend:
-        var id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-      }
-    var toast = new auiToast({
-    })
-    var token = api.getGlobalData({
-    key: 'token'
-});
-function getToken() {
-  var a = {
-      "email": "admin@admin.com",
-      "password":"123456"
-  };
-  a = JSON.stringify(a);
-  api.ajax({
-      url: 'http://wstmart.anhy.net/api.php?_d=AuthTokens',
-      method: 'post',
-      data: {
-          body:a
-      },
-      headers:{
-        'Content-Type': 'application/json'
-      }
-  },function(ret, err){
-      if (ret) {
-        api.setGlobalData({
-          key:'token',
-          value:ret.token
-        })
-          console.log( JSON.stringify( ret ) );
-      } else {
-          console.error( JSON.stringify( err ) );
-      }
-  });
-
-}
     function changeImg(img) {
-        $api.removeAttr(img,'src');
-        $api.attr(img,'src','http://wstmart.anhy.net/home/index/getVerify');
+        $api.removeAttr(img, 'src');
+        $api.attr(img, 'src', 'http://wstmart.anhy.net/home/index/getVerify');
     }
+
     function loginFackbook() {
-      console.log('facebook');
-      var facebook = api.require('facebook');
-      facebook.isInstalled(function(ret, err) {
-    if (ret.installed) {
-        console.log("当前设备已安装facebook客户端");
-    } else {
-        console.log('当前设备未安装facebook客户端');
+        console.log('facebook');
+        var facebook = api.require('facebook');
+        facebook.isInstalled(function(ret, err) {
+            if (ret.installed) {
+                console.log("当前设备已安装facebook客户端");
+            } else {
+                console.log('当前设备未安装facebook客户端');
+            }
+        });
+        facebook.login({
+            appId: '2260718420859070',
+        }, function(ret, err) {
+            console.error(JSON.stringify(err));
+            console.error(JSON.stringify(ret));
+            if (ret.status) {
+                api.alert({
+                    msg: JSON.stringify(ret)
+                });
+            } else {
+                api.alert({
+                    msg: JSON.stringify(err)
+                });
+            }
+        });
     }
-});
-      facebook.login({
-        appId: '2260718420859070',
-      },function(ret, err){
-    console.error(JSON.stringify(err));
-    console.error(JSON.stringify(ret));
-           if(ret.status) {
-             api.alert({msg:JSON.stringify(ret)});
-           } else {
-              api.alert({msg:JSON.stringify(err)});
-           }
-     });
-    }
+
     function loginGoogle() {
-      var google = api.require('google');
-google.signIn(function(ret, err) {
-    if (err) {
-        api.alert({msg:JSON.stringify(err)});
-    } else {
-        api.alert({msg:JSON.stringify(ret)});
+        var google = api.require('google');
+        google.showSignInButton({
+                rect: {
+                    x: 200,
+                    y: 100,
+                    w: 120,
+                    h: 45
+                },
+                style: 'standard',
+                colorScheme: 'light',
+                fixedOn: api.frameName,
+                fixed: true
+            }, function(ret, err) {
+                if (err) {
+                    api.alert({
+                        msg: JSON.stringify(err)
+                    });
+                } else {
+                    api.alert({
+                        msg: JSON.stringify(ret)
+                    });
+                }
+            })
+            // google.signIn(function(ret, err) {
+            //     if (err) {
+            //         api.alert({msg:JSON.stringify(err)});
+            //     } else {
+            //         api.alert({msg:JSON.stringify(ret)});
+            //     }
+            // });
     }
-});
-    }
+
     function login() {
-        var dataList = {};
-        dataList.email = $api.val($api.byId('userName'));
+        var dataList = {
+            return_url: 'index.php',
+            redirect_url: 'index.php?dispatch=auth.login_form&return_url=index.php',
+        };
+        dataList.user_login = $api.val($api.byId('userName'));
         // dataList.verifyCode = $api.val($api.byId('codeImg'));
         dataList.password = $api.val($api.byId('password'));
         // dataList.rememberPwd ="";
         console.log(JSON.stringify(dataList))
 
         api.ajax({
-            url: 'http://wstmart.anhy.net/api.php?_d=AuthTokens',
+            url: 'http://mv.anhy.net/index.php?dispatch=auth.login&is_ajax=1&appajax=1',
             method: 'post',
+            returnAll:true,
             data: {
-                body:JSON.stringify(dataList)
+                values: dataList
             },
-            headers:{
-              'Content-Type': 'application/json'
-            }
-        },function(ret, err){
-          alert(JSON.stringify(ret))
+            // headers:{
+            //   'Content-Type': 'application/json'
+            // }
+        }, function(ret, err) {
+            // console.log(JSON.stringify(ret))
+            // console.error(JSON.stringify(err))
+            // console.log(err.headers);
             if (ret) {
                 // console.log(JSON.stringify(ret));
                 // alert( JSON.stringify( ret ) );
-                if (ret.status == -1){
-                  changeImg($api.byId('img_code'));
-                  toast.fail({
-                      title:ret.msg,
-                      duration:2000
-                  });
-                // $api.byId('codeImg').click();
+                if (ret.status == -1) {
+                    changeImg($api.byId('img_code'));
+                    toast.fail({
+                        title: ret.msg,
+                        duration: 2000
+                    });
+                    // $api.byId('codeImg').click();
 
-                }else {
-                  api.setGlobalData({
-                    key:'token',
-                    value:ret.token
-                  })
-                  toast.success({
-                      title:ret.msg,
-                      duration:2000
-                  });
-                  api.closeWin({
-                    name:'login'
-                  });
+                } else {
+                  var a = ret.headers['Set-Cookie'].indexOf(';');
+                  var b = ret.headers['Set-Cookie'].substr(0,a);
+                  console.log(b);
+                    localStorage.setItem('token', b);
+
+                    toast.success({
+                        title: ret.msg,
+                        duration: 2000
+                    });
+                    api.closeWin({
+                        name: 'login'
+                    });
                 }
 
             } else {
-              changeImg($api.byId('img_code'));
-              toast.fail({
-                  title:"验证失败",
-                  duration:2000
-              });
-              // $api.byId('codeImg').click();
+                changeImg($api.byId('img_code'));
+                toast.fail({
+                    title: "验证失败",
+                    duration: 2000
+                });
+                // $api.byId('codeImg').click();
                 // alert( JSON.stringify( ret ) );
                 // alert( JSON.stringify( err ) );
             }

@@ -13,13 +13,17 @@ function checkPC() {
 
 function IS_star(videoId) {
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/video/is_star',
+        url: 'http://wstmart.anhy.net/api.php?_d=VideoStar',
         method: 'get',
         data: {
             values: {
                 video_id: videoId
             },
-        }
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
     }, function(ret, err) {
 
         if (ret) {
@@ -72,10 +76,14 @@ function selectVideo(str_sel) {
                 str: str_sel,
                 search_type: 0
             },
-        }
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
     }, function(ret, err) {
         if (ret) {
-            alert(JSON.stringify(ret));
+            // alert(JSON.stringify(ret));
             stopMusic();
             hideSelect();
             api.openWin({
@@ -239,7 +247,7 @@ function GetVideoList(List, container, swipe, foot_h) {
                 pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
 
             }
-            if (moveIsTrue) {
+            if (moveIsTrue && (page + 1) == userData.length) {
                 IS_star(userData[this.page].id);
                 document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
                 $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
@@ -268,8 +276,6 @@ function GetVideoList(List, container, swipe, foot_h) {
             RightPaneOpen()
         }
     });
-
-
 }
 
 function VideoPlaying() {
@@ -390,13 +396,17 @@ function addFlow(vl, el) {
         return;
     }
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/users/follow',
+        url: 'http://wstmart.anhy.net/api.php?_d=VideoStar',
         method: 'post',
         data: {
             values: {
                 id: vl
             },
-        }
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
     }, function(ret, err) {
         if (ret) {
             alert(JSON.stringify(ret));
@@ -491,13 +501,17 @@ function remFlow(vl) {
         return;
     }
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/users/unfollow',
+        url: 'http://wstmart.anhy.net/api.php?_d=follow',
         method: 'post',
         data: {
             values: {
                 id: vl
             },
-        }
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
     }, function(ret, err) {
         if (ret) {
             alert(JSON.stringify(ret));
@@ -541,32 +555,44 @@ function add_star(id) {
         console.log('err');
         return;
     }
+var el = document.getElementById('likeBtn');
+    var urls = 'http://wstmart.anhy.net/api.php?_d=VideoStar';
+    var type = 'post';
+    if($api.dom(el, '.icon-heart').style.color == 'red'){
+      urls = 'http://wstmart.anhy.net/api.php?_d=VideoStar/11';
+      type = 'delete';
+    }
+      console.log('add_star');
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/video/star',
-        method: 'get',
+        url: urls,
+        method: type,
         data: {
-            values: {
+            body:JSON.stringify({
                 video_id: id
-            },
-        }
+            }),
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
     }, function(ret, err) {
-
+      console.log(JSON.stringify(ret))
+      console.error(JSON.stringify(err))
         if (ret) {
-            var el = document.getElementById('likeBtn');
-            if (ret.status == 1) {
+
+            if ($api.dom(el, '.icon-heart').style.color != 'red') {
                 $api.css($api.dom(el, '.icon-heart'), 'color:red;');
                 $api.text($api.dom(el, '.icon-number'), Number($api.text($api.dom(el, '.icon-number'))) + 1);
-            } else if (ret.status == 0) {
+            } else  {
                 $api.removeAttr($api.dom(el, '.icon-heart'), 'style');
                 $api.text($api.dom(el, '.icon-number'), Number($api.text($api.dom(el, '.icon-number'))) - 1);
-            } else if (ret.status == -999) {
-                api.openWin({
-                    name: 'login',
-                    url: './login_win.html',
-                });
             }
         } else {
-            alert(JSON.stringify(err));
+              api.openWin({
+                  name: 'login',
+                  url: './login_win.html',
+              });
+            // alert(JSON.stringify(err));
         }
     });
 
@@ -575,20 +601,84 @@ function add_star(id) {
 function userVideo(footer_h, container, l) {
 
     api.ajax({
-        url: 'http://wstmart.anhy.net/apihome/video/video_list',
+        url: 'http://wstmart.anhy.net/api.php?_d=VideoContent&page='+(l+1),
         method: 'get',
-        data: {
-            values: {
-                'page': l + 1
-            }
-        }
     }, function(ret, err) {
-        if (err) {
-            alert(JSON.stringify(err));
+      // alert(JSON.stringify(ret));
+        if (err || ret.length <1) {
+          userData = [{
+          nickname:1,
+          number:1598531459891,
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+					id: new Date().getTime() + 1,
+					imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
+					goods_video_url: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/abb9595e74647defe21d748e12f7a7c9.mp4',
+				}, {
+          nickname:1,
+          number:1598531459895,
+					id: new Date().getTime() + 2,
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+					imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/1a73dd6a90a52b2aad1aafefbf977e4c.png',
+					goods_video_url: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/00b2141bff87cfaa75498f66214aeb9e.mp4',
+				}, {
+          nickname:1,
+          number:1598531459896,
+					id: new Date().getTime(),
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+					imageUrl: 'http://www.verzweiflung.cn/2.mp4',
+					goods_video_url: 'http://www.verzweiflung.cn/2.mp4',
+				}, {
+          nickname:1,
+          number:1598531459897,
+					id: new Date().getTime() + 3,
+					imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
+					goods_video_url: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/9d9906ba474152307d7edca6bd72fbe2.mp4',
+				}, {
+          nickname:1,
+          number:1598531459898,
+					id: new Date().getTime() + 4,
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+					imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/51fc1ddde9790c96a6986b74342a15e3.png',
+					videoUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/dc811d2c4d88b409063c7ea2065fe6a0.mp4',
+				}, {
+          nickname:1,
+          number:1598531459899,
+					id: new Date().getTime() + 5,
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+					imageUrl: 'http://www.verzweiflung.cn/3.mp4',
+					goods_video_url: 'http://www.verzweiflung.cn/3.mp4',
+				}, {
+          nickname:1,
+          number:1598531459894,
+					id: new Date().getTime() + 6,
+					imageUrl: '',
+          star_sum:0,
+          share_sum:0,
+          comment_sum:0,
+
+					goods_video_url: 'http://www.verzweiflung.cn/1.mp4',
+				}];
+        GetVideoList(userData, container, '.swipe', footer_h);
+        $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
+        $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'), userData[0].star_sum);
+        $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
+        $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
+        $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
+        document.getElementById(userData[0].id).muted = false;
             return;
-        }
+        }else{
         if (userData.length == 0) {
-            userData = ret.data.data;
+            userData = ret;
             IS_star(userData[0].id)
             GetVideoList(userData, container, '.swipe', footer_h);
             $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
@@ -598,7 +688,7 @@ function userVideo(footer_h, container, l) {
             $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
             document.getElementById(userData[0].id).muted = false;
         } else {
-            var list = ret.data.data;
+            var list = ret;
             if (list.length > 0) {
                 for (var i = 0; i < list.length; i++) {
                     userData.push(list[i]);
@@ -615,7 +705,7 @@ function userVideo(footer_h, container, l) {
                 Slip.jump(page + 1);
             }
         }
-
+}
     })
 
 }
@@ -692,21 +782,17 @@ function openShare() {
 
 function myInfoMes() {
     api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/index',
+            url: 'http://wstmart.anhy.net/api.php?_d=userstate',
             method: 'get',
         },
         function(ret, err) {
-            if (ret.status == 1) {
-                var list = ret.data;
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: JSON.stringify(ret.data)
-                });
-            } else if (ret.status == -999) {
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: ''
-                });
+            if (ret) {
+                var list = ret;
+                localStorage.setItem('userMesg',JSON.stringify(ret));
+
+            } else{
+              localStorage.setItem('userMesg','');
+
             }
         })
 }

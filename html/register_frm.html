@@ -1,53 +1,56 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>Hello APP</title>
     <link rel="stylesheet" type="text/css" href="../css/aui.css" />
-	<style>
+    <style>
         .login-third {
             margin-top: 3rem;
         }
-	</style>
+    </style>
 </head>
+
 <body>
     <section class="aui-content aui-margin-t-15">
         <ul class="aui-list aui-form-list">
-          <li class="aui-list-item">
-              <div class="aui-list-item-inner">
-                  <div class="aui-list-item-label aui-border-r color-orange">
-                      邮箱
-                  </div>
-                  <div class="aui-list-item-input aui-padded-l-10">
-                      <input type="text" placeholder="输入email" id="email" value="" class="loginName" >
-                  </div>
-              </div>
-          </li>
-          <li class="aui-list-item">
-              <div class="aui-list-item-inner">
-                  <div class="aui-list-item-label aui-border-r color-orange">
-                      密码
-                  </div>
-                  <div class="aui-list-item-input aui-padded-l-10">
-                      <input type="password" placeholder="输入密码" id="password" value="" class="loginPwd">
-                  </div>
-              </div>
-          </li>
-          <li class="aui-list-item">
-              <div class="aui-list-item-inner">
-                  <div class="aui-list-item-label aui-border-r color-orange">
-                      性别
-                  </div>
-                  <div class="aui-list-item-input aui-padded-l-10">
-                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="0">&nbsp;&nbsp;保密&nbsp;&nbsp;
-                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="1">&nbsp;&nbsp;男&nbsp;&nbsp;
-                      <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="2">&nbsp;&nbsp;女
-                  </div>
-              </div>
-          </li>
-          <!-- <li class="aui-list-item">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label aui-border-r color-orange">
+                        邮箱
+                    </div>
+                    <div class="aui-list-item-input aui-padded-l-10">
+                        <input type="text" placeholder="输入email"name="user_data[email]" id="email" value="" class="loginName">
+                    </div>
+                </div>
+            </li>
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label aui-border-r color-orange">
+                        密码
+                    </div>
+                    <div class="aui-list-item-input aui-padded-l-10">
+                        <input type="password" placeholder="输入密码"name="user_data[password1]" id="password" value="" class="loginPwd">
+                        <input type="hidden" name="user_data[password2]">
+                    </div>
+                </div>
+            </li>
+            <!-- <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label aui-border-r color-orange">
+                        性别
+                    </div>
+                    <div class="aui-list-item-input aui-padded-l-10">
+                        <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="0">&nbsp;&nbsp;保密&nbsp;&nbsp;
+                        <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="1">&nbsp;&nbsp;男&nbsp;&nbsp;
+                        <input class="aui-checkbox" type="radio" name="userSex" id="userSex" value="2">&nbsp;&nbsp;女
+                    </div>
+                </div>
+            </li> -->
+            <!-- <li class="aui-list-item">
               <div class="aui-list-item-inner">
                   <div class="aui-list-item-input" style="width: auto;">
                       <input type="text"  maxlength="4" placeholder="验证码" id="codeImg" class="verifyCode">
@@ -62,68 +65,105 @@
     <section class="aui-content-padded">
         <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" tapmode onclick="register()"> 注册</div>
     </section>
+    <form id="form" style="display:none">
+      <input type="text">
+      <input type="text" placeholder="输入email"name="user_data[email]" value="q@5.com" >
+      <input type="text" placeholder="输入email"name="user_data[password2]" value="12" >
+      <input type="text" placeholder="输入email"name="user_data[password1]" value="12" >
+      <input type="text" placeholder="输入email"name="all_mailing_lists[]" value="1" >
+      <input type="text" placeholder="输入email"name="ship_to_another" value="1" >
+      <input type="text" placeholder="输入email"name="user_data[firstname]" value="" >
+      <input type="text" placeholder="输入email"name="user_data[lastname]" value="" >
+      <input type="text" placeholder="输入email"name="user_data[phone]" value="" >
+    </form>
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script src="../script/aui-toast.js" charset="utf-8"></script>
 <script type="text/javascript">
-var toast = new auiToast();
-    apiready = function(){
+    var toast = new auiToast();
+    apiready = function() {
         api.parseTapmode();
     };
+
     function register() {
         var dataList = {
-          "Field name":"Field name",
-  "user_type":"C",
-  "company_id":"",
-  "status":"A",
+            ship_to_another: 1,
+            user_data: {
+                'firstname': '',
+                'lastname': '',
+                'phone': '',
+                'email': 'q@1.com',
+                'password1': 12,
+                'password2': 12,
+            },
+            all_mailing_lists: {
+                 '':1
+            },
+            dispatch:{
+              'profiles.update':''
+            }
         };
-        dataList.email = $api.byId('email').value;
-        // dataList.userSex = $api.val($api.byId('userSex'));
-        dataList.password = $api.val($api.byId('password'));
-        // dataList.isInform =1;
-        // dataList.userStatus =1;
-        // dataList.userId =0;
-        // dataList.userPhoto ="";
+        var formData = new FormData();
+        formData.append('ship_to_another', '1')
+        formData.append('user_data[firstname]', '')
+        formData.append('user_data[lastname]', '')
+        formData.append('user_data[phone]', '')
+        formData.append('user_data[email]', 'q@1.com')
+        formData.append('user_data[password1]', '12')
+        formData.append('user_data[password2]', '12')
+        formData.append('all_mailing_lists[]', '1')
+        formData.append('dispatch[profiles.update]', '')
+        // dataList.user_data.email = $api.byId('email').value;
+        // formData.append('user_data[email]', $api.byId('email').value)
+            // dataList.userSex = $api.val($api.byId('userSex'));
+        // dataList.user_data.password1 = $api.val($api.byId('password'));
+        // formData.append('user_data[password1]', $api.val($api.byId('password')))
+        // dataList.user_data.password2 = $api.val($api.byId('password'));
+        // formData.append('user_data[password2]', $api.val($api.byId('password')))
+            // dataList.isInform =1;
+            // dataList.userStatus =1;
+            // dataList.userId =0;
+            // dataList.userPhoto ="";
         console.log(JSON.stringify(dataList))
-        var data = JSON.stringify(dataList)
+        var q = new FormData(dataList);
+            // var data_list = JSON.stringify(dataList)
         api.ajax({
-            url: 'http://wstmart.anhy.net/api.php?_d=users',
+            //http: mv.anhy.net/index.php?appajax=1&dispatch=profiles.update&is_ajax=1
+                url: 'http://mv.anhy.net/index.php?dispatch=profiles.update',
             method: 'post',
-            headers:{
-              'X-Requested-With': 'XMLHttpRequest',
-              "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            //     // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
             },
             data: {
-              values:dataList
-            }
+                values: dataList
+            },
+            returnAll: true,
         }, function(ret, err) {
+            console.log(JSON.stringify(err));
+            console.warn(JSON.stringify(ret));
+            if (ret.result) {
+                var a = ret.headers['Set-Cookie'].indexOf(';');
+                var b = ret.headers['Set-Cookie'].substr(0, a);
+                console.log(b);
+                localStorage.setItem('token', b);
+                toast.success({
+                    title: ret.msg,
+                    duration: 2000
+                });
+                // localStorage.setItem('userId',ret.user_id)
+                // localStorage.setItem('token',ret.token)
 
-            if (ret) {
-                // console.log(JSON.stringify(ret));
-                // alert( JSON.stringify( ret ) );
-                if (ret.status == -1){
-                  changeImg($api.byId('img_code'));
-                  toast.fail({
-                      title:ret.msg,
-                      duration:2000
-                  });
-                // $api.byId('codeImg').click();
-
-                }else {
-                  toast.success({
-                      title:ret.msg,
-                      duration:2000
-                  });
-                  api.closeWin();
-                }
+                api.closeWin();
 
             } else {
-              console.error(JSON.stringify(err))
-              toast.fail({
-                  title:"验证失败",
-                  duration:2000
-              });
-              // $api.byId('codeImg').click();
+                console.error(JSON.stringify(err))
+                toast.fail({
+                    title: "验证失败",
+                    duration: 2000
+                });
+
+                // $api.byId('codeImg').click();
                 // alert( JSON.stringify( ret ) );
                 // alert( JSON.stringify( err ) );
             }
@@ -131,4 +171,5 @@ var toast = new auiToast();
 
     }
 </script>
+
 </html>

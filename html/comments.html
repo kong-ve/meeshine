@@ -73,8 +73,8 @@
 
     function del_comment(id) {
         api.ajax({
-            url: 'http://wstmart.anhy.net/apishop/video/del_comment',
-            method: 'post',
+            url: 'http://wstmart.anhy.net/api.php?_d=VideoComment/11',
+            method: 'delete',
             data: {
                 values: {
                     'comment_id': id
@@ -129,16 +129,17 @@
           duration: 2000
       });
         api.ajax({
-            url: 'http://wstmart.anhy.net/apishop/video/comment_list',
+            url: 'http://wstmart.anhy.net/api.php?_d=VideoComment',
             method: 'get',
             data: {
                 values: {
                     'video_id': parse.video
                 }
-            }
+            },
         }, function(ret, err) {
-            if(ret.data.data.length >0){
-            var data_list = ret.data.data;
+          console.log(JSON.stringify(ret))
+            if(ret){
+            var data_list = ret;
             var cmt = document.getElementById('commitList');
             var html = '';
             $api.text($api.dom($api.byId('header'), '.aui-title'), ret.data.total + '评论')
@@ -171,7 +172,7 @@
             $api.append(cmt, html);
           toast.hide();
           }else{
-            $api.text($api.dom($api.byId('header'), '.aui-title'), ret.data.total + '评论')
+            $api.text($api.dom($api.byId('header'), '.aui-title'), '0评论')
               var cmt = document.getElementById('commitList');
             $api.append(cmt, '<li class="aui-list-item aui-list-item-middle"><h6>暂无评论</h6></li>');
               toast.hide();
@@ -215,25 +216,22 @@ function del_click(d,bl) {
 }
 function myInfoMes() {
     api.ajax({
-            url: 'http://wstmart.anhy.net/apihome/users/index',
+      url: 'http://wstmart.anhy.net/api.php?_d=userstate',
             method: 'get',
         },
         function(ret, err) {
             // console.log(JSON.stringify(ret));
-            if (ret.status == 1) {
-                var list = ret.data;
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: JSON.stringify(ret.data)
-                });
-                login = true;
-            } else if (ret.status == -999) {
-                api.setGlobalData({
-                    key: 'userMesg',
-                    value: ''
-                });
-                login = false;
+            if(err){
+              localStorage.setItem('userMesg', '');
+              login = false;
+              return ;
             }
+            if (ret) {
+                var list = ret;
+                localStorage.setItem('userMesg', JSON.stringify(ret));
+                  localStorage.setItem('userId', ret.id);
+                  login = true;
+              }
         })
     }
 
@@ -242,9 +240,17 @@ function myInfoMes() {
           'video_id': parse.video,
           'content':$api.val($api.byId('text'))
         };
-        $api.post('http://wstmart.anhy.net/apishop/video/send_comment', {
-            values: data
-        }, function(ret, err) {
+        $api.ajax({
+          url:'http://wstmart.anhy.net/api.php?_d=VideoComment',
+          method:'post',
+         data:{
+            body: JSON.stringify(data)
+        },
+        headers: {
+            'Content-Type': 'application/json',
+            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        },
+      }, function(ret, err) {
             console.log(JSON.stringify(ret))
         })
     }

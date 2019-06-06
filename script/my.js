@@ -32,15 +32,16 @@ function bigBg() {
 function LoginOut() {
     api.ajax(
       {
-        url: 'http://wstmart.anhy.net/apihome/users/logout',
+        url: 'http://mv.anhy.net/index.php?dispatch=auth.logout&is_ajax=1&appajax=1',
         method: 'get',
     },
     function(ret, err) {
-        if (ret.status == 1) {
+        if (ret) {
             toast.success({
                 title: ret.msg,
                 duration: 2000
             });
+            localStorage.clear();
             api.rebootApp();
 
         } else {
@@ -58,12 +59,19 @@ function EditInfo() {
     api.openWin({
         name: 'EditInfo',
         url: './information_win.html',
+        pageParam:{
+          frame:api.frameName
+        }
     });
 
 }
 
 function userInfo() {
-  var data =  JSON.parse(api.getGlobalData({key: 'userMesg'}));
+  var msgList = localStorage.getItem('userMesg');
+  if(msgList == ''){
+    return;
+  }
+  var data =  JSON.parse(msgList);
   var list = data;
   var style=document.createElement('style');
 style.innerHTML="#message::before{background: url(../image/suipai/suipai1.png) no-repeat;background-size:cover;}";//添加样式内容的话也可以用上面提到过的`insertRule`,相对例子里的硬编码会更优雅点。
