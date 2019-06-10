@@ -65,7 +65,7 @@
     <section class="aui-content-padded">
         <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" tapmode onclick="register()"> 注册</div>
     </section>
-    <form id="form" style="display:none">
+    <form id="form" style="display:none" action="http://mv.anhy.net/index.php?dispatch=profiles.update">
       <input type="text">
       <input type="text" placeholder="输入email"name="user_data[email]" value="q@5.com" >
       <input type="text" placeholder="输入email"name="user_data[password2]" value="12" >
@@ -88,14 +88,20 @@
     function register() {
         var dataList = {
             ship_to_another: 1,
-            user_data: {
-                'firstname': '',
-                'lastname': '',
-                'phone': '',
-                'email': 'q@1.com',
-                'password1': 12,
-                'password2': 12,
-            },
+            // user_data: {
+            //     'firstname': '',
+            //     'lastname': '',
+            //     'phone': '',
+            //   'email': 'q@1.com',
+            //     'password1': 12,
+            //     'password2': 12,
+            // },
+            'user_data[firstname]':'',
+              'user_data[lastname]':'',
+                'user_data[phone]':'',
+                  'user_data[email]':'q@1.com',
+                    'user_data[password1]':'12',
+                      'user_data[password2]':'12',
             all_mailing_lists: {
                  '':1
             },
@@ -103,38 +109,22 @@
               'profiles.update':''
             }
         };
-        var formData = new FormData();
-        formData.append('ship_to_another', '1')
-        formData.append('user_data[firstname]', '')
-        formData.append('user_data[lastname]', '')
-        formData.append('user_data[phone]', '')
-        formData.append('user_data[email]', 'q@1.com')
-        formData.append('user_data[password1]', '12')
-        formData.append('user_data[password2]', '12')
-        formData.append('all_mailing_lists[]', '1')
-        formData.append('dispatch[profiles.update]', '')
+
         // dataList.user_data.email = $api.byId('email').value;
-        // formData.append('user_data[email]', $api.byId('email').value)
             // dataList.userSex = $api.val($api.byId('userSex'));
         // dataList.user_data.password1 = $api.val($api.byId('password'));
-        // formData.append('user_data[password1]', $api.val($api.byId('password')))
         // dataList.user_data.password2 = $api.val($api.byId('password'));
-        // formData.append('user_data[password2]', $api.val($api.byId('password')))
-            // dataList.isInform =1;
-            // dataList.userStatus =1;
-            // dataList.userId =0;
-            // dataList.userPhoto ="";
+
         console.log(JSON.stringify(dataList))
-        var q = new FormData(dataList);
             // var data_list = JSON.stringify(dataList)
         api.ajax({
+          dataType:'json',
             //http: mv.anhy.net/index.php?appajax=1&dispatch=profiles.update&is_ajax=1
-                url: 'http://mv.anhy.net/index.php?dispatch=profiles.update',
+                url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&is_ajax=1&appajax=1',
             method: 'post',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            //     // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
-            },
+            // headers: {
+            //  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            // },
             data: {
                 values: dataList
             },
@@ -142,7 +132,8 @@
         }, function(ret, err) {
             console.log(JSON.stringify(err));
             console.warn(JSON.stringify(ret));
-            if (ret.result) {
+            if (ret) {
+              if(ret.body.result){
                 var a = ret.headers['Set-Cookie'].indexOf(';');
                 var b = ret.headers['Set-Cookie'].substr(0, a);
                 console.log(b);
@@ -151,6 +142,7 @@
                     title: ret.msg,
                     duration: 2000
                 });
+              }
                 // localStorage.setItem('userId',ret.user_id)
                 // localStorage.setItem('token',ret.token)
 
