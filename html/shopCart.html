@@ -31,9 +31,9 @@
   <div>
     <header class="aui-bar aui-bar-nav" id="header">
         <div class="aui-title">购物车</div>
-        <div class="aui-pull-right aui-btn aui-btn-outlined">
+        <!-- <div class="aui-pull-right aui-btn">
             <span class="aui-iconfont aui-icon-search"></span>
-        </div>
+        </div> -->
     </header>
   </div>
     <section id="main">
@@ -150,7 +150,7 @@ var swipe;
           }
       },function(ret, err){
           if (ret) {
-              // console.warn( JSON.stringify( ret.result.data.cart.value.total ) );
+              console.warn( JSON.stringify( ret.result.data) );
               var main = $api.byId('main');
               $api.text($api.byId('sum'),ret.result.data.cart.value.total);
               var car_product = ret.result.data.cart_products.value;
@@ -166,7 +166,7 @@ var swipe;
               heder.id= 'heder';
               heder.name = 'demo';
               heder.setAttribute('data-check','demo1');
-              heder.onclick = "product_header(this)";
+                heder.setAttribute('onclick','product_header(this)');
               var aui_img_round = document.createElement('img');
               aui_img_round.className = 'aui-img-round aui-padded-l-5';
               aui_img_round.src = '../image/suipai/bg.jpg';
@@ -187,6 +187,7 @@ var swipe;
                 }
                 var li = document.createElement('li');
                 li.className = 'aui-list-view-cell aui-img aui-counter-list';
+                li.id = keys;
                 var aui_swipe_handle = document.createElement('div');
                 aui_swipe_handle.className = 'aui-swipe-handle';
                   var input = document.createElement('input');
@@ -199,6 +200,7 @@ var swipe;
                   img_obj.src = key.main_pair.detailed.image_path;
                   var aui_img_body = document.createElement('div');
                   aui_img_body.className='aui-img-body';
+                  aui_img_body.id = key.product_id;
                   aui_img_body.innerText =   key.product+"   category:"+key.main_category;
                   var aui_counter_box = document.createElement('div');
                   aui_counter_box.className = 'aui-counter-box';
@@ -265,14 +267,16 @@ var swipe;
 
     }
     function product_header(d) {
+        console.log('selected');
       var a = $api.domAll('input[data-check="'+$api.attr(d,'data-check')+'"]');
+      console.log(a.length)
         for(var i = 0;i<a.length;i++){
           a[i].checked = d.checked;
       }
     }
 function delCart(){
-
-  var id = this.getAttribute('data-id');
+var d = this;
+  var id = d.getAttribute('data-id');
     console.warn(JSON.stringify(id))
   console.log('del');
   var url = 'http://mv.anhy.net/index.php?appajax=1&is_ajax=1&dispatch=checkout.delete&cart_id='+id+'&redirect_mode=cart';
@@ -286,9 +290,7 @@ console.log(url);
   },function(ret, err){
       if (ret) {
           console.warn( JSON.stringify( ret ) );
-            var main = $api.byId('main');
-            main.innerHTML = '';
-            getList();
+            $api.remove($api.byId(id))
       } else {
           alert( JSON.stringify( err ) );
       }
@@ -303,6 +305,8 @@ function minusclick() {
       $api.rmEvt($api.dom(par,'.aui-counter-minus'), 'touchstart',minusclick)
   }
   $api.val($api.dom(par,'.aui-counter-input'),Number(vl)-1);
+  var cart_id = $api.attr($api.closest(this,'li'),'id');
+  ChangeNum(cart_id,Number(vl)+1,$api.dom(par,'.aui-counter-input'));
 }
 function plusclick() {
   var par = this.parentNode;
@@ -312,5 +316,34 @@ function plusclick() {
     $api.addEvt($api.dom(par,'.aui-counter-minus'), 'touchstart',minusclick)
   }
   $api.val($api.dom(par,'.aui-counter-input'),Number(vl)+1);
+  var cart_id = $api.attr($api.closest(this,'li'),'id');
+  ChangeNum(cart_id,Number(vl)+1,$api.dom(par,'.aui-counter-input'));
+}
+function ChangeNum(id,val,domm){
+  var list = {
+    redirect_mode:'cart',
+     result_ids: 'cart*,checkout*' ,
+    cart_products:{},
+    full_render: true ,
+    security_hash: '',
+    is_ajax: 1
+  }
+  list.cart_products[id] ={}
+  list.cart_products[id]['product_id']= $api.attr($api.closest(domm,'.aui-img-body'),'id');
+  list.cart_products[id]['amount']= val;
+  api.ajax({
+      url: 'http://mv.anhy.net/index.php?dispatch=checkout.update&appajax=1&is_ajax=1',
+      method: 'post',
+      data: {
+         values: list,
+      }
+  },function(ret, err){
+      if (ret) {
+          alert( JSON.stringify( ret ) );
+      } else {
+          alert( JSON.stringify( err ) );
+      }
+  });
+
 }
 </script>

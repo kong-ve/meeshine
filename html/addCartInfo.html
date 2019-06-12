@@ -263,6 +263,11 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
 
   }
  };
+ if(token){
+   var header = {Cookie:token}
+ }else{
+   var header = {}
+ }
  var checkoutId= 'checkout.add..'+product.product_id;
  list.dispatch[checkoutId]="";
   list.product_data[product.product_id] = {};
@@ -285,10 +290,7 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
     url:'http://mv.anhy.net/index.php?appajax=1',
     method:'post',
     data:list,
-    // headers:{
-      // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    //   'Cookie':token
-    // }
+    headers:header,
   success:function(ret) {
     // alert(JSON.stringify(ret))
     console.log(JSON.stringify(ret))
