@@ -781,6 +781,7 @@ function openShare() {
 }
 
 function myInfoMes() {
+  var a =
     api.ajax({
             url: 'http://wstmart.anhy.net/api.php?_d=userstate',
             method: 'get',
@@ -952,7 +953,68 @@ function switchLoading(obj, url, text) {
 
     }, 100)
 }
-
+function select_product(){
+  var productList = $api.byId('selectProduct');
+  var html='<section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">'+
+      '<div class="aui-row aui-row-padded" >'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+          '<div class="aui-col-xs-6" onclick="openSell(\'all\')">'+
+              '<div class="aui-card-list">'+
+                  '<div class="aui-card-list-content">'+
+                      '<img src="../image/demo1.png">'+
+                  '</div>'+
+                  '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>'+
+              '</div>'+
+          '</div>'+
+        '</div>'+
+  '</section>';
+  $api.append(productList, html);
+  $api.removeCls(document.getElementById('product-show'), 'aui-hide');
+  $api.removeCls(productList, 'aui-hide');
+}
+function hideproduct() {
+    $api.addCls(document.getElementById('product-show'), 'aui-hide');
+    $api.removeCls($api.byId('selectProduct'), 'aui-hide');
+}
 function openCamera() {
     var param = {
         resolutionMode: 2,

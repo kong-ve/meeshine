@@ -32,6 +32,7 @@ function openCart() {
             h: body_h - footer_h
         },
         bounces: false,
+        reload:true,
         bgColor: 'rgba(0,0,0,0.3)',
         vScrollBarEnabled: true,
         hScrollBarEnabled: true
@@ -41,12 +42,13 @@ function openCart() {
 
 function myInfoMes() {
   var token = localStorage.getItem('token');
+  console.log(token);
   if(!token){
     localStorage.setItem('userMesg', '');
     return ;
   }
     api.ajax({
-            url: 'http://wstmart.anhy.net/api.php?_d=userstate',
+            url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
             method: 'get',
             headers:{
               Cookie:token
@@ -59,18 +61,16 @@ function myInfoMes() {
               return ;
             }
             if (ret) {
-                var list = ret;
+                var list = ret.result.data.user_data.value;
                 console.log(JSON.stringify(list))
-                localStorage.setItem('userMesg', JSON.stringify(ret));
-                  localStorage.setItem('userId', ret.id);
+                localStorage.setItem('userMesg', JSON.stringify(list));
+                  // localStorage.setItem('userId', ret.id);
 
               }
         })
     }
     function isLogin(obj, url, index) {
-      console.log(1);
       var token = localStorage.getItem('token');
-      console.log(token);
       if(token){
         // api.ajax({
         //     url: 'http://wstmart.anhy.net/index.php?dispatch=auth.token_login&token='+token+'&redirect_url=http://wstmart.anhy.net/api.php?_d=userstate',
@@ -114,7 +114,7 @@ function myInfoMes() {
                         foot: footer_h,
                     },
                     bounces: false,
-                    reload:index == 'myinfo' ? true : false,
+                    reload:index == 'myinfo' || '' ? true : false,
                     bgColor: 'rgba(0,0,0,0.3)',
                     vScrollBarEnabled: false,
                     hScrollBarEnabled: false,

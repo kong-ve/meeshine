@@ -191,18 +191,10 @@
             // console.log(JSON.stringify(ret))
             // console.error(JSON.stringify(err))
             // console.log(err.headers);
-            if (ret) {
+            if (ret.body.result) {
                 // console.log(JSON.stringify(ret));
                 // alert( JSON.stringify( ret ) );
-                if (ret.status == -1) {
-                    changeImg($api.byId('img_code'));
-                    toast.fail({
-                        title: ret.msg,
-                        duration: 2000
-                    });
-                    // $api.byId('codeImg').click();
 
-                } else {
                   var a = ret.headers['Set-Cookie'].indexOf(';');
                   var b = ret.headers['Set-Cookie'].substr(0,a);
                   console.log(b);
@@ -215,7 +207,7 @@
                     api.closeWin({
                         name: 'login'
                     });
-                }
+
 
             } else {
                 changeImg($api.byId('img_code'));
@@ -224,8 +216,8 @@
                     duration: 2000
                 });
                 // $api.byId('codeImg').click();
-                // alert( JSON.stringify( ret ) );
-                // alert( JSON.stringify( err ) );
+                alert( JSON.stringify( ret ) );
+                console.error( JSON.stringify( err ) );
             }
         });
 

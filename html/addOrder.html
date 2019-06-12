@@ -198,7 +198,11 @@
         var footer = 　$api.byId('footer');
         $api.fixTabBar(footer)
     }
+function closeWin() {
+  api.closeWin({
+  });
 
+}
     function openCell() {
         var el = $api.byId('cell');
         var e = $api.hasCls(el, 'show');

@@ -12,11 +12,29 @@
     <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
     <link rel="stylesheet" href="../css/style.css">
     <style>
+    #selectProduct{
+      width: 100%;
+      height: 40%;
+      top:40%;
+      position: fixed;
+      z-index: 999;
+    }
+    .peoduct-model-aui {
+    width: 100%;
+    height: 100%;
+    z-index: 99;
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: fixed;
+}
 
     </style>
 </head>
 
 <body>
+  <div class="aui-hide" id="selectProduct">
+
+  </div>
   <div class="aui-searchbar aui-hide" id="search">
           <form class="aui-searchbar-input aui-border-radius" action="javascript:searchForm()">
               <i class="aui-iconfont aui-icon-search"></i>
@@ -27,6 +45,7 @@
           </form>
           <div class="aui-searchbar-btn" tapmode onclick="hideSelect()">取消</div>
       </div>
+      <div class="aui-hide peoduct-model-aui" id="product-show" onclick="hideproduct()"></div>
     <div class="aui-hide model-aui" id="model-show" onclick="hideModel()"></div>
     <div class="aui-hide sell-model-aui" id="sell-model-show" onclick="hideSell()"></div>
     <div class="sell-model-aui aui-hide" id="com-show" onclick="hideCom()"></div>

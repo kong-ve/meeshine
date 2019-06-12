@@ -37,7 +37,7 @@
     </header>
   </div>
     <section id="main">
-      <div class="aui-content aui-card-list">
+       <!-- <div class="aui-content aui-card-list">
         <div class="aui-card-list-header">
             <div class="title-card">
               <input id="heder" class="aui-pull-left aui-radio" type="checkbox" name="demo" data-check="demo1" onclick="product_header(this)">
@@ -103,7 +103,7 @@
               </li>
           </ul>
         </div>
-      </div>
+      </div> -->
   </section>
     <footer class="aui-bar aui-bar-tab" id="footer">
       <div class="aui-bar-tab-item" style="width:70%;">
@@ -114,7 +114,7 @@
             <div class="aui-bar-tab-label aui-text-defalut">全选</div>
         </div>
         <div class="aui-bar-tab-item priceSum" tapmode>
-            <div class="aui-bar-tab-label aui-text-defalut">￥<span id="sum">15687</span></div>
+            <div class="aui-bar-tab-label aui-text-defalut">$<span id="sum">0</span></div>
         </div>
       </div>
         <div class="aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;">立即购买</div>
@@ -125,19 +125,144 @@
 <script type="text/javascript" src="../script/api.js"></script>
 <script type="text/javascript" src="../script/aui-list-swipe.js"></script>
 <script>
-
+var swipe;
     apiready = function() {
         api.parseTapmode();
         var header  = $api.byId('header');
         $api.fixStatusBar(header);
         $api.css(document.body,'height:'+api.frameHeight+'px');
+        getList();
+         swipe = new ListSwipe();
     }
-    var swipe = new ListSwipe();
+
     function SelectList_all(d){
       var a = $api.domAll('input[type="checkbox"]');
         for(var i = 0;i<a.length;i++){
           a[i].checked = d.checked;
       }
+    }
+    function getList() {
+      api.ajax({
+          url: 'http://mv.anhy.net/index.php?dispatch=checkout.cart&appajax=1&is_ajax=1',
+          method: 'get',
+          headers:{
+            Cookie:localStorage.getItem('token')
+          }
+      },function(ret, err){
+          if (ret) {
+              // console.warn( JSON.stringify( ret.result.data.cart.value.total ) );
+              var main = $api.byId('main');
+              $api.text($api.byId('sum'),ret.result.data.cart.value.total);
+              var car_product = ret.result.data.cart_products.value;
+              var aui_card_list = document.createElement('div');
+              aui_card_list.className = 'aui-content aui-card-list';
+              var aui_card_list_header = document.createElement('div');
+              aui_card_list_header.className='aui-card-list-header';
+              var title_card = document.createElement('div');
+              title_card.className = 'title-card';
+              var heder = document.createElement('input');
+              heder.className = 'aui-pull-left aui-radio';
+              heder.type ='checkbox';
+              heder.id= 'heder';
+              heder.name = 'demo';
+              heder.setAttribute('data-check','demo1');
+              heder.onclick = "product_header(this)";
+              var aui_img_round = document.createElement('img');
+              aui_img_round.className = 'aui-img-round aui-padded-l-5';
+              aui_img_round.src = '../image/suipai/bg.jpg';
+              var span = document.createElement('span');
+              span.className = 'aui-padded-l-5 aui-padded-t-5 aui-font-size-14';
+              span.innerText = '店铺名';
+                var aui_card_list_content = document.createElement('div');
+                aui_card_list_content.className="aui-card-list-content";
+                  var aui_list_view = document.createElement('ul');
+                  aui_list_view.className = 'aui-list-view';
+
+              var li_list = '';
+            for(var keys in car_product){
+              var key = car_product[keys];
+                var calss = 'aui-counter-minus aui-disabled';
+                if(key.amount >1){
+                  calss = 'aui-counter-minus';
+                }
+                var li = document.createElement('li');
+                li.className = 'aui-list-view-cell aui-img aui-counter-list';
+                var aui_swipe_handle = document.createElement('div');
+                aui_swipe_handle.className = 'aui-swipe-handle';
+                  var input = document.createElement('input');
+                  input.className='aui-pull-left aui-radio';
+                  input.setAttribute("data-check","demo1");
+                  input.name='demo';
+                  input.type="checkbox";
+                  var img_obj = document.createElement('img');
+                  img_obj.className ='aui-img-object aui-pull-left';
+                  img_obj.src = key.main_pair.detailed.image_path;
+                  var aui_img_body = document.createElement('div');
+                  aui_img_body.className='aui-img-body';
+                  aui_img_body.innerText =   key.product+"   category:"+key.main_category;
+                  var aui_counter_box = document.createElement('div');
+                  aui_counter_box.className = 'aui-counter-box';
+                  var price = document.createElement('div');
+                  price.className = 'aui-pull-left aui-text-danger';
+                  price.innerText = '$ '+key.price;
+                  var aui_pull_right = document.createElement('div');
+                  aui_pull_right.className = 'aui-counter aui-danger aui-pull-right';
+                  var minus = document.createElement('div');
+                  minus.className = calss;
+                  var aui_counter_input = document.createElement('input');
+                  aui_counter_input.className = 'aui-counter-input';
+                  aui_counter_input.type = 'text';
+                  aui_counter_input.value = key.amount;
+                  // console.log(key.amount)
+                  var plus = document.createElement('div');
+                  plus.className = 'aui-counter-plus';
+                  var del = document.createElement('div');
+                  del.className = 'aui-swipe-right-btn aui-bg-danger tapmode';
+                  del.innerText='删除';
+                  del.setAttribute('data-id',keys);
+
+                  aui_pull_right.appendChild(minus)
+                    aui_pull_right.appendChild(aui_counter_input)
+                      aui_pull_right.appendChild(plus)
+                  aui_counter_box.appendChild(price);
+                  aui_counter_box.appendChild(aui_pull_right);
+                  aui_img_body.appendChild(aui_counter_box);
+                  aui_swipe_handle.appendChild(input);
+                  aui_swipe_handle.appendChild(img_obj);
+                  aui_swipe_handle.appendChild(aui_img_body);
+                  li.appendChild(aui_swipe_handle);
+                  li.appendChild(del);
+                  aui_list_view.appendChild(li)
+              }
+              aui_card_list_content.appendChild(aui_list_view);
+              title_card.appendChild(heder);
+              title_card.appendChild(aui_img_round);
+              title_card.appendChild(span);
+              aui_card_list_header.appendChild(title_card);
+              aui_card_list.appendChild(aui_card_list_header);
+              aui_card_list.appendChild(aui_card_list_content);
+              // $api.append(main, html);
+              main.appendChild(aui_card_list);
+              var del_btn = $api.domAll('.aui-swipe-right-btn');
+              for(var q = 0;q<del_btn.length;q++){
+                $api.addEvt(del_btn[q], 'touchstart',delCart,true);
+              }
+              var a =$api.domAll('.aui-counter-plus');
+              for(var i = 0;i<a.length;i++){
+                $api.addEvt(a[i], 'touchstart',plusclick);
+              }
+                  var b = $api.domAll('.aui-counter-minus');
+                  for(var k = 0;k<b.length;k++){
+                    if(!$api.hasCls(b[k],'aui-disabled'))
+                    $api.addEvt(b[k], 'touchstart',minusclick);
+                  }
+
+
+          } else {
+              alert( JSON.stringify( err ) );
+          }
+      });
+
     }
     function product_header(d) {
       var a = $api.domAll('input[data-check="'+$api.attr(d,'data-check')+'"]');
@@ -145,10 +270,31 @@
           a[i].checked = d.checked;
       }
     }
-    var a =$api.domAll('.aui-counter-plus');
-    for(var i = 0;i<a.length;i++){
-      $api.addEvt(a[i], 'touchstart',plusclick);
-    }
+function delCart(){
+
+  var id = this.getAttribute('data-id');
+    console.warn(JSON.stringify(id))
+  console.log('del');
+  var url = 'http://mv.anhy.net/index.php?appajax=1&is_ajax=1&dispatch=checkout.delete&cart_id='+id+'&redirect_mode=cart';
+console.log(url);
+  api.ajax({
+      url: url,
+      method: 'get',
+      // headers:{
+      //   Cookie:localStorage.getItem('token')
+      // }
+  },function(ret, err){
+      if (ret) {
+          console.warn( JSON.stringify( ret ) );
+            var main = $api.byId('main');
+            main.innerHTML = '';
+            getList();
+      } else {
+          alert( JSON.stringify( err ) );
+      }
+  });
+
+}
 function minusclick() {
   var par = this.parentNode;
   var vl = $api.val($api.dom(par,'.aui-counter-input'));

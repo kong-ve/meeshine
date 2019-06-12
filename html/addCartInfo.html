@@ -19,9 +19,10 @@
         <img src="../image/suipai/bg.jpg" onerror="this.src = '../image/suipai/bg.jpg'"/>
       </div>
       <div class="message-info">
-        <div class="price-sum">￥ <span>1325</span></div>
+        <div class="price-title"></div>
+        <div class="price-sum">￥ <span>0</span></div>
         <div class="price-other">
-          <div class="alsum">库存<span>12314</span>件</div>
+          <div class="alsum">库存<span>0</span>件</div>
           <div class="product-list">已选：</div>
         </div>
       </div>
@@ -36,10 +37,10 @@
         <div class="select-list">
           <div class="title">颜色分类</div>
           <div class="select-list-other" id="colorSelect">
-            <div class="aui-label"><img width="20" src="../image/suipai/bg.jpg"/>  <span>黑色【通信款】</span></div>
+            <!-- <div class="aui-label"><img width="20" src="../image/suipai/bg.jpg"/>  <span>黑色【通信款】</span></div>
             <div class="aui-label">list</div>
             <div class="aui-label">or</div>
-            <div class="aui-label">change</div>
+            <div class="aui-label">change</div> -->
           </div>
         </div>
         <div class="select-list aui-hide">
@@ -88,44 +89,31 @@
                 <i class="aui-iconfont aui-icon-cart aui-text-warning"></i>
                 <div class="aui-bar-tab-label aui-text-warning">购物车</div>
             </div> -->
-      <div class="cartbtn aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;">加入购物车</div>
+      <div class="cartbtn aui-bar-tab-item aui-bg-warning aui-text-white" tapmode style="width: auto;" onclick="addCart()">加入购物车</div>
             <div class="buybtn aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;" onclick="order()">立即购买</div>
         </footer>
   </body>
 </html>
 <script src="../script/api.js"></script>
 <script src="../script/home.js"></script>
+<script src="../script/aui-toast.js" type="text/javascript"></script>
+<script src="../script/jquery-3.2.1.js " charset="utf-8"></script>
 <script>
+var toast = new auiToast({});
 var colorL =   document.getElementById('colorSelect').querySelectorAll('.aui-label');
 var select_id = 0;
-for(var el = 0;el<colorL.length;el++){
-  console.log(JSON.stringify(colorL[el]));
-  $api.addEvt(colorL[el],'click', function(){
-    for (var i =0;i<colorL.length;i++){
-      if(colorL[i] == this){
-        select_id = i;
-        // photoBrowser.setIndex({
-        //   index:i
-        // })
-        $api.dom($api.dom($api.byId('header'),'.pic'),'img').src = '../images/thumbs/1-'+(i+1)+'.jpg';
-
-      }
-    }
-      var list = $api.dom($api.byId('colorSelect'),'.aui-active');
-          $api.removeCls(list,'aui-active');
-      $api.addCls(this, 'aui-active');
-      var product = $api.dom(document, '.product-list');
-      var txt = '已选:';
-      txt +=$api.text(this);
-      console.log(txt)
-      $api.text(product,txt);
-    });
-}
+var category_ids_img = [];
+var product = {};
+var token = localStorage.getItem('token');
 // baguetteBox.run('.baguetteBoxOne');
 var photoBrowser;
 apiready= function() {
   api.parseTapmode();
   // photoBrowser = api.require('photoBrowser')
+  toast.loading({
+    title:"加载中",
+    duration:2000
+});
   var params = api.pageParam;
   var footer = 　$api.byId('footer');
       $api.fixTabBar(footer);
@@ -137,12 +125,59 @@ apiready= function() {
     }
 
 api.ajax({
-  url:'http://mv.anhy.net/index.php?dispatch=products.view&product_id=765&is_ajax=1',
+  url:'http://mv.anhy.net/index.php?dispatch=products.view&product_id=472&is_ajax=1&appajax=1',
   method:'get',
 },function (ret,err) {
-  alert(JSON.stringify(ret));
-  console.error(err)
+  // alert(JSON.stringify(ret));
+  // console.error(JSON.stringify(err))
+  $api.text($api.dom('.price-title'),ret.result.data.product.value.product)
+    $api.text($api.dom($api.dom('.price-sum'),'span'),ret.result.data.product.value.price);
+    $api.text($api.dom($api.dom('.alsum'),'span'),ret.result.data.product.value.amount);
+
+    var category = ret.result.data.product.value.category_ids;
+    category.map(function(i,v){
+      var l = $api.dom('.select-list-other');
+      $api.html(l, '');
+
+      var html = '<div class="aui-label" data-id="'+i+'">'+i+'</div>';
+      $api.append(l,html);
+    });
+    category_ids_img.push(ret.result.data.provider_meta_data.value.all.image);
+    var img_list = ret.result.data.product.value.image_pairs;
+    // console.error(JSON.stringify(img_list))
+    for(var key in img_list){
+
+      category_ids_img.push(img_list[key].detailed.http_image_path);
+    }
+    colorL =   document.getElementById('colorSelect').querySelectorAll('.aui-label');
+    for(var el = 0;el<colorL.length;el++){
+      console.log(JSON.stringify(colorL[el]));
+      $api.addEvt(colorL[el],'click', function(){
+        for (var i =0;i<colorL.length;i++){
+          if(colorL[i] == this){
+            select_id = i;
+            // photoBrowser.setIndex({
+            //   index:i
+            // })
+            $api.dom($api.dom($api.byId('header'),'.pic'),'img').src = category_ids_img[i];
+
+          }
+        }
+          var list = $api.dom($api.byId('colorSelect'),'.aui-active');
+              $api.removeCls(list,'aui-active');
+          $api.addCls(this, 'aui-active');
+          var product = $api.dom(document, '.product-list');
+          var txt = '已选:';
+          txt +=$api.text(this);
+          console.log(txt)
+          $api.text(product,txt);
+        });
+    }
+    $api.dom('.aui-label[data-id="'+ret.result.data.product.value.main_category+'"]').click();
+    product = ret.result.data.product.value;
+    toast.hide();
 })
+
 }
 var num = $api.val($api.byId('num'));
 if(num == 1){
@@ -155,6 +190,10 @@ function addNum() {
     $api.removeCls($api.dom('.aui-icon-minus'), 'aui-disabled');
     $api.addEvt($api.dom('.minus'), 'touchstart',removeNum);
   }
+  else if(vl == 4){
+    $api.addCls($api.dom('.aui-icon-plus'), 'aui-disabled');
+    $api.rmEvt($api.dom('.plus'), 'touchstart',addNum);
+  }
     $api.val($api.byId('num'),Number(vl)+1);
 }
 function removeNum() {
@@ -163,10 +202,28 @@ function removeNum() {
 
         $api.addCls($api.dom('.aui-icon-minus'), 'aui-disabled');
           $api.rmEvt($api.dom('.minus'), 'touchstart',removeNum);
+    } else if(vl == 5){
+      $api.removeCls($api.dom('.aui-icon-plus'), 'aui-disabled');
+      $api.addEvt($api.dom('.plus'), 'touchstart',addNum);
     }
       $api.val($api.byId('num'),Number(vl)-1);
 }
 function order() {
+  var list = {
+    result_ids: 'call_request_1677',
+return_url: 'index.php?dispatch=call_requests.request&product_id=1677&obj_prefix=',
+call_data:{
+  product_id: 1677,
+name: 'a',
+phone: '+1(111)111-1111',
+email: '569214475@qq.com',
+},
+product_data:{1677:{amount: 1,product_id:1677}},
+is_ajax: 1,
+dispatch:{'call_requests.request': ''},
+security_hash: ''
+}
+console.log(JSON.stringify(list))
   api.openWin({
       name: 'addOrder',
       url: './addOrder.html',
@@ -176,6 +233,79 @@ function order() {
       }
   });
 }
+function addCart() {
+
+  var list = {
+    result_ids: 'cart_status*,wish_list*,checkout*,account_info*',
+redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
+    product_data:{},
+    additional_info:{},
+    appearance:{
+    show_price_values:1,
+    show_price:1,
+    show_list_discount:1,
+    show_product_options:1,
+  details_page: 1,
+    dont_show_points: '',
+    show_sku: 1,
+    show_product_amount: 1,
+    show_qty: 1,
+    capture_options_vs_qty: '',
+    show_add_to_cart: 1,
+    show_list_buttons: 1,
+    but_role: 'big',
+    quick_view: ''
+  },
+  full_render: 'Y',
+  is_ajax: 1,
+  security_hash:'',
+  "dispatch":{
+
+  }
+ };
+ var checkoutId= 'checkout.add..'+product.product_id;
+ list.dispatch[checkoutId]="";
+  list.product_data[product.product_id] = {};
+  list.product_data[product.product_id]['product_id'] = product.product_id;
+
+  list.product_data[product.product_id]['amount'] = $api.val($api.byId('num'));
+
+  var info = product.detailed_params;
+
+  for(var key in info){
+    if(info[key] != true || false){
+      list.additional_info[key] = info[key];
+
+    }else{
+      list.additional_info[key] = info[key] == true ? 1: '';
+    }
+  }
+  // console.log(JSON.stringify(list));
+  $.ajax({
+    url:'http://mv.anhy.net/index.php?appajax=1',
+    method:'post',
+    data:list,
+    // headers:{
+      // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    //   'Cookie':token
+    // }
+  success:function(ret) {
+    // alert(JSON.stringify(ret))
+    console.log(JSON.stringify(ret))
+    toast.success({
+      title:ret.result.data,
+       duration:2000
+    });
+    setTimeout(function(){closeFrame()},2000);
+  },error:function (err) {
+      console.error(JSON.stringify(err))
+      toast.fail({
+        title:err,
+         duration:2000
+      });
+  }
+})
+}
 function pic_all() {
   // $api.removeCls($api.byId('picAll'), 'aui-hide');
   // document.getElementById('picAll').querySelectorAll('a')[select_id].click();
@@ -183,7 +313,8 @@ api.openWin({
     name: 'pciAll',
     url: './pic_All.html',
     pageParam: {
-        len: select_id
+        len: select_id,
+        imgList:category_ids_img
     }
 });
 
