@@ -79,6 +79,7 @@
 </body>
 <script type="text/javascript" src="../script/api.js"></script>
 <script src="../script/aui-toast.js" charset="utf-8"></script>
+<script src="../script/jquery-3.2.1.js" charset="utf-8"></script>
 <script type="text/javascript">
     var toast = new auiToast();
     apiready = function() {
@@ -88,14 +89,14 @@
     function register() {
         var dataList = {
             ship_to_another: 1,
-            // user_data: {
-            //     'firstname': '',
-            //     'lastname': '',
-            //     'phone': '',
-            //   'email': 'q@1.com',
-            //     'password1': 12,
-            //     'password2': 12,
-            // },
+            user_data: {
+                'firstname': '',
+                'lastname': '',
+                'phone': '',
+              'email': 'q@1.com',
+                'password1': 12,
+                'password2': 12,
+            },
             'user_data[firstname]':'',
               'user_data[lastname]':'',
                 'user_data[phone]':'',
@@ -110,15 +111,17 @@
             }
         };
 
-        // dataList.user_data.email = $api.byId('email').value;
+        dataList['user_data[email]'] = $api.byId('email').value;
+        dataList['user_data']['email'] = $api.byId('email').value;
             // dataList.userSex = $api.val($api.byId('userSex'));
-        // dataList.user_data.password1 = $api.val($api.byId('password'));
-        // dataList.user_data.password2 = $api.val($api.byId('password'));
+        dataList['user_data[password1]']= $api.val($api.byId('password'));
+          dataList['user_data']['password1'] = $api.val($api.byId('password'));
+        dataList['user_data[password2]'] = $api.val($api.byId('password'));
+          dataList['user_data']['password2'] = $api.val($api.byId('password'));
 
         console.log(JSON.stringify(dataList))
             // var data_list = JSON.stringify(dataList)
         api.ajax({
-          dataType:'json',
             //http: mv.anhy.net/index.php?appajax=1&dispatch=profiles.update&is_ajax=1
                 url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&is_ajax=1&appajax=1',
             method: 'post',
@@ -142,11 +145,12 @@
                     title: ret.msg,
                     duration: 2000
                 });
+                  api.closeWin();
               }
                 // localStorage.setItem('userId',ret.user_id)
                 // localStorage.setItem('token',ret.token)
 
-                api.closeWin();
+
 
             } else {
                 console.error(JSON.stringify(err))
