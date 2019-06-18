@@ -60,12 +60,14 @@ function myInfoMes() {
               localStorage.setItem('userMesg', '');
               return ;
             }
-            if (ret) {
+            if (ret.result) {
                 var list = ret.result.data.user_data.value;
                 console.log(JSON.stringify(list))
                 localStorage.setItem('userMesg', JSON.stringify(list));
                   // localStorage.setItem('userId', ret.id);
 
+              }else{
+                  localStorage.setItem('userMesg', '');
               }
         })
     }
@@ -144,7 +146,63 @@ function myInfoMes() {
         });
       }
     }
+function randomChangeBtn(obj, url, index) {
+  var ob = $api.byId(obj);
+  var frames = api.frames();
+  for (var i = 0; i < frames.length; i++) {
+    if(frames[i].name == 'home'){
+      api.execScript({
+          frameName: frames[i].name,
+          script: 'stopMusic();'
+      });
 
+    }
+      api.setFrameAttr({
+          name: frames[i].name,
+          hidden: true
+      })
+  }
+  var footer = 　$api.byId('footer')
+  var body_h = api.winHeight;
+  var footer_h = $api.offset(footer).h;
+  var footerAct = $api.dom(footer, '.aui-bar-tab-item.aui-active');
+  $api.removeCls(footerAct, 'aui-active');
+  $api.addCls(ob, 'aui-active');
+  api.openFrame({
+      name: index,
+      url: url,
+      rect: {
+          x: 0,
+          y: 0,
+          w: 'auto',
+          h: body_h - footer_h
+      },
+      pageParam: {
+          // top: headerPos.h,
+          footer: body_h - footer_h,
+          foot: footer_h,
+      },
+      bounces: false,
+      bgColor: 'rgba(0,0,0,0.3)',
+      vScrollBarEnabled: false,
+      hScrollBarEnabled: false,
+      scrollEnabled: index == 'myinfo' ? true : false
+
+  });
+  setTimeout(function() {
+      var frames = api.frames();
+      // for (var i = 0; i < frames.length; i++) {
+      // console.log(window.childNode)
+      api.sendFrameToBack({
+          from: index
+      });
+      api.setFrameAttr({
+              name: index,
+              hidden: false
+          })
+          // }
+  }, 1000)
+}
     function randomSwitchBtn(obj, url, index) {
         // $api.text($api.byId('aui-header'), name);
         if (index != 'home') {

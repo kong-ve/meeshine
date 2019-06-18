@@ -170,6 +170,9 @@
         var dataList = {
             return_url: 'index.php',
             redirect_url: 'index.php?dispatch=auth.login_form&return_url=index.php',
+            dispatch:{
+              'auth.login':''
+            }
         };
         dataList.user_login = $api.val($api.byId('userName'));
         // dataList.verifyCode = $api.val($api.byId('codeImg'));

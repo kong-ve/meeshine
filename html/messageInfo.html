@@ -32,8 +32,8 @@
                 </div>
             </div>
         </section>
-        <ul class="aui-list aui-media-list">
-            <li class="aui-list-item aui-list-item-middle">
+        <ul class="aui-list aui-media-list" id="message_list">
+            <!-- <li class="aui-list-item aui-list-item-middle">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-media" style="width: 3rem;">
                         <img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">
@@ -58,7 +58,7 @@
                         APICloud AUI
                     </div>
                 </div>
-            </li>
+            </li> -->
         </ul>
   </body>
 </html>
@@ -68,7 +68,47 @@
     api.parseTapmode();
     var header = $api.byId('header');
     $api.fixStatusBar(header);
+getList()
 
+  }
+  function getList() {
+    api.ajax({
+        url: 'http://mv.anhy.net/index.php?dispatch=vendor_communication.threads&is_ajax=1&appajax=1',
+        method: 'get',
+    },function(ret, err){
+        if (ret) {
+            console.log( JSON.stringify( ret ) );
+            var html = '';
+            if(ret.result){
+              if(ret.result.data.threads.value.length>0){
+                var data = ret.result.data.threads.value;
+                data.map(function(key,index) {
+                  html+='<li class="aui-list-item aui-list-item-middle">'+
+                      '<div class="aui-media-list-item-inner">'+
+                          '<div class="aui-list-item-media" style="width: 3rem;">'+
+                              '<img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">'+
+                          '</div>'+
+                          '<div class="aui-list-item-inner ">'+
+                              '<div class="aui-list-item-text">'+
+                                  '<div class="aui-list-item-title aui-font-size-14">'+key.company+'</div>'+
+                                  '<div class="aui-list-item-right">'+new Date(key.last_updated*1000).toLocaleString()+'</div>'+
+                              '</div>'+
+                              '<div class="aui-list-item-text">'+
+                                  key.last_message+
+                              '</div>'+
+                          '</div>'+
+                      '</div>'+
+                  '</li>';
+                })
+                console.log(html)
+                $api.append($api.byId('message_list'), html);
+
+              }
+            }
+        } else {
+            alert( JSON.stringify( err ) );
+        }
+    });
 
   }
 </script>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>AUI快速完成布局</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+        .text-white {
+            color: #ffffff !important;
+        }
+        .aui-grid [class*=aui-col-] {
+            padding: 0.75rem 0;
+        }
+        body{
+          overflow: auto;
+        }
+    </style>
+</head>
+<body>
+  <header class="aui-bar aui-bar-nav aui-bg-white" id="aui-header">
+      <a class="aui-btn aui-pull-left" tapmode onclick="closeWin()">
+          <span class="aui-iconfont aui-icon-left"></span>
+      </a>
+      <div class="aui-title">Settings</div>
+  </header>
+    <!-- 顶部 -->
+    <section class="aui-content">
+
+        <ul class="aui-list aui-list-in">
+
+            <li class="aui-list-item" onclick="LoginOut()">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-title">LoginOut</div>
+                </div>
+            </li>
+        </ul>
+    </section>
+
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script src="../script/aui-toast.js" charset="utf-8"></script>
+<script src="../script/my.js"></script>
+<script type="text/javascript">
+  var toast = new auiToast({});
+    apiready = function () {
+      api.parseTapmode();
+      $api.fixStatusBar($api.byId('aui-header'));
+
+    }
+    function closeWin() {
+      api.closeWin()
+    }
+</script>
+</html>

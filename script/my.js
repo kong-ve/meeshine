@@ -1,34 +1,34 @@
-function bigBg() {
-    document.addEventListener('touchstart', function(event) {
-        yx = event.changedTouches[0].clientY;
-    })
-    document.addEventListener('touchmove', function(event) {
-        // event.preventDefault();
-        if (touchMove == false) {
-            var height = document.getElementById('main').querySelector('.bg').querySelector('img').height;
-            if (yx == 0) {
-                yx = event.changedTouches[0].clientY;
-                var y = height;
-            } else {
-                if (yx < event.changedTouches[0].clientY) {
-                    var y = height + 1;
-                    document.getElementById('main').querySelector('.bg').querySelector('img').style.height = (y) + 'px';
-                }
-            }
-        }
-    })
-    document.addEventListener('touchend', function(event) {
-        if (touchMove == false) {
-            if (yx < event.changedTouches[0].clientY) {
-                var height = document.getElementById('main').querySelector('.bg').querySelector('img').height;
-                var y = height + 1;
-                document.getElementById('main').querySelector('.bg').querySelector('img').style.height = (y) + 'px';
-            }
-            document.getElementById('main').querySelector('.bg').querySelector('img').style.height = '';
-        }
-    })
-}
-
+// function bigBg() {
+//     document.addEventListener('touchstart', function(event) {
+//         yx = event.changedTouches[0].clientY;
+//     })
+//     document.addEventListener('touchmove', function(event) {
+//         // event.preventDefault();
+//         if (touchMove == false) {
+//             var height = document.getElementById('main').querySelector('.bg').querySelector('img').height;
+//             if (yx == 0) {
+//                 yx = event.changedTouches[0].clientY;
+//                 var y = height;
+//             } else {
+//                 if (yx < event.changedTouches[0].clientY) {
+//                     var y = height + 1;
+//                     document.getElementById('main').querySelector('.bg').querySelector('img').style.height = (y) + 'px';
+//                 }
+//             }
+//         }
+//     })
+//     document.addEventListener('touchend', function(event) {
+//         if (touchMove == false) {
+//             if (yx < event.changedTouches[0].clientY) {
+//                 var height = document.getElementById('main').querySelector('.bg').querySelector('img').height;
+//                 var y = height + 1;
+//                 document.getElementById('main').querySelector('.bg').querySelector('img').style.height = (y) + 'px';
+//             }
+//             document.getElementById('main').querySelector('.bg').querySelector('img').style.height = '';
+//         }
+//     })
+// }
+//
 function LoginOut() {
     api.ajax(
       {
@@ -55,10 +55,10 @@ function LoginOut() {
 
 }
 
-function EditInfo() {
+function OpenInfo() {
     api.openWin({
-        name: 'EditInfo',
-        url: './information_win.html',
+        name: 'setion',
+        url: './setion_frm.html',
         pageParam:{
           frame:api.frameName
         }
