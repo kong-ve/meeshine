@@ -106,13 +106,13 @@
       <div class="aui-list aui-media-list aui-list-noborder aui-bg-info user-info" id="header">
           <div class="aui-list-item aui-list-item-middle">
               <div class="aui-media-list-item-inner ">
-                  <div class="aui-list-item-media" style="width:3rem;">
+                  <div id="logo_my" class="aui-list-item-media" style="width:3rem;">
                       <img src="../image/demo1.png" class="aui-img-round" >
                   </div>
                   <div class="aui-list-item-inner">
-                      <div class="aui-list-item-text text-white aui-font-size-18">38dd4ef6d</div>
+                      <div class="aui-list-item-text text-white aui-font-size-18" id="nickname">38dd4ef6d</div>
                       <div class="aui-list-item-text text-white">
-                         <div><i class="aui-iconfont aui-icon-mobile aui-font-size-14"></i>152****0989</div>
+                         <div id="number"><i class="aui-iconfont aui-icon-mobile aui-font-size-14" ></i>152****0989</div>
                       </div>
                   </div>
               </div>
@@ -130,7 +130,7 @@
             <div class="aui-list-item-input">Notification</div>
         </div>
     </li>
-    <li class="aui-list-item" tapmode>
+    <li class="aui-list-item" tapmode onclick="OpenBtn('./order_win.html','OrderHistory')">
         <div class="aui-list-item-inner">
             <div class="aui-list-item-label">
               <i class="iconfont icon-posorderhistory"></i>
@@ -203,7 +203,20 @@
     apiready = function () {
       api.parseTapmode();
     $api.byId('header').style.paddingTop = api.safeArea.top+'px';
+    api.execScript({
+        frameName: 'home',
+        script: 'myInfoMes();'
+    });
+
       userInfo();
+    }
+    
+    function OpenBtn(address,name,message) {
+      api.openWin({
+          name: name,
+          url: address,
+      });
+
     }
 </script>
 </html>

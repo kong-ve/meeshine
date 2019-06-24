@@ -90,7 +90,8 @@ var data;
               body:JSON.stringify(d),
           },
           headers:{
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
           }
       },function(ret, err){
         console.log( JSON.stringify( ret ) );

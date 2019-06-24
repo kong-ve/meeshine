@@ -20,9 +20,9 @@ function IS_star(videoId) {
                 video_id: videoId
             },
         },
-        headers: {
-            'Content-Type': 'application/json',
-            // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
+        headers:{
+          Cookie:localStorage.getItem('token'),
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
         },
     }, function(ret, err) {
 
@@ -101,7 +101,7 @@ function selectVideo(str_sel) {
 
 }
 
-function GetVideoList(List, container, swipe, foot_h,destroy) {
+function GetVideoList(List, container, swipe, foot_h, destroy) {
 
     List.map(function(v, i) {
 
@@ -197,185 +197,185 @@ function GetVideoList(List, container, swipe, foot_h,destroy) {
         //         '<span class="icon-number-top">15</span>'+
         //     '</div>'+
         // '</div>';
-        if(destroy){
-        document.querySelector(container).querySelector('.swipe').appendChild(el);
-      }else{
-        container.querySelector(swipe).appendChild(el);
-      }
+        if (destroy) {
+            document.querySelector(container).querySelector('.swipe').appendChild(el);
+        } else {
+            container.querySelector(swipe).appendChild(el);
+        }
     })
 
     pages = document.querySelectorAll('.swipe-box');
     console.warn(pages.length);
 
-    if(!destroy){
-    slip = Slip(container, 'y').webapp(pages).start(function(event) {
-        page = this.page;
-        // 事件对象
-        moveIsTrue = false;
-        // 当前坐标值
+    if (!destroy) {
+        slip = Slip(container, 'y').webapp(pages).start(function(event) {
+            page = this.page;
+            // 事件对象
+            moveIsTrue = false;
+            // 当前坐标值
 
-    }).move(function(event) {
-        moveIsTrue = true;
-        document.getElementById('userBtn').style.display = 'none';
-        $api.removeCls($api.dom(document.getElementById('userBtn'), '.add-user'), 'showSuccess')
-        $api.removeAttr($api.dom(document.getElementById('userBtn'), '.add-user'), 'hidden')
-        document.getElementById('likeBtn').style.display = 'none';
-        $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'), 'style');
-        document.getElementById('shareBtn').style.display = 'none';
-        document.getElementById('commitBtn').style.display = 'none';
-        document.getElementById('shopcartBtn').style.display = 'none';
-        // document.getElementById('sellBtn').style.display = 'none';
-    }).end(function() {
-        if (this.finger == null) {
-            if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
-                if (document.getElementById(userData[this.page].id).paused) {
-                    document.getElementById(userData[this.page].id).play();
-                    document.getElementById(userData[this.page].id).muted = false;
+        }).move(function(event) {
+            moveIsTrue = true;
+            document.getElementById('userBtn').style.display = 'none';
+            $api.removeCls($api.dom(document.getElementById('userBtn'), '.add-user'), 'showSuccess')
+            $api.removeAttr($api.dom(document.getElementById('userBtn'), '.add-user'), 'hidden')
+            document.getElementById('likeBtn').style.display = 'none';
+            $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'), 'style');
+            document.getElementById('shareBtn').style.display = 'none';
+            document.getElementById('commitBtn').style.display = 'none';
+            document.getElementById('shopcartBtn').style.display = 'none';
+            // document.getElementById('sellBtn').style.display = 'none';
+        }).end(function() {
+            if (this.finger == null) {
+                if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
+                    if (document.getElementById(userData[this.page].id).paused) {
+                        document.getElementById(userData[this.page].id).play();
+                        document.getElementById(userData[this.page].id).muted = false;
 
-                    $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
-                    $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
-                } else {
-                    document.getElementById(userData[this.page].id).pause();
-                    $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
-                    $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                        $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                        $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+                    } else {
+                        document.getElementById(userData[this.page].id).pause();
+                        $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+                        $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                    }
+                    return false;
                 }
+            } else {
+                // console.log(JSON.stringify(this))
+                if (this.page == (this.pageNum - 1) && moveIsTrue) {
+                    p++;
+                    userVideo(api.pageParam.foot, $api.byId('container'), p);
+                    console.log('userVideo')
+                } else {
+                    $api.byId(userData[page].id).pause();
+                    page = this.page;
+
+                    if (document.getElementById(userData[this.page].id).muted == true) {
+                        document.getElementById(userData[this.page].id).currentTime = 0;
+                        document.getElementById(userData[this.page].id).muted = false;
+                    }
+                    $api.byId(userData[this.page].id).play();
+                    pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
+
+                }
+                if (moveIsTrue && (page + 1) == userData.length) {
+                    IS_star(userData[this.page].id);
+                    document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
+                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
+                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
+                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
+                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+
+                }
+
+            }
+            setTimeout(function() {
+                document.getElementById('userBtn').style.display = 'block';
+                document.getElementById('likeBtn').style.display = 'block';
+                document.getElementById('shareBtn').style.display = 'block';
+                document.getElementById('commitBtn').style.display = 'block';
+                document.getElementById('shopcartBtn').style.display = 'block';
+                // document.getElementById('sellBtn').style.display = 'block';
+            }, 500)
+        });
+        Slip(container, "x").slider().end(function() {
+            if (moveIsTrue == true) {
                 return false;
             }
-        } else {
-          console.log(JSON.stringify(this))
-            if (this.page   == (this.pageNum-1) && moveIsTrue) {
-                p++;
-                userVideo(api.pageParam.foot, $api.byId('container'), p);
-                console.log('userVideo')
+            if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1) {
+                LefePaneOpen();
+            }
+            if (this.orient.indexOf('left') != -1 && this.orient.indexOf('right') == -1) {
+                RightPaneOpen()
+            }
+        });
+    } else {
+        // console.log('start')
+        slip.destroy();
+        slip = Slip(document.querySelector(container), 'y').webapp(pages).start(function(event) {
+            page = this.page;
+            // 事件对象
+            moveIsTrue = false;
+            // 当前坐标值
+        }).move(function(event) {
+            moveIsTrue = true;
+            document.getElementById('userBtn').style.display = 'none';
+            $api.removeCls($api.dom(document.getElementById('userBtn'), '.add-user'), 'showSuccess')
+            $api.removeAttr($api.dom(document.getElementById('userBtn'), '.add-user'), 'hidden')
+            document.getElementById('likeBtn').style.display = 'none';
+            $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'), 'style');
+            document.getElementById('shareBtn').style.display = 'none';
+            document.getElementById('commitBtn').style.display = 'none';
+            document.getElementById('shopcartBtn').style.display = 'none';
+            // document.getElementById('sellBtn').style.display = 'none';
+        }).end(function() {
+            if (this.finger == null) {
+                if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
+                    if (document.getElementById(userData[this.page].id).paused) {
+                        document.getElementById(userData[this.page].id).play();
+                        document.getElementById(userData[this.page].id).muted = false;
+
+                        $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                        $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+                    } else {
+                        document.getElementById(userData[this.page].id).pause();
+                        $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+                        $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                    }
+                    return false;
+                }
             } else {
-                $api.byId(userData[page].id).pause();
-                page = this.page;
-
-                if (document.getElementById(userData[this.page].id).muted == true) {
-                    document.getElementById(userData[this.page].id).currentTime = 0;
-                    document.getElementById(userData[this.page].id).muted = false;
-                }
-                $api.byId(userData[this.page].id).play();
-                pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
-
-            }
-            if (moveIsTrue && (page + 1) == userData.length) {
-                IS_star(userData[this.page].id);
-                document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
-                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
-                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
-                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
-                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
-
-            }
-
-        }
-        setTimeout(function() {
-            document.getElementById('userBtn').style.display = 'block';
-            document.getElementById('likeBtn').style.display = 'block';
-            document.getElementById('shareBtn').style.display = 'block';
-            document.getElementById('commitBtn').style.display = 'block';
-            document.getElementById('shopcartBtn').style.display = 'block';
-            // document.getElementById('sellBtn').style.display = 'block';
-        }, 500)
-    });
-    Slip(container, "x").slider().end(function() {
-        if (moveIsTrue == true) {
-            return false;
-        }
-        if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1) {
-            LefePaneOpen();
-        }
-        if (this.orient.indexOf('left') != -1 && this.orient.indexOf('right') == -1) {
-            RightPaneOpen()
-        }
-    });
-  }else{
-    console.log('start')
-    slip.destroy();
-    slip = Slip(document.querySelector(container), 'y').webapp(pages).start(function(event) {
-        page = this.page;
-        // 事件对象
-        moveIsTrue = false;
-        // 当前坐标值
-    }).move(function(event) {
-        moveIsTrue = true;
-        document.getElementById('userBtn').style.display = 'none';
-        $api.removeCls($api.dom(document.getElementById('userBtn'), '.add-user'), 'showSuccess')
-        $api.removeAttr($api.dom(document.getElementById('userBtn'), '.add-user'), 'hidden')
-        document.getElementById('likeBtn').style.display = 'none';
-        $api.removeAttr($api.dom(document.getElementById('likeBtn'), '.icon-heart'), 'style');
-        document.getElementById('shareBtn').style.display = 'none';
-        document.getElementById('commitBtn').style.display = 'none';
-        document.getElementById('shopcartBtn').style.display = 'none';
-        // document.getElementById('sellBtn').style.display = 'none';
-    }).end(function() {
-        if (this.finger == null) {
-            if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
-                if (document.getElementById(userData[this.page].id).paused) {
-                    document.getElementById(userData[this.page].id).play();
-                    document.getElementById(userData[this.page].id).muted = false;
-
-                    $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
-                    $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
+                // console.log(JSON.stringify(this))
+                if (this.page == (this.pageNum - 1) && moveIsTrue) {
+                    p++;
+                    userVideo(api.pageParam.foot, $api.byId('slip'), p);
+                    console.log('add')
                 } else {
-                    document.getElementById(userData[this.page].id).pause();
-                    $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
-                    $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
+                    $api.byId(userData[page].id).pause();
+                    page = this.page;
+
+                    if (document.getElementById(userData[this.page].id).muted == true) {
+                        document.getElementById(userData[this.page].id).currentTime = 0;
+                        document.getElementById(userData[this.page].id).muted = false;
+                    }
+                    $api.byId(userData[this.page].id).play();
+                    pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
+
                 }
+                if (moveIsTrue && (page + 1) == userData.length) {
+                    IS_star(userData[this.page].id);
+                    document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
+                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
+                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
+                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
+                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+
+                }
+
+            }
+            setTimeout(function() {
+                document.getElementById('userBtn').style.display = 'block';
+                document.getElementById('likeBtn').style.display = 'block';
+                document.getElementById('shareBtn').style.display = 'block';
+                document.getElementById('commitBtn').style.display = 'block';
+                document.getElementById('shopcartBtn').style.display = 'block';
+                // document.getElementById('sellBtn').style.display = 'block';
+            }, 500)
+        });
+        Slip(document.querySelector(container), "x").slider().end(function() {
+            if (moveIsTrue == true) {
                 return false;
             }
-        } else {
-          console.log(JSON.stringify(this))
-            if (this.page  == (this.pageNum-1) && moveIsTrue) {
-                p++;
-                userVideo(api.pageParam.foot, $api.byId('slip'), p);
-                console.log('add')
-            } else {
-                $api.byId(userData[page].id).pause();
-                page = this.page;
-
-                if (document.getElementById(userData[this.page].id).muted == true) {
-                    document.getElementById(userData[this.page].id).currentTime = 0;
-                    document.getElementById(userData[this.page].id).muted = false;
-                }
-                $api.byId(userData[this.page].id).play();
-                pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
-
+            if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1) {
+                LefePaneOpen();
             }
-            if (moveIsTrue && (page + 1) == userData.length) {
-                IS_star(userData[this.page].id);
-                document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
-                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
-                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
-                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
-                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
-
+            if (this.orient.indexOf('left') != -1 && this.orient.indexOf('right') == -1) {
+                RightPaneOpen()
             }
+        });
 
-        }
-        setTimeout(function() {
-            document.getElementById('userBtn').style.display = 'block';
-            document.getElementById('likeBtn').style.display = 'block';
-            document.getElementById('shareBtn').style.display = 'block';
-            document.getElementById('commitBtn').style.display = 'block';
-            document.getElementById('shopcartBtn').style.display = 'block';
-            // document.getElementById('sellBtn').style.display = 'block';
-        }, 500)
-    });
-    Slip(document.querySelector(container), "x").slider().end(function() {
-        if (moveIsTrue == true) {
-            return false;
-        }
-        if (this.orient.indexOf('right') != -1 && this.orient.indexOf('left') == -1) {
-            LefePaneOpen();
-        }
-        if (this.orient.indexOf('left') != -1 && this.orient.indexOf('right') == -1) {
-            RightPaneOpen()
-        }
-    });
-
-  }
+    }
     toast.hide();
 }
 
@@ -674,6 +674,7 @@ function add_star(id) {
         },
         headers: {
             'Content-Type': 'application/json',
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
             // "Authorization":"Basic YWRtaW5AYWRtaW4uY29tOjJlZWJjZDljNGZhOWU4MzZmZjJmZWM1ZDdkZDBmMzlj",
         },
     }, function(ret, err) {
@@ -700,16 +701,20 @@ function add_star(id) {
 }
 
 function userVideo(footer_h, container, l) {
-  // console.log(l)
-  toast.loading({
-    title:"加载中",
-    duration:2000
-})
+    // console.log(l)
+    toast.loading({
+        title: "加载中",
+        duration: 2000
+    })
     api.ajax({
         url: 'http://mv.anhy.net/api.php?_d=VideoContent&page=' + (l + 1),
         method: 'get',
+        headers:{
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+        }
     }, function(ret, err) {
-        // alert(JSON.stringify(ret));
+        console.warn(JSON.stringify(ret));
+        console.error(JSON.stringify(err));
         if (err || ret.length < 1) {
 
             if (userData[0]) {
@@ -717,7 +722,7 @@ function userVideo(footer_h, container, l) {
 
                 var list = [{
                     nickname: 1,
-                    number: Math.random()*50000,
+                    number: Math.random() * 50000,
                     id: new Date().getTime() + 6,
                     imageUrl: '',
                     star_sum: 0,
@@ -726,19 +731,19 @@ function userVideo(footer_h, container, l) {
 
                     goods_video_url: 'http://www.verzweiflung.cn/1.mp4',
                 }];
-                    for (var i = 0; i < list.length; i++) {
-                        userData.push(list[i]);
-                    }
-                    console.log('add');
-                    GetVideoList(list, '#slip', '.swipe', footer_h,true);
-                    $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', userData[page + 1].imgUrl || '../image/suipai/bg.jpg');
-                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[page + 1].star_sum);
-                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
-                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
-                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
-                      document.getElementById(list[0].id).play();
-                    slip.jump(page+1);
-                    page = page+1;
+                for (var i = 0; i < list.length; i++) {
+                    userData.push(list[i]);
+                }
+                console.log('add');
+                GetVideoList(list, '#slip', '.swipe', footer_h, true);
+                $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', userData[page + 1].imgUrl || '../image/suipai/bg.jpg');
+                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[page + 1].star_sum);
+                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
+                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
+                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                document.getElementById(list[0].id).play();
+                slip.jump(page + 1);
+                page = page + 1;
 
             } else {
                 userData = [{
@@ -918,22 +923,54 @@ function openShare() {
     }
 }
 
+function ontherMyInfoMes() {
+    var token = localStorage.getItem('token');
+    api.ajax({
+            url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
+            method: 'get',
+            headers: {
+                Cookie: token,
+                // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            }
+        },
+        function(ret, err) {
+            if (ret.result) {
+                var list = ret;
+                console.log(JSON.stringify(ret))
+                localStorage.setItem('userMesg', JSON.stringify(ret.result.UserState));
+
+            } else {
+                localStorage.setItem('userMesg', '');
+                api.execScript({
+                    name: 'root',
+                    script: 'LoginOrTrue();'
+                });
+
+            }
+        })
+}
+
 function myInfoMes() {
-    var a =
-        api.ajax({
-                url: 'http://mv.anhy.net/api.php?_d=userstate',
-                method: 'get',
-            },
-            function(ret, err) {
-                if (ret) {
-                    var list = ret;
-                    localStorage.setItem('userMesg', JSON.stringify(ret));
+    var token = localStorage.getItem('token');
+    api.ajax({
+            url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
+            method: 'get',
+            headers: {
+                // Cookie: token,
+                  // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            }
+        },
+        function(ret, err) {
+            if (ret.result) {
+                var list = ret;
+                console.log(JSON.stringify(ret))
+                localStorage.setItem('userMesg', JSON.stringify(ret.result.UserState));
 
-                } else {
-                    localStorage.setItem('userMesg', '');
+            } else {
+                localStorage.setItem('userMesg', '');
 
-                }
-            })
+            }
+        })
 }
 
 function shareTos(id) {

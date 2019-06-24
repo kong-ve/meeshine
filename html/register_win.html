@@ -42,6 +42,12 @@
         })
     };
     function closeWin(){
+      api.execScript({
+          name: 'root',
+          frameName: 'home',
+          script: 'myInfoMes();'
+      });
+      
         api.closeWin({
           animation:{
             type:"reveal",

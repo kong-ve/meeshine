@@ -85,56 +85,49 @@
     apiready = function() {
         api.parseTapmode();
     };
+    $.fn.serializeObject = function () {
+                var o = {};
+                var a = this.serializeArray();
+                $.each(a, function () {
+                    if (o[this.name]) {
+                        if (!o[this.name].push) {
+                            o[this.name] = [o[this.name]];
+                        }
+                        o[this.name].push(this.value || '');
+                    } else {
+                        o[this.name] = this.value || '';
+                    }
+                });
+                return o;
+            };
 
     function register() {
-        var dataList = {
-            ship_to_another: 1,
-            user_data: {
-                'firstname': '',
-                'lastname': '',
-                'phone': '',
-              'email': 'q@1.com',
-                'password1': 12,
-                'password2': 12,
-            },
-            'user_data[firstname]':'',
-              'user_data[lastname]':'',
-                'user_data[phone]':'',
-                  'user_data[email]':'q@1.com',
-                    'user_data[password1]':'12',
-                      'user_data[password2]':'12',
-            all_mailing_lists: {
-                 '':1
-            },
-            dispatch:{
-              'profiles.update':''
-            }
-        };
 
-        dataList['user_data[email]'] = $api.byId('email').value;
-        dataList['user_data']['email'] = $api.byId('email').value;
-            // dataList.userSex = $api.val($api.byId('userSex'));
-        dataList['user_data[password1]']= $api.val($api.byId('password'));
-          dataList['user_data']['password1'] = $api.val($api.byId('password'));
-        dataList['user_data[password2]'] = $api.val($api.byId('password'));
-          dataList['user_data']['password2'] = $api.val($api.byId('password'));
+      $('input[name="user_data[email]"]').val($api.byId('email').value)
+      $('input[name="user_data[password1]"]').val($api.byId('password').value)
+      $('input[name="user_data[password2]"]').val($api.byId('password').value)
 
-        console.log(JSON.stringify(dataList))
-            // var data_list = JSON.stringify(dataList)
+          var formData =$('#form').serializeObject();
+          console.log(JSON.stringify(formData))
         api.ajax({
-            //http: mv.anhy.net/index.php?appajax=1&dispatch=profiles.update&is_ajax=1
+            // http: mv.anhy.net/index.php?appajax=1&dispatch=profiles.update&is_ajax=1
                 url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&is_ajax=1&appajax=1',
             method: 'post',
-            // headers: {
-            //  'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
-            // },
-            data: {
-                values: dataList
+            encode:true,
+            headers: {
+              // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            //  'Content-Type': 'application/x-www-form-urlencoded;'
             },
+            data: {
+              values:formData
+            } ,
+            safeMode:'none',
             returnAll: true,
         }, function(ret, err) {
+          console.log('err')
             console.log(JSON.stringify(err));
-            console.warn(JSON.stringify(ret));
+            console.log('ret')
+              console.log(JSON.stringify(ret));
             if (ret) {
               if(ret.body.result){
                 var a = ret.headers['Set-Cookie'].indexOf(';');
@@ -144,6 +137,11 @@
                 toast.success({
                     title: ret.msg,
                     duration: 2000
+                });
+                api.execScript({
+                    name: 'root',
+                    frameName: 'home',
+                    script: 'ontherMyInfoMes();'
                 });
                   api.closeWin();
               }
@@ -159,9 +157,9 @@
                     duration: 2000
                 });
 
-                // $api.byId('codeImg').click();
-                // alert( JSON.stringify( ret ) );
-                // alert( JSON.stringify( err ) );
+                $api.byId('codeImg').click();
+                alert( JSON.stringify( ret ) );
+                alert( JSON.stringify( err ) );
             }
         });
 

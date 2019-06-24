@@ -26,16 +26,30 @@
   .aui-card-list-content .aui-list-view-cell:last-child:after {
     	border-bottom: 0;
   }
+  #main{
+    height: 100%;
+  }
+  #empty_cart{
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 25%;
+    height: 50%;
+  }
+  #empty_cart p:first-child{
+    color: #aeaeae;
+    text-align: center;
+    width: 100%;
+  }
+
 </style>
 <body>
-  <div>
     <header class="aui-bar aui-bar-nav" id="header">
         <div class="aui-title">购物车</div>
-        <!-- <div class="aui-pull-right aui-btn">
+        <div class="aui-pull-right aui-btn">
             <span class="aui-iconfont aui-icon-search"></span>
-        </div> -->
+        </div>
     </header>
-  </div>
     <section id="main">
        <!-- <div class="aui-content aui-card-list">
         <div class="aui-card-list-header">
@@ -104,6 +118,10 @@
           </ul>
         </div>
       </div> -->
+      <div id="empty_cart">
+        <p>Your Cart is empty</p><br/>
+        <div class="aui-btn aui-btn-block aui-btn-outlined" onclick="closeFrame()"tapmode>Continue shopping</div>
+      </div>
   </section>
     <footer class="aui-bar aui-bar-tab" id="footer">
       <div class="aui-bar-tab-item" style="width:70%;">
@@ -134,7 +152,11 @@ var swipe;
         getList();
          swipe = new ListSwipe();
     }
+    function closeFrame(){
+      api.closeFrame({
+      });
 
+    }
     function SelectList_all(d){
       var a = $api.domAll('input[type="checkbox"]');
         for(var i = 0;i<a.length;i++){
@@ -146,10 +168,18 @@ var swipe;
           url: 'http://mv.anhy.net/index.php?dispatch=checkout.cart&appajax=1&is_ajax=1',
           method: 'get',
           headers:{
-            Cookie:localStorage.getItem('token')
+            Cookie:localStorage.getItem('token'),
+            // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
           }
       },function(ret, err){
+
           if (ret) {
+              console.warn( JSON.stringify( ret.result.data.cart_products.value.length) );
+            if(ret.result.data.cart_products.value.length <1){
+              $api.byId('empty_cart').style.display = 'block';
+              $api.byId('footer').style.display = 'none';
+              return;
+            }
               console.warn( JSON.stringify( ret.result.data) );
               var main = $api.byId('main');
               $api.text($api.byId('sum'),ret.result.data.cart.value.total);
@@ -284,13 +314,25 @@ console.log(url);
   api.ajax({
       url: url,
       method: 'get',
-      // headers:{
-      //   Cookie:localStorage.getItem('token')
-      // }
+      headers:{
+        Cookie:localStorage.getItem('token'),
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+      }
   },function(ret, err){
       if (ret) {
           console.warn( JSON.stringify( ret ) );
-            $api.remove($api.byId(id))
+          var q = $api.closest($api.byId(id),'.aui-card-list');
+          var q_c_list = $api.domAll(q, '.aui-counter-list');
+          if(q_c_list.length > 1){
+              $api.remove($api.byId(id))
+          }else{
+              $api.remove(q);
+              if($api.domAll('.aui-card-list').length >1){
+              $api.byId('empty_cart').style.display = 'block';
+              $api.byId('footer').style.display = 'none';
+            }
+          }
+
       } else {
           alert( JSON.stringify( err ) );
       }
@@ -334,6 +376,9 @@ function ChangeNum(id,val,domm){
   api.ajax({
       url: 'http://mv.anhy.net/index.php?dispatch=checkout.update&appajax=1&is_ajax=1',
       method: 'post',
+      headers:{
+        'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+      },
       data: {
          values: list,
       }

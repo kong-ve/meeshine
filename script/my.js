@@ -34,6 +34,9 @@ function LoginOut() {
       {
         url: 'http://mv.anhy.net/index.php?dispatch=auth.logout&is_ajax=1&appajax=1',
         method: 'get',
+        headers:{
+          // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+        }
     },
     function(ret, err) {
         if (ret) {
@@ -68,19 +71,28 @@ function OpenInfo() {
 
 function userInfo() {
   var msgList = localStorage.getItem('userMesg');
-  if(msgList == ''){
+  console.log(msgList);
+  if(msgList == '' || null || undefined){
     return;
   }
   var data =  JSON.parse(msgList);
   var list = data;
   var style=document.createElement('style');
-style.innerHTML="#message::before{background: url(../image/suipai/suipai1.png) no-repeat;background-size:cover;}";//添加样式内容的话也可以用上面提到过的`insertRule`,相对例子里的硬编码会更优雅点。
+style.innerHTML="#message::before{background: url(../image/suipai/suipai1.png) no-repeat;background-size:cover;}";
+//添加样式内容的话也可以用上面提到过的`insertRule`,相对例子里的硬编码会更优雅点。
 document.head.appendChild(style);
   for (var key in list) {
       if (list[key]) {
-          if (document.getElementById(key))
+        if(key == 'nickname'){
+          if (document.getElementById(key)){
+              $api.text($api.byId(key), list[key]||'email用户'+list['number']);
+            }
+        }else{
+          if (document.getElementById(key)){
               $api.text($api.byId(key), list[key]);
+            }
       }
+    }
     }
 }
 

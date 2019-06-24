@@ -22,6 +22,8 @@ function openCart() {
     var footer = 　$api.byId('footer')
     var body_h = api.winHeight;
     var footer_h = $api.offset(footer).h;
+    var footerAct = $api.dom(footer, '.aui-bar-tab-item.aui-active');
+    $api.removeCls(footerAct, 'aui-active');
     api.openFrame({
         name: 'shoppingcart',
         url: './html/shopCart.html',
@@ -51,25 +53,38 @@ function myInfoMes() {
             url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
             method: 'get',
             headers:{
-              Cookie:token
-            }
+              Cookie:token,
+              // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            },
+            returnAll:true,
         },
         function(ret, err) {
+            console.log(JSON.stringify(ret))
             if(err){
               console.log(JSON.stringify(err))
               localStorage.setItem('userMesg', '');
               return ;
             }
-            if (ret.result) {
-                var list = ret.result.data.user_data.value;
-                console.log(JSON.stringify(list))
+            if (ret.body.result) {
+                var list = ret.body.result.data.user_data.value;
+                console.log(JSON.stringify(ret))
                 localStorage.setItem('userMesg', JSON.stringify(list));
                   // localStorage.setItem('userId', ret.id);
 
               }else{
                   localStorage.setItem('userMesg', '');
+                  localStorage.setItem('token','');
               }
         })
+    }
+    function LoginOrTrue(){
+      var token = localStorage.getItem('token');
+        if(!token){
+          api.openWin({
+              name: 'login',
+              url: './html/login_win.html',
+          });
+        }
     }
     function isLogin(obj, url, index) {
       var token = localStorage.getItem('token');
@@ -116,11 +131,11 @@ function myInfoMes() {
                         foot: footer_h,
                     },
                     bounces: false,
-                    reload:index == 'myinfo' || '' ? true : false,
+                    reload:index != 'home'  ? true : false,
                     bgColor: 'rgba(0,0,0,0.3)',
                     vScrollBarEnabled: false,
                     hScrollBarEnabled: false,
-                    scrollEnabled: index == 'myinfo' ? true : false
+                    scrollEnabled: index != 'home' ? true : false
 
                 });
                 setTimeout(function() {

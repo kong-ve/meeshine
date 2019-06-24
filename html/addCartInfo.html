@@ -264,9 +264,14 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
   }
  };
  if(token){
-   var header_log = {'Cookie':token}
+   var header_log = {
+     'Cookie':token,
+    //  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+ }
  }else{
-   var header_log = {}
+   var header_log = {
+    //  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+   }
  }
  var checkoutId= 'checkout.add..'+product.product_id;
  list.dispatch[checkoutId]="";
@@ -290,7 +295,7 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
     url:'http://mv.anhy.net/index.php?appajax=1',
     method:'post',
     data:list,
-    // headers:header_log,
+    headers:header_log,
   success:function(ret) {
     // alert(JSON.stringify(ret))
     console.log(JSON.stringify(ret))

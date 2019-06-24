@@ -72,9 +72,14 @@ getList()
 
   }
   function getList() {
+    var token = localStorage.getItem('token');
     api.ajax({
         url: 'http://mv.anhy.net/index.php?dispatch=vendor_communication.threads&is_ajax=1&appajax=1',
         method: 'get',
+        headers:{
+          "Cookie":token,
+          // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+        }
     },function(ret, err){
         if (ret) {
             console.log( JSON.stringify( ret ) );
@@ -104,6 +109,13 @@ getList()
                 $api.append($api.byId('message_list'), html);
 
               }
+            }else{
+              api.confirm({
+                  title: 'error',
+                  msg: 'errorMeg',
+                  buttons: ['Success', 'Cancel']
+              });
+
             }
         } else {
             alert( JSON.stringify( err ) );
