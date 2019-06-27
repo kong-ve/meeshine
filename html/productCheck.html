@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>选择规格</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link type="text/css" rel="stylesheet" href="http://mv.anhy.net/var/cache/misc/assets/design/themes/bright_theme/css/standalone.fa5c5888dd2538184f845a63e8585f761561366959.css">
+</head>
+
+<body id="main">
+  <div class="aui-content aui-margin-b-15" id="form">
+      <ul class="aui-list aui-form-list aui-media-list">
+        <li class="aui-list-item">
+          <img src="" alt="" id="img-header">
+        </li>
+        <li class="aui-list-item" id="productName">
+
+        </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      Your name
+                  </div>
+                  <div class="aui-list-item-input">
+                    <input type="hidden" name="result_ids" value="" />
+                    <input type="hidden" name="return_url" value="" />
+                    <input type="hidden" name="call_data[product_id]" value="" />
+                    <input type="hidden" name="dispatch[call_requests.request]" value="" />
+                      <input type="text" name="call_data[name]">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      Phone
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input type="text" placeholder="" name="call_data[phone]">
+                  </div>
+              </div>
+          </li>
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner">
+                  <div class="aui-list-item-label">
+                      Email
+                  </div>
+                  <div class="aui-list-item-input">
+                      <input type="text" placeholder="" name="call_data[email]">
+                  </div>
+              </div>
+          </li>
+
+          <li class="aui-list-item">
+              <div class="aui-list-item-inner aui-list-item-center aui-list-item-btn">
+                  <div class="aui-btn aui-btn-info aui-margin-r-5" tapmode onclick="act_btn()">提交</div>
+              </div>
+          </li>
+      </ul>
+  </div>
+</body>
+
+</html>
+<script src="../script/api.js"></script>
+<script>
+    var parse;
+    apiready = function() {
+
+        parse = api.pageParam.html;
+        console.log('------------------------------')
+        getBody();
+        console.log('------------------------------')
+          api.parseTapmode();
+    }
+
+    function getBody() {
+        $api.val($api.dom('input[name="result_ids"]'),'call_request_' + parse.product_id);
+          $api.val($api.dom('input[name="call_data[product_id]"]'),parse.product_id);
+            $api.byId('img-header').src = parse.main_pair.detailed.image_path ;
+              $api.text($api.byId('productName'),parse.product);
+      $api.val($api.dom('input[name="return_url"]'),'index.php?dispatch=call_requests.request&product_id=' + parse.product_id + '&obj_prefix=');
+        // var h = ('<div id="call_request_' + parse.product_id + '">' +
+        //     '<form name="call_requests_form" id="form_call_request_' + parse.product_id +
+        //     '"  class="cm-ajax cm-processing-personal-data" data-ca-processing-personal-data-without-click="true" data-ca-product-form="product_form_' + parse.product_id + '" >' +
+        //     '<input type="hidden" name="result_ids" value="call_request_' + parse.product_id + '" />' +
+        //     '<input type="hidden" name="return_url" value="index.php?dispatch=call_requests.request&amp;product_id=' + parse.product_id + '&amp;obj_prefix=" />' +
+        //     '<input type="hidden" name="call_data[product_id]" value="' + parse.product_id + '" />' +
+        //     '<div class="ty-cr-product-info-container">'+
+        //     '<div class="ty-cr-product-info-image">'+
+        //     '<img class="ty-pict     cm-image" id="det_img_' + parse.product_id + '" src="' + parse.main_pair.detailed.image_path + '" alt="" title="" srcset="' + parse.main_pair.detailed.image_path + ' 2x"  />' +
+        //     '</div>' +
+        //     '<div class="ty-cr-product-info-header">' +
+        //     '<h3 class="ty-product-block-title"><bdi>' + parse.product + '</bdi></h3>' +
+        //     '</div>' +
+        //     '  </div>' +
+        //     '<div class="ty-control-group">' +
+        //     '<label class="ty-control-group__title" for="call_data_call_request_' + parse.product_id + '_name">Your name</label>' +
+        //     '<input id="call_data_call_request_' + parse.product_id + '_name" size="50" class="ty-input-text-full" type="text" name="call_data[name]" value="" />' +
+        //     '</div>' +
+        //     '<div class="ty-control-group">' +
+        //     '  <label for="call_data_call_request_' + parse.product_id + '_phone" class="ty-control-group__title cm-mask-phone-label">Phone</label>' +
+        //     '  <input id="call_data_call_request_' + parse.product_id + '_phone" class="ty-input-text-full cm-mask-phone ty-inputmask-bdi" size="50" type="text" name="call_data[phone]" value="" data-enable-custom-mask="true" />' +
+        //     '</div>' +
+        //     '  <div class="ty-cr-or">— or —</div>' +
+        //     '  <div class="ty-control-group">' +
+        //     '  <label for="call_data_call_request_' + parse.product_id + '_email" class="ty-control-group__title cm-email">E-mail</label>' +
+        //     '  <input id="call_data_call_request_' + parse.product_id + '_email" class="ty-input-text-full" size="50" type="text" name="call_data[email]" value="" />' +
+        //     '</div>' +
+        //     '<div class="cr-popup-error-box">' +
+        //     '<div class="hidden cm-cr-error-box help-inline">' +
+        //     '<p>Please enter your phone number or email (for our manager to contact you)</p>' +
+        //     '</div>' +
+        //     '  </div>' +
+        //     '<div class="cm-block-add-subscribe">' +
+        //     '</div>' +
+        //     '<div class="buttons-container">' +
+        //     '<button class="ty-btn__primary ty-btn__big cm-form-dialog-closer ty-btn ty-btn" type="Submit" name="dispatch[call_requests.request]" tapmode onclick="act()">Submit</button>' +
+        //     '  </div>' +
+        //     '</form>' +
+        //     '</div>');
+        //
+        // $api.append(document.getElementById('main'), h)
+    }
+
+    function act_btn() {
+      var dataList = {};
+      console.warn('start');
+        dataList['product_data'] = {};
+        dataList.product_data[parse.product_id]={};
+        dataList.product_data[parse.product_id]['product_id'] = parse.product_id;
+          dataList.product_data[parse.product_id]['amount'] = api.pageParam.amount;
+
+        var q = $api.domAll('input');
+
+        for(var key in q){
+            console.log(JSON.stringify(q[key]))
+          dataList[q[key].name] = q[key].value;
+        }
+  console.log(JSON.stringify(dataList));
+        api.ajax({
+            url: 'http://mv.anhy.net/index.php?appajax=1&is_ajax=1',
+            method: 'post',
+            data: {
+                values: dataList,
+
+            }
+        }, function(ret, err) {
+            if (ret.state == 1) {
+                console.log(JSON.stringify(ret));
+                api.toast({
+                    msg: ret.msg,
+                    duration: 2000,
+                    location: 'middle'
+                });
+                api.closeWin({
+                });
+                
+            } else {
+                console.warn(JSON.stringify(err));
+            }
+        });
+
+    }
+</script>
