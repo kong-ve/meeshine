@@ -21,8 +21,8 @@ function IS_star(videoId) {
             },
         },
         headers:{
-          Cookie:localStorage.getItem('token'),
-          'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+          cookie:localStorage.getItem('token'),
+          // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
         },
     }, function(ret, err) {
 
@@ -109,8 +109,8 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
         var el_child = document.createElement('video');
 
         el.className = 'swipe-box';
-        el_child.src = v.goods_video_url;
-        el_child.id = v.id;
+        el_child.src = 'http://mv.anhy.net/'+v.goods_video_url;
+        el_child.id = v.video_id;
         el_child.poster = v.imageUrl || 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png';
         el_child.autoplay = true;
         el_child.loop = true;
@@ -127,14 +127,7 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
         el_child.setAttribute('x5-video-orientation', "portraint")
         el_child.className = 'video_max';
         el_child.codecs = "avc1.42E01E, mp4a.40.2"
-            // var btn_shopping = document.createElement('div');
-            // btn_shopping.className = 'shopBtn';
-            // var i_shop = document.createElement('i');
-            // i_shop.className = 'iconfont icon-shop-cart-white';
-            // var span_shop = document.createElement('span');
-            // span_shop.innerText = '123456789';
-            // btn_shopping.appendChild(i_shop);
-            // btn_shopping.appendChild(span_shop);
+
         var div_text = document.createElement('div');
         div_text.className = "sample_content ui-view";
         div_text.id = 'fixmessage_info';
@@ -160,43 +153,7 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
         el.appendChild(div_text);
 
         el.appendChild(i_el);
-        // el.innerHTML = el.innerHTML + '<div id="userBtn" class="flex-btn" style="top:'+((i*api.frameHeight)+api.frameHeight*0.28)+'px" onclick="onAddFL(this)" data-id="'+v.user_id+'">'+
-        //     '<div class="btnbox border-white">'+
-        //         '<div class="img-user">'+
-        //             '<img src="'+(v.imageUrl||'../image/suipai/bg.jpg')+'" />'+
-        //         '</div>'+
-        //         '<div class="add-user">'+
-        //             '<i class="icon iconfont icon-plus" size="24"></i>'+
-        //             '<i class="aui-iconfont aui-icon-correct aui-hide"></i>'+
-        //         '</div>'+
-        //
-        //     '</div>'+
-        // '</div>'+
-        // '<div id="likeBtn" class="flex-btn" style="top:'+((i*api.frameHeight)+api.frameHeight*0.4)+'px" onclick="heartLike(this)">'+
-        //     '<div class="btnbox">'+
-        //         '<i class="icon iconfont icon-heart" size="24"></i>'+
-        //         '<span class="icon-number">15</span>'+
-        //     '</div>'+
-        // '</div>'+
-        // '<div id="shareBtn" class="flex-btn" style="top:'+((i*api.frameHeight)+api.frameHeight*0.5)+'px" onclick="openShare()">'+
-        //     '<div class="btnbox">'+
-        //         '<i class="icon iconfont icon-share-big" color="#fff" size="24"></i>'+
-        //         '<span class="icon-number">15</span>'+
-        //     '</div>'+
-        // '</div>'+
-        // '<div id="commitBtn" class="flex-btn" style="top:'+((i*api.frameHeight)+api.frameHeight*0.6)+'px" onclick="openCom()">'+
-        //     '<div class="btnbox">'+
-        //         '<i class="icon iconfont icon-ping" size="24"></i>'+
-        //         '<span class="icon-number">15</span>'+
-        //     '</div>'+
-        // '</div>'+
-        //
-        // '<div id="shopcartBtn" class="flex-btn" style="top:'+((i*api.frameHeight)+api.frameHeight*0.9)+'px" onclick="openSell()">'+
-        //     '<div class="btnbox bg">'+
-        //         '<i class="icon iconfont icon-addShopcart" size="24"></i>'+
-        //         '<span class="icon-number-top">15</span>'+
-        //     '</div>'+
-        // '</div>';
+
         if (destroy) {
             document.querySelector(container).querySelector('.swipe').appendChild(el);
         } else {
@@ -228,14 +185,14 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
         }).end(function() {
             if (this.finger == null) {
                 if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
-                    if (document.getElementById(userData[this.page].id).paused) {
-                        document.getElementById(userData[this.page].id).play();
-                        document.getElementById(userData[this.page].id).muted = false;
+                    if (document.getElementById(userData[this.page].video_id).paused) {
+                        document.getElementById(userData[this.page].video_id).play();
+                        document.getElementById(userData[this.page].video_id).muted = false;
 
                         $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
                         $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
                     } else {
-                        document.getElementById(userData[this.page].id).pause();
+                        document.getElementById(userData[this.page].video_id).pause();
                         $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
                         $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
                     }
@@ -248,24 +205,24 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
                     userVideo(api.pageParam.foot, $api.byId('container'), p);
                     console.log('userVideo')
                 } else {
-                    $api.byId(userData[page].id).pause();
+                    $api.byId(userData[page].video_id).pause();
                     page = this.page;
 
-                    if (document.getElementById(userData[this.page].id).muted == true) {
-                        document.getElementById(userData[this.page].id).currentTime = 0;
-                        document.getElementById(userData[this.page].id).muted = false;
+                    if (document.getElementById(userData[this.page].video_id).muted == true) {
+                        document.getElementById(userData[this.page].video_id).currentTime = 0;
+                        document.getElementById(userData[this.page].video_id).muted = false;
                     }
-                    $api.byId(userData[this.page].id).play();
+                    $api.byId(userData[this.page].video_id).play();
                     pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
 
                 }
                 if (moveIsTrue && (page + 1) == userData.length) {
-                    IS_star(userData[this.page].id);
+                    IS_star(userData[this.page].video_id);
                     document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
                     $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
                     $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
                     $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
-                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number-top'), 'sold:' + 0);
 
                 }
 
@@ -312,14 +269,14 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
         }).end(function() {
             if (this.finger == null) {
                 if (JSON.stringify(api.frames()).indexOf('leftPane') == -1 && JSON.stringify(api.frames()).indexOf('rightPane') == -1) {
-                    if (document.getElementById(userData[this.page].id).paused) {
-                        document.getElementById(userData[this.page].id).play();
-                        document.getElementById(userData[this.page].id).muted = false;
+                    if (document.getElementById(userData[this.page].video_id).paused) {
+                        document.getElementById(userData[this.page].video_id).play();
+                        document.getElementById(userData[this.page].video_id).muted = false;
 
                         $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
                         $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
                     } else {
-                        document.getElementById(userData[this.page].id).pause();
+                        document.getElementById(userData[this.page].video_id).pause();
                         $api.removeCls(pages[this.page].querySelector('.play-video'), 'hide-video');
                         $api.addCls(pages[this.page].querySelector('.play-video'), 'show-video');
                     }
@@ -332,24 +289,24 @@ function GetVideoList(List, container, swipe, foot_h, destroy) {
                     userVideo(api.pageParam.foot, $api.byId('slip'), p);
                     console.log('add')
                 } else {
-                    $api.byId(userData[page].id).pause();
+                    $api.byId(userData[page].video_id).pause();
                     page = this.page;
 
-                    if (document.getElementById(userData[this.page].id).muted == true) {
-                        document.getElementById(userData[this.page].id).currentTime = 0;
-                        document.getElementById(userData[this.page].id).muted = false;
+                    if (document.getElementById(userData[this.page].video_id).muted == true) {
+                        document.getElementById(userData[this.page].video_id).currentTime = 0;
+                        document.getElementById(userData[this.page].video_id).muted = false;
                     }
-                    $api.byId(userData[this.page].id).play();
+                    $api.byId(userData[this.page].video_id).play();
                     pages[this.page].querySelector('.play-video').className = 'play-video hide-video icon iconfont icon-play';
 
                 }
                 if (moveIsTrue && (page + 1) == userData.length) {
-                    IS_star(userData[this.page].id);
+                    IS_star(userData[this.page].video_id);
                     document.getElementById('userBtn').querySelector('.img-user').querySelector('img').src = userData[this.page].imageUrl || '../image/suipai/bg.jpg';
                     $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[this.page].star_sum);
                     $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[this.page].share_sum);
                     $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[this.page].comment_sum);
-                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number-top'), 'sold:' + 0);
 
                 }
 
@@ -384,14 +341,14 @@ function VideoPlaying() {
         console.log('err');
         return;
     }
-    if (document.getElementById(userData[page].id).paused) {
-        document.getElementById(userData[page].id).play();
-        document.getElementById(userData[page].id).muted = false;
+    if (document.getElementById(userData[page].video_id).paused) {
+        document.getElementById(userData[page].video_id).play();
+        document.getElementById(userData[page].video_id).muted = false;
 
         $api.removeCls(pages[page].querySelector('.play-video'), 'show-video');
         $api.addCls(pages[page].querySelector('.play-video'), 'hide-video');
     } else {
-        document.getElementById(userData[page].id).pause();
+        document.getElementById(userData[page].video_id).pause();
         $api.removeCls(pages[page].querySelector('.play-video'), 'hide-video');
         $api.addCls(pages[page].querySelector('.play-video'), 'show-video');
     }
@@ -439,9 +396,9 @@ function LefePaneOpen() {
 }
 
 function playingVideo() {
-    if (document.getElementById(userData[this.page].id).paused) {
-        document.getElementById(userData[this.page].id).play();
-        document.getElementById(userData[this.page].id).muted = false;
+    if (document.getElementById(userData[this.page].video_id).paused) {
+        document.getElementById(userData[this.page].video_id).play();
+        document.getElementById(userData[this.page].video_id).muted = false;
 
         $api.removeCls(pages[this.page].querySelector('.play-video'), 'show-video');
         $api.addCls(pages[this.page].querySelector('.play-video'), 'hide-video');
@@ -713,17 +670,18 @@ function userVideo(footer_h, container, l) {
           'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
         }
     }, function(ret, err) {
+        console.warn("======================================");
         console.warn(JSON.stringify(ret));
         console.error(JSON.stringify(err));
         if (err || ret.length < 1) {
-
+          console.warn("err");
             if (userData[0]) {
                 // alert(JSON.stringify(ret));
 
                 var list = [{
                     nickname: 1,
                     number: Math.random() * 50000,
-                    id: new Date().getTime() + 6,
+                    video_id: new Date().getTime() + 6,
                     imageUrl: '',
                     star_sum: 0,
                     share_sum: 0,
@@ -741,7 +699,7 @@ function userVideo(footer_h, container, l) {
                 $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
                 $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
                 $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
-                document.getElementById(list[0].id).play();
+                document.getElementById(list[0].video_id).play();
                 slip.jump(page + 1);
                 page = page + 1;
 
@@ -752,13 +710,13 @@ function userVideo(footer_h, container, l) {
                     star_sum: 0,
                     share_sum: 0,
                     comment_sum: 0,
-                    id: new Date().getTime() + 1,
+                    video_id: new Date().getTime() + 1,
                     imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
                     goods_video_url: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/abb9595e74647defe21d748e12f7a7c9.mp4',
                 }, {
                     nickname: 1,
                     number: 1598531459895,
-                    id: new Date().getTime() + 2,
+                    video_id: new Date().getTime() + 2,
                     star_sum: 0,
                     share_sum: 0,
                     comment_sum: 0,
@@ -767,7 +725,7 @@ function userVideo(footer_h, container, l) {
                 }, {
                     nickname: 1,
                     number: 1598531459896,
-                    id: new Date().getTime(),
+                    video_id: new Date().getTime(),
                     star_sum: 0,
                     share_sum: 0,
                     comment_sum: 0,
@@ -776,13 +734,13 @@ function userVideo(footer_h, container, l) {
                 }, {
                     nickname: 1,
                     number: 1598531459897,
-                    id: new Date().getTime() + 3,
+                    video_id: new Date().getTime() + 3,
                     imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
                     goods_video_url: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/9d9906ba474152307d7edca6bd72fbe2.mp4',
                 }, {
                     nickname: 1,
                     number: 1598531459898,
-                    id: new Date().getTime() + 4,
+                    video_id: new Date().getTime() + 4,
                     star_sum: 0,
                     share_sum: 0,
                     comment_sum: 0,
@@ -791,7 +749,7 @@ function userVideo(footer_h, container, l) {
                 }, {
                     nickname: 1,
                     number: 1598531459899,
-                    id: new Date().getTime() + 5,
+                    video_id: new Date().getTime() + 5,
                     star_sum: 0,
                     share_sum: 0,
                     comment_sum: 0,
@@ -800,7 +758,7 @@ function userVideo(footer_h, container, l) {
                 }, {
                     nickname: 1,
                     number: 1598531459894,
-                    id: new Date().getTime() + 6,
+                    video_id: new Date().getTime() + 6,
                     imageUrl: '',
                     star_sum: 0,
                     share_sum: 0,
@@ -814,35 +772,41 @@ function userVideo(footer_h, container, l) {
                 $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
                 $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
                 $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
-                document.getElementById(userData[0].id).muted = false;
+                document.getElementById(userData[0].video_id).muted = false;
             }
             return;
         } else {
-
+          console.log('----------------------------')
             if (userData.length == 0) {
+              console.warn("ret>0");
                 userData = ret;
-                IS_star(userData[0].id)
+                console.log(JSON.stringify(userData))
+                IS_star(userData[0].video_id);
                 GetVideoList(userData, container, '.swipe', footer_h);
                 $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
                 $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'), userData[0].star_sum);
                 $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
                 $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
                 $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
-                document.getElementById(userData[0].id).muted = false;
+                document.getElementById(userData[0].video_id).muted = false;
             } else {
+
                 var list = ret;
+
                 if (list.length > 0) {
                     for (var i = 0; i < list.length; i++) {
+
                         userData.push(list[i]);
                     }
 
-                    Slip(container).destroy();
+                    // Slip(container).destroy();
                     GetVideoList(list, container, '.swipe', footer_h);
-                    IS_star(userData[page + 1].id);
-                    $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', userData[page + 1].imgUrl || '../image/suipai/bg.jpg');
-                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[page + 1].star_sum);
-                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
-                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
+                    console.warn("ret<1");
+                    IS_star(list[0].id);
+                    $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', list[0].imgUrl || '../image/suipai/bg.jpg');
+                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), list[0].star_sum);
+                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), list[0].share_sum);
+                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), list[0].comment_sum);
                     $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
 
 
@@ -861,8 +825,8 @@ function openSell() {
             details: detail,
             video: detail.video_url,
             img: detail.imageUrl,
-            id: detail.id,
-            timestart: document.getElementById(detail.id).currentTime,
+            id: detail.video_id,
+            timestart: document.getElementById(detail.video_id).currentTime,
             frameNames: api.frameName,
             "ids": 'all'
         }
@@ -929,7 +893,7 @@ function ontherMyInfoMes() {
             url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
             method: 'get',
             headers: {
-                Cookie: token,
+                cookie: token,
                 // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
             }
         },
@@ -956,8 +920,8 @@ function myInfoMes() {
             url: 'http://mv.anhy.net/index.php?dispatch=profiles.update&appajax=1&is_ajax=1',
             method: 'get',
             headers: {
-                // Cookie: token,
-                  // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+                cookie: token,
+                  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
             }
         },
         function(ret, err) {
@@ -1045,10 +1009,10 @@ function stopMusic() {
         console.log('err');
         return;
     }
-    if (document.getElementById(userData[page].id).muted) {
-        document.getElementById(userData[page].id).muted = false;
+    if (document.getElementById(userData[page].video_id).muted) {
+        document.getElementById(userData[page].video_id).muted = false;
     } else {
-        document.getElementById(userData[page].id).muted = true;
+        document.getElementById(userData[page].video_id).muted = true;
     }
 }
 

@@ -1,39 +1,58 @@
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>消息</title>
-  </head>
-  <link rel="stylesheet" href="../css/aui.css"/>
-  <link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
-  <body>
+</head>
+<link rel="stylesheet" href="../css/aui.css" />
+<link rel="stylesheet" type="text/css" href="../feature/fonts/iconfont.css" />
+<style media="screen">
+    #empty_cart {
+        display: none;
+        position: absolute;
+        top: 40%;
+        left: 25%;
+        height: 50%;
+    }
+
+    #empty_cart p:first-child {
+        color: #aeaeae;
+        text-align: center;
+        width: 100%;
+    }
+</style>
+
+<body>
     <header class="aui-bar aui-bar-nav" id="header">
-            <div class="aui-title">消息</div>
-            <div class="aui-pull-right aui-btn">
-                联系人
-            </div>
-        </header>
+        <a class="aui-btn aui-pull-left aui-hide" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title">消息</div>
+        <div class="aui-btn aui-pull-right"></div>
+
+    </header>
     <section class="aui-grid">
-            <div class="aui-row">
-                <div class="aui-col-xs-4">
-                    <i class="aui-iconfont aui-icon-home"></i>
-                    <div class="aui-grid-label">首页</div>
-                </div>
-                <div class="aui-col-xs-4">
-                    <i class="aui-iconfont aui-icon-gear"></i>
-                    <div class="aui-grid-label">设置</div>
-                </div>
-                <div class="aui-col-xs-4">
-                    <i class="aui-iconfont aui-icon-map"></i>
-                    <div class="aui-grid-label">地图</div>
-                </div>
+        <div class="aui-row">
+            <div class="aui-col-xs-4">
+                <i class="aui-iconfont aui-icon-home"></i>
+                <div class="aui-grid-label">首页</div>
             </div>
-        </section>
-        <ul class="aui-list aui-media-list" id="message_list">
-            <!-- <li class="aui-list-item aui-list-item-middle">
+            <div class="aui-col-xs-4">
+                <i class="aui-iconfont aui-icon-gear"></i>
+                <div class="aui-grid-label">设置</div>
+            </div>
+            <div class="aui-col-xs-4">
+                <i class="aui-iconfont aui-icon-map"></i>
+                <div class="aui-grid-label">地图</div>
+            </div>
+        </div>
+    </section>
+    <ul class="aui-list aui-media-list" id="message_list">
+        <!-- <li class="aui-list-item aui-list-item-middle">
                 <div class="aui-media-list-item-inner">
                     <div class="aui-list-item-media" style="width: 3rem;">
                         <img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">
@@ -59,68 +78,99 @@
                     </div>
                 </div>
             </li> -->
-        </ul>
-  </body>
+    </ul>
+    <div id="empty_cart">
+        <p>Your Message is empty</p><br/>
+        <div class="aui-btn aui-btn-block aui-btn-outlined" onclick="closeFrame()" tapmode>Continue shopping</div>
+    </div>
+</body>
+
 </html>
 <script src="../script/api.js"></script>
 <script>
-  apiready =function(){
-    api.parseTapmode();
-    var header = $api.byId('header');
-    $api.fixStatusBar(header);
-getList()
-
-  }
-  function getList() {
-    var token = localStorage.getItem('token');
-    api.ajax({
-        url: 'http://mv.anhy.net/index.php?dispatch=vendor_communication.threads&is_ajax=1&appajax=1',
-        method: 'get',
-        headers:{
-          "Cookie":token,
-          // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
-        }
-    },function(ret, err){
-        if (ret) {
-            console.log( JSON.stringify( ret ) );
-            var html = '';
-            if(ret.result){
-              if(ret.result.data.threads.value.length>0){
-                var data = ret.result.data.threads.value;
-                data.map(function(key,index) {
-                  html+='<li class="aui-list-item aui-list-item-middle">'+
-                      '<div class="aui-media-list-item-inner">'+
-                          '<div class="aui-list-item-media" style="width: 3rem;">'+
-                              '<img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">'+
-                          '</div>'+
-                          '<div class="aui-list-item-inner ">'+
-                              '<div class="aui-list-item-text">'+
-                                  '<div class="aui-list-item-title aui-font-size-14">'+key.company+'</div>'+
-                                  '<div class="aui-list-item-right">'+new Date(key.last_updated*1000).toLocaleString()+'</div>'+
-                              '</div>'+
-                              '<div class="aui-list-item-text">'+
-                                  key.last_message+
-                              '</div>'+
-                          '</div>'+
-                      '</div>'+
-                  '</li>';
-                })
-                console.log(html)
-                $api.append($api.byId('message_list'), html);
-
-              }
-            }else{
-              api.confirm({
-                  title: 'error',
-                  msg: 'errorMeg',
-                  buttons: ['Success', 'Cancel']
-              });
-
+    apiready = function() {
+        api.parseTapmode();
+        var header = $api.byId('header');
+        $api.fixStatusBar(header);
+        if (!api.frameName) {
+            if (api.winName == 'msg') {
+                $api.removeCls($api.dom('.aui-pull-left'), 'aui-hide');
             }
-        } else {
-            alert( JSON.stringify( err ) );
         }
-    });
+        getList()
 
-  }
+    }
+
+    function closeWin() {
+        api.closeWin({});
+
+    }
+
+    function closeFrame() {
+        api.execScript({
+            name: 'root',
+            script: "isLogin('tabbar1','html/main.html','home');"
+        });
+        api.closeWin({
+            name: 'OrderHistory'
+        });
+
+    }
+
+    function getList() {
+        var token = localStorage.getItem('token');
+        api.ajax({
+            url: 'http://mv.anhy.net/index.php?dispatch=vendor_communication.threads&is_ajax=1&appajax=1',
+            method: 'get',
+            headers: {
+                "cookie": token,
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            }
+        }, function(ret, err) {
+            if (ret) {
+                console.log(JSON.stringify(ret));
+                var html = '';
+                if (ret.result) {
+                    if (ret.result.data.threads.value.length > 0) {
+                        var data = ret.result.data.threads.value;
+                        data.map(function(key, index) {
+                            html += '<li class="aui-list-item aui-list-item-middle">' +
+                                '<div class="aui-media-list-item-inner">' +
+                                '<div class="aui-list-item-media" style="width: 3rem;">' +
+                                '<img src="../image/demo5.png" class="aui-img-round aui-list-img-sm">' +
+                                '</div>' +
+                                '<div class="aui-list-item-inner ">' +
+                                '<div class="aui-list-item-text">' +
+                                '<div class="aui-list-item-title aui-font-size-14">' + key.company + '</div>' +
+                                '<div class="aui-list-item-right">' + new Date(key.last_updated * 1000).toLocaleString() + '</div>' +
+                                '</div>' +
+                                '<div class="aui-list-item-text">' +
+                                key.last_message +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</li>';
+                        })
+                        console.log(html)
+                        $api.append($api.byId('message_list'), html);
+
+                    } else {
+                        $api.byId('empty_cart').style.display = 'block';
+                    }
+                } else {
+                    // localStorage.setItem('token','');
+                    $api.byId('empty_cart').style.display = 'block';
+                    // api.confirm({
+                    //     title: 'error',
+                    //     msg: 'errorMeg',
+                    //     buttons: ['Success', 'Cancel']
+                    // });
+
+                }
+            } else {
+                alert(JSON.stringify(err));
+            }
+        });
+
+    }
 </script>

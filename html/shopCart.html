@@ -135,7 +135,7 @@
             <div class="aui-bar-tab-label aui-text-defalut">$<span id="sum">0</span></div>
         </div>
       </div>
-        <div class="aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;">立即购买</div>
+        <div class="aui-bar-tab-item aui-bg-danger aui-text-white" tapmode style="width: auto;" onclick="CheckBuy()">立即购买</div>
     </footer>
 </body>
 
@@ -152,7 +152,24 @@ var swipe;
         getList();
          swipe = new ListSwipe();
     }
+    function CheckBuy() {
+      var token = localStorage.getItem('token');
+      api.openWin({
+          name: 'checkoutCart_header',
+          url: './header_check.html',
+          pageParam:{
+            name: 'checkoutCart',
+            url: 'http://mv.anhy.net/index.php?dispatch=checkout.checkout',
+          headers:{'cookie':token},
+          }
+      });
+
+    }
     function closeFrame(){
+      api.execScript({
+          name: 'root',
+          script: "isLogin('tabbar1','html/main.html','home');"
+      });
       api.closeFrame({
       });
 
@@ -167,9 +184,10 @@ var swipe;
       api.ajax({
           url: 'http://mv.anhy.net/index.php?dispatch=checkout.cart&appajax=1&is_ajax=1',
           method: 'get',
+          cache:false,
           headers:{
-            Cookie:localStorage.getItem('token'),
-            // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+            cookie:localStorage.getItem('token'),
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
           }
       },function(ret, err){
 
@@ -315,12 +333,13 @@ console.log(url);
       url: url,
       method: 'get',
       headers:{
-        Cookie:localStorage.getItem('token'),
+        cookie:localStorage.getItem('token'),
         'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
       }
   },function(ret, err){
-      if (ret) {
-          console.warn( JSON.stringify( ret ) );
+    console.warn( JSON.stringify( ret ) );
+      if (ret.state == 1) {
+
           var q = $api.closest($api.byId(id),'.aui-card-list');
           var q_c_list = $api.domAll(q, '.aui-counter-list');
           if(q_c_list.length > 1){
@@ -384,9 +403,17 @@ function ChangeNum(id,val,domm){
       }
   },function(ret, err){
       if (ret) {
-          alert( JSON.stringify( ret ) );
+        if(ret.state ==1){
+          api.toast({
+              msg: ret.msg,
+              duration: 2000,
+              location: 'middle'
+          });
+
+        }
+          console.log( JSON.stringify( ret ) );
       } else {
-          alert( JSON.stringify( err ) );
+          console.warn( JSON.stringify( err ) );
       }
   });
 

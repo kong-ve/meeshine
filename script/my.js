@@ -35,7 +35,7 @@ function LoginOut() {
         url: 'http://mv.anhy.net/index.php?dispatch=auth.logout&is_ajax=1&appajax=1',
         method: 'get',
         headers:{
-          // 'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
         }
     },
     function(ret, err) {

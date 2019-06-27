@@ -127,9 +127,12 @@ apiready= function() {
 api.ajax({
   url:'http://mv.anhy.net/index.php?dispatch=products.view&product_id=472&is_ajax=1&appajax=1',
   method:'get',
+  headers:{
+    'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36',
+  },
 },function (ret,err) {
-  // alert(JSON.stringify(ret));
-  // console.error(JSON.stringify(err))
+  console.warn(JSON.stringify(ret));
+  console.error(JSON.stringify(err))
   $api.text($api.dom('.price-title'),ret.result.data.product.value.product)
     $api.text($api.dom($api.dom('.price-sum'),'span'),ret.result.data.product.value.price);
     $api.text($api.dom($api.dom('.alsum'),'span'),ret.result.data.product.value.amount);
@@ -210,28 +213,51 @@ function removeNum() {
 }
 function order() {
   var list = {
-    result_ids: 'call_request_1677',
-return_url: 'index.php?dispatch=call_requests.request&product_id=1677&obj_prefix=',
+    result_ids: 'call_request_472',
+return_url: 'index.php?dispatch=call_requests.request&product_id=472&obj_prefix=',
 call_data:{
-  product_id: 1677,
+  product_id: 472,
 name: 'a',
 phone: '+1(111)111-1111',
 email: '569214475@qq.com',
 },
-product_data:{1677:{amount: 1,product_id:1677}},
+product_data:{472:{amount: 1,product_id:472}},
 is_ajax: 1,
 dispatch:{'call_requests.request': ''},
 security_hash: ''
 }
 console.log(JSON.stringify(list))
-  api.openWin({
-      name: 'addOrder',
-      url: './addOrder.html',
-      pageParam:{
-        first:api.frameName,
-        firstType:'frame',
-      }
-  });
+$.ajax({
+  url:'http://mv.anhy.net/index.php?dispatch=call_requests.request&product_id=472&obj_prefix=&result_ids=content_call_request_472&skip_result_ids_check=true&is_ajax=1&appajax=1',
+  type:'get',
+  success:function(data){
+    if(data.result){
+      console.log(data.result.data.product.value);
+      api.openWin({
+          name: 'headers_product_view_checked',
+          url: './header_check.html',
+          pageParam: {
+              html:data.result.data.product.value,
+              amount: $api.val($api.byId('num')),
+          }
+      });
+
+    }
+  },error(err,status,type){
+    toast.fail({
+      title:err,
+       duration:2000
+    });
+  }
+})
+  // api.openWin({
+  //     name: 'addOrder',
+  //     url: './addOrder.html',
+  //     pageParam:{
+  //       first:api.frameName,
+  //       firstType:'frame',
+  //     }
+  // });
 }
 function addCart() {
 
@@ -266,11 +292,11 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
  if(token){
    var header_log = {
      'Cookie':token,
-    //  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+     'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
  }
  }else{
    var header_log = {
-    //  'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+     'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
    }
  }
  var checkoutId= 'checkout.add..'+product.product_id;
@@ -292,18 +318,20 @@ redirect_url: 'index.php?dispatch=products.view&product_id='+product.product_id,
   }
   // console.log(JSON.stringify(list));
   $.ajax({
-    url:'http://mv.anhy.net/index.php?appajax=1',
+    url:'http://mv.anhy.net/index.php?appajax=1&is_ajax=1',
     method:'post',
     data:list,
     headers:header_log,
   success:function(ret) {
     // alert(JSON.stringify(ret))
     console.log(JSON.stringify(ret))
+    if(ret.state ==1){
     toast.success({
-      title:ret.result.data,
+      title:ret.msg,
        duration:2000
     });
     setTimeout(function(){closeFrame()},2000);
+  }
   },error:function (err) {
       console.error(JSON.stringify(err))
       toast.fail({
