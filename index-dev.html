@@ -31,7 +31,7 @@
 </style>
 <body>
     <div id="top" class="top" >
-      
+
     </div>
     <div class="swipe-wrap" id="slip">
         <article class="swipe">
@@ -74,10 +74,10 @@
       document.getElementById('top').appendChild(top_div);
       // iframe_apiAdd(list[i],dataUrl[i])
     }
-    
 
 
-    
+
+
     function onPlayerReady(event) {
         // console.log(JSON.stringify(event))
         player[0].playVideo()
@@ -140,10 +140,10 @@
 function Slip_end() {
 	if(this.page %2 == 1){
     		// player.remove(this.page-1);
-    		
+
     	}else{
     		// player[this.page+1].remove();
-    		
+
     	}
     	if(page > this.page){
     		player[page].stopVideo();
@@ -160,11 +160,11 @@ function Slip_end() {
     		controls.style.top = Number(slip_top)-window.innerHeight+'px';
     		slip_top = Number(slip_top)-window.innerHeight;
     		controls.style.transition="all 400ms ease-in 0s;"
-    		delete_video(this.page+1,count);
+    		delete_video(this.page-1,count);
     	}
-    	
-    	
-     
+
+
+
     }
     function delete_video(pagesa,i){
     	list[i] = 'player'+i;
@@ -210,11 +210,11 @@ function Slip_end() {
     function addVideo(pagesa,i){
 var div = document.createElement('div');
       div.id = list[i];
-      div.className = 'swipe-box';      var top_div = document.createElement('div');
+      div.className = 'swipe-box';
+       var top_div = document.createElement('div');
       top_div.style.width  = window.innerWidth+'px';
       top_div.style.height  = window.innerHeight+'px';
-      document.getElementById('slip').querySelector('.swipe').insertBefore(div,  player[page]);
-    	 document.getElementById('top').insertBefore(top_div,  pages[page]);
+
     	delete(player[pagesa]);
     		document.getElementById('top').removeChild(pages[pagesa]);
     		var l = new YT.Player(list[i], {
@@ -240,7 +240,9 @@ var div = document.createElement('div');
              'onStateChange':onPlayerStateChange
            }
           });
-    		player.insert(pagesa, l)
+          player.splice(pagesa, 0, l)
+        document.getElementById('slip').querySelector('.swipe').insertBefore(div,player[pagesa]);
+         document.getElementById('top').insertBefore(top_div,  pages[pagesa]);
     		pages = document.getElementById('top').querySelectorAll('div');
         slip = Slip(document.getElementById('top'), 'y').webapp(pages).end(Slip_end);
     }
