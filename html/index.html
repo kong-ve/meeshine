@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+
+    </style>
+  </head>
+  <body>
+
+  </body>
+</html>
+<script>
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var list = {};
+var dataUrl={};
+var player;
+function GetRequest() {
+
+   var url = location.search; //获取url中"?"符后的字串
+
+   var theRequest = new Object();
+
+   if (url.indexOf("?") != -1) {
+
+      var str = url.substr(1);
+
+      strs = str.split("&");
+
+      for(var i = 0; i < strs.length; i ++) {
+
+         theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+
+      }
+
+   }
+
+   return theRequest;
+
+}
+    function onYouTubeIframeAPIReady() {
+      var a = GetRequest();
+      var div = document.createElement('div');
+      div.id = a.id;
+      document.body.appendChild(div);
+      player = new YT.Player(a.id, {
+          height: window.innerHeight,
+          width: window.innerWidth,
+          videoId: a.value,
+          playerVars:{
+            autoplay:1,
+            controls:0,
+            fs:0,
+            loop:1,
+            playsinline:1,
+            playlist:a.value,
+            rel:0,
+            iv_load_policy:3,
+            hl:'zh-cn',
+            rel:0,
+            modestbranding:1,
+            showinfo:0,
+            cc_load_policy:1
+          },
+          events: {
+           'onReady': onPlayerReady ,
+           'onStateChange':onPlayerStateChange
+         }
+        });
+
+  }
+  function onPlayerReady(event){
+    event.target.playVideo();
+  }
+  function onPlayerStateChange(event){
+    if(event.data == YT.Player.ENDED){
+        event.target.playVideo();
+    }else if (event.data == YT.Player.PAUSED){
+      event.target.pauseVideo()
+    }
+  }
+</script>

@@ -663,9 +663,158 @@ function userVideo(footer_h, container, l) {
         title: "加载中",
         duration: 2000
     })
-    var list = {
-      1:
-    }
+    api.ajax({
+        url: 'http://mv.anhy.net/api.php?_d=VideoContent&page=' + (l + 1),
+        method: 'get',
+        headers:{
+          'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Mobile Safari/537.36'
+        }
+    }, function(ret, err) {
+        console.warn("======================================");
+        console.warn(JSON.stringify(ret));
+        console.error(JSON.stringify(err));
+        if (err || ret.length < 1) {
+          console.warn("err");
+            if (userData[0]) {
+                // alert(JSON.stringify(ret));
+
+                var list = [{
+                    nickname: 1,
+                    number: Math.random() * 50000,
+                    video_id: new Date().getTime() + 6,
+                    imageUrl: '',
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+
+                    goods_video_url: 'KMbLK4aX3pM',
+                }];
+                for (var i = 0; i < list.length; i++) {
+                    userData.push(list[i]);
+                }
+                console.log('add');
+                GetVideoList(list, '#slip', '.swipe', footer_h, true);
+                $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', userData[page + 1].imgUrl || '../image/suipai/bg.jpg');
+                $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), userData[page + 1].star_sum);
+                $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), userData[page + 1].share_sum);
+                $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), userData[page + 1].comment_sum);
+                $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+                document.getElementById(list[0].video_id).play();
+                slip.jump(page + 1);
+                page = page + 1;
+
+            } else {
+                userData = [{
+                    nickname: 1,
+                    number: 1598531459891,
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+                    video_id: new Date().getTime() + 1,
+                    imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/bc281dfcaf750de7acd9c8e9224e237b.png',
+                    goods_video_url: 'oF63ybOSBJ0',
+                }, {
+                    nickname: 1,
+                    number: 1598531459895,
+                    video_id: new Date().getTime() + 2,
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+                    imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/1a73dd6a90a52b2aad1aafefbf977e4c.png',
+                    goods_video_url: 'aInUyEL2NOE',
+                }, {
+                    nickname: 1,
+                    number: 1598531459896,
+                    video_id: new Date().getTime(),
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+                    imageUrl: 'http://www.verzweiflung.cn/2.mp4',
+                    goods_video_url: 'KMbLK4aX3pM',
+                }, {
+                    nickname: 1,
+                    number: 1598531459897,
+                    video_id: new Date().getTime() + 3,
+                    imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/ec65083dbdc6bb18a6318591ac6c15a5.png',
+                    goods_video_url: 'aInUyEL2NOE',
+                }, {
+                    nickname: 1,
+                    number: 1598531459898,
+                    video_id: new Date().getTime() + 4,
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+                    imageUrl: 'http://7z2dc9.com1.z0.glb.clouddn.com/apicloud/51fc1ddde9790c96a6986b74342a15e3.png',
+                    videoUrl: 'KMbLK4aX3pM',
+                }, {
+                    nickname: 1,
+                    number: 1598531459899,
+                    video_id: new Date().getTime() + 5,
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+                    imageUrl: 'http://www.verzweiflung.cn/3.mp4',
+                    goods_video_url: 'aInUyEL2NOE',
+                }, {
+                    nickname: 1,
+                    number: 1598531459894,
+                    video_id: new Date().getTime() + 6,
+                    imageUrl: '',
+                    star_sum: 0,
+                    share_sum: 0,
+                    comment_sum: 0,
+
+                    goods_video_url: 'oF63ybOSBJ0',
+                }];
+                GetVideoList(userData, container, '.swipe', footer_h);
+                $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
+                $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'), userData[0].star_sum);
+                $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
+                $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
+                $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
+                document.getElementById(userData[0].video_id).muted = false;
+            }
+            return;
+        } else {
+          console.log('----------------------------')
+            if (userData.length == 0) {
+              console.warn("ret>0");
+                userData = ret;
+                console.log(JSON.stringify(userData))
+                IS_star(userData[0].video_id);
+                GetVideoList(userData, container, '.swipe', footer_h);
+                $api.attr($api.dom(document.getElementById('userBtn'), 'img'), 'src', userData[0].imgUrl || '../image/suipai/bg.jpg');
+                $api.text($api.dom(document.getElementById('likeBtn'), '.icon-number'), userData[0].star_sum);
+                $api.text($api.dom(document.getElementById('shareBtn'), '.icon-number'), userData[0].share_sum);
+                $api.text($api.dom(document.getElementById('commitBtn'), '.icon-number'), userData[0].comment_sum);
+                $api.text($api.dom(document.getElementById('shopcartBtn'), '.icon-number'), 0);
+                document.getElementById(userData[0].video_id).muted = false;
+            } else {
+
+                var list = ret;
+
+                if (list.length > 0) {
+                    for (var i = 0; i < list.length; i++) {
+
+                        userData.push(list[i]);
+                    }
+
+                    // Slip(container).destroy();
+                    GetVideoList(list, container, '.swipe', footer_h);
+                    console.warn("ret<1");
+                    IS_star(list[0].id);
+                    $api.attr($api.dom($api.byId('userBtn'), 'img'), 'src', list[0].imgUrl || '../image/suipai/bg.jpg');
+                    $api.text($api.dom($api.byId('likeBtn'), '.icon-number'), list[0].star_sum);
+                    $api.text($api.dom($api.byId('shareBtn'), '.icon-number'), list[0].share_sum);
+                    $api.text($api.dom($api.byId('commitBtn'), '.icon-number'), list[0].comment_sum);
+                    $api.text($api.dom($api.byId('shopcartBtn'), '.icon-number'), 'sold:' + 0);
+
+
+                }
+            }
+        }
+    })
+
 }
 
 function openSell() {
@@ -942,6 +1091,65 @@ function switchLoading(obj, url, text) {
         });
 
     }, 100)
+}
+
+function select_product() {
+    var productList = $api.byId('selectProduct');
+    var html = '<section class="aui-content aui-padded-l-5 aui-padded-r-10 aui-padded-t-5">' +
+        '<div class="aui-row aui-row-padded" >' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="aui-col-xs-6" onclick="openSell(\'all\')">' +
+        '<div class="aui-card-list">' +
+        '<div class="aui-card-list-content">' +
+        '<img src="../image/demo1.png">' +
+        '</div>' +
+        '<div class="aui-card-list-header aui-font-size-14">APICloud AUI前端框架</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</section>';
+    $api.append(productList, html);
+    $api.removeCls(document.getElementById('product-show'), 'aui-hide');
+    $api.removeCls(productList, 'aui-hide');
 }
 
 function hideproduct() {

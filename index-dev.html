@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <link rel="stylesheet" type="text/css" href="./feature/fonts/iconfont.css" />
 </head>
 <style>
 .swipe-box{
@@ -28,11 +29,40 @@
 	width: 100%;
 	height: 100%;
 }
+#demo-top{
+  position: absolute;
+  top: 0;
+  height: 10%;
+  z-index: 9999;
+  width: 100%;
+  background: #000;
+}
+#demo-bottom{
+  position: absolute;
+  bottom: 0;
+  height: 10%;
+  z-index: 9999;
+  width: 100%;
+  background: #000;
+}
+.play-list div::after{
+  content: "\e651";
+  position: relative;
+  top: 50%;
+  font-family: "iconfont";
+  left: 50%;
+  width: 20%;
+  z-index: 99999;
+  color:#fff;
+  font-size: xx-large;
+}
 </style>
 <body>
     <div id="top" class="top" >
 
     </div>
+    <!-- <div id="demo-top"></div> -->
+    <!-- <div id="demo-bottom"></div> -->
     <div class="swipe-wrap" id="slip">
         <article class="swipe">
 
@@ -45,7 +75,8 @@
 <script type="text/javascript" src="./script/slip.js"></script>
     <script>
     var slip;
-    var controls = document.getElementById('slip');
+    var video;
+    var controls = document.getElementById('slip').querySelector('.swipe');
     var pages ;
     var page = 0;
     var slip_top = 0;
@@ -61,6 +92,7 @@
     var count = 3;
     var list = {
     }
+    var moveIsTrue = false;
       var player = [];
     for(var i = 0;i<count;i++){
       list[i] = 'player'+i;
@@ -80,11 +112,15 @@
 
     function onPlayerReady(event) {
         // console.log(JSON.stringify(event))
-        player[0].playVideo()
+        event.target.playVideo()
+          event.target.mute();
       }
       var done = false;
       function onPlayerStateChange(event) {
-        // console.log(JSON.stringify(event.data));
+        console.log(JSON.stringify(event.data));
+        if(event.data == YT.PlayerState.ENDED){
+          event.target.playVideo();
+        }
         // if (event.data == YT.PlayerState.PLAYING && !done) {
         //   setTimeout(stopVideo, 6000);
         //   done = true;
@@ -114,14 +150,17 @@
               cc_load_policy:1
             },
             events: {
-             'onReady': onPlayerReady,
+             'onReady': i!=0 ?onPlayerReady :playv,
              'onStateChange':onPlayerStateChange
            }
           });
           player.push(lists);
+
         }
+
         pages = document.getElementById('top').querySelectorAll('div');
-        slip = Slip(document.getElementById('top'), 'y').webapp(pages).end(Slip_end);
+        video = Slip(controls,'y').webapp(pages);
+        slip = Slip(document.getElementById('top'), 'y').webapp(pages).start(function(){moveIsTrue = false}).move(function(){moveIsTrue = true}).end(Slip_end);
         // api.addEventListener({
         //     name: 'swipedown'
         // }, function(ret, err){
@@ -135,40 +174,110 @@
         // });
 
         }
+        var stop_Video = false;
+var other_this=null;
+function playv(event) {
+        event.target.playVideo();
+      }
+      //增加class
+function addClass(obj,cls) {
+    var obj_class=obj.className,//获取class的内容；
+    blank = ( obj_class != '' ) ? ' ' : '';//判断获取的class是否为空，如果不为空，则添加空格；
+    added = obj_class + blank + cls;//组合原来的class和需要添加的class，中间加上空格；
+    obj.className = added;//替换原来的class；
+}
 
+//移除class
+function removeClass(obj,cls){
+    var obj_class = '' + obj.className + '';//获取class的内容，并在首尾各加一个空格；'abc    bcd' -> ' abc    bcd '
+    obj_class = obj_class.replace(/(\s+)/gi,' ');//将多余的空字符替换成一个空格；' abc    bcd ' -> ' abc bcd '
+    removed = obj_class.replace(cls,' ');//在原来的class，替换掉首尾加了空格的class  ' abc bcd ' -> 'bcd '
+    removed = removed.replace(/(^\s+)|(\s+$)/g,'');//去掉首尾空格；'bcd ' -> 'bcd'
+    obj.className = removed;//替换原来的class；
+}
 
+//判断是否存在class
+function hasClass(obj,cls){
+    var obj_class = obj.className,//获取class的内容；
+    obj_class_lst = obj_class.split(/\s+/);//通过split空字符将cls转换成数组
+    x = 0;
+    for(x in obj_class_lst){
+        if ( obj_class_lst[x] == cls ) {
+            return true;
+        }
+    }
+    return false;
+}
 function Slip_end() {
-	if(this.page %2 == 1){
-    		// player.remove(this.page-1);
+      if(moveIsTrue == true){
+        if(count-1 == page+1){
+          add_s(count,this);
 
-    	}else{
-    		// player[this.page+1].remove();
+          return ;
+        }
+    	checkUPORdown(this);
+}else{
+  if(stop_Video == false){
+    player[page].pauseVideo();
+    // document.getElementById('top').addCls()
+    addClass(document.getElementById('top'),'play-list')
+    stop_Video = true;
+  }else{
+    player[page].playVideo();
+    player[page].unMute();
+      removeClass(document.getElementById('top'),'play-list')
+      stop_Video=false;
+  }
 
-    	}
-    	if(page > this.page){
-    		player[page].stopVideo();
-    	page = this.page;
-    	player[page].playVideo();
-    		controls.style.top = Number(slip_top)+window.innerHeight+'px';
-    		slip_top = Number(slip_top)+window.innerHeight;
-    		controls.style.transition="all 400ms ease-in 0s;"
-    		addVideo(this.page-1,this.page-1);
-    	}else if(page < this.page){
-    		player[page].stopVideo();
-    	page = this.page;
-    	player[page].playVideo();
-    		controls.style.top = Number(slip_top)-window.innerHeight+'px';
-    		slip_top = Number(slip_top)-window.innerHeight;
-    		controls.style.transition="all 400ms ease-in 0s;"
-    		delete_video(this.page-1,count);
-    	}
-
+}
 
 
     }
-    function delete_video(pagesa,i){
-    	list[i] = 'player'+i;
-    	dataUrl[i] = 'KMbLK4aX3pM';
+    function checkUPORdown(a){
+      if(a.orient.indexOf('up') != -1){
+        removeClass(document.getElementById('top'),'play-list')
+    		player[page].pauseVideo();
+        	player[page].unMute()
+          delete_video(page,'plus');
+    	page++
+      	video.jump(page)
+        	setTimeout(function(){player[page].unMute();
+    	player[page].playVideo();stop_Video=false;
+
+    },1000)
+
+
+
+    	}else if(a.orient.indexOf('down') != -1){
+          removeClass(document.getElementById('top'),'play-list')
+    		player[page].pauseVideo();
+        	player[page].unMute()
+            delete_video(page,'minu');
+    		page--
+        	video.jump(page)
+          	setTimeout(function(){player[page].unMute();
+    	player[page].playVideo();stop_Video=false;},1000)
+
+
+    	}
+      other = null;
+    }
+    function delete_video(pagesa,type){
+      controls.removeChild(document.getElementById(list[pagesa]));
+        document.getElementById('top').removeChild(pages[pagesa]);
+        if(type == 'plus'){
+          addVideo(page+1);
+          page--;
+
+        }else{
+          addVideo(page-1);
+          page++;
+        }
+        count = 3;
+    }
+    function add_s(i,other_this){
+      list[i] = 'player'+i;
+    	dataUrl[i] = 'oF63ybOSBJ0';
     	 var div = document.createElement('div');
       div.id = list[i];
       div.className = 'swipe-box';
@@ -177,74 +286,43 @@ function Slip_end() {
       top_div.style.height  = window.innerHeight+'px';
       document.getElementById('slip').querySelector('.swipe').appendChild(div);
       document.getElementById('top').appendChild(top_div);
-    	delete(player[pagesa]);
-    		document.getElementById('top').removeChild(pages[pagesa]);
-    		var l = new YT.Player(list[i], {
-            height: window.innerHeight,
-            width: window.innerWidth,
-            videoId: dataUrl[i],
-            playerVars:{
-              autoplay:1,
-              controls:0,
-              fs:0,
-              loop:1,
-              playsinline:1,
-              rel:0,
-              iv_load_policy:3,
-              hl:'zh-cn',
-              rel:0,
-              modestbranding:1,
-              showinfo:0,
-              cc_load_policy:1
-            },
-            events: {
-             'onReady': onPlayerReady,
-             'onStateChange':onPlayerStateChange
-           }
-          });
-          player.push(l);
-          // count++;
-          pages = document.getElementById('top').querySelectorAll('div');
-        slip = Slip(document.getElementById('top'), 'y').webapp(pages).end(Slip_end);
+      var l = new YT.Player(list[i], {
+          height: window.innerHeight,
+          width: window.innerWidth,
+          videoId: dataUrl[i],
+          playerVars:{
+            autoplay:1,
+            controls:0,
+            fs:0,
+            loop:1,
+            playsinline:1,
+            rel:0,
+            iv_load_policy:3,
+            hl:'zh-cn',
+            rel:0,
+            modestbranding:1,
+            showinfo:0,
+            cc_load_policy:1
+          },
+          events: {
+           'onReady': onPlayerReady,
+           'onStateChange':onPlayerStateChange
+         }
+        });
+        player.push(l);
+        count++;
+        video.destroy();
+        slip.destroy();
+        pages = document.getElementById('top').querySelectorAll('div');
+        video = Slip(controls,'y').webapp(pages);
+        slip = Slip(document.getElementById('top'), 'y').webapp(pages).start(function(){moveIsTrue = false}).move(function(){moveIsTrue = true}).end(Slip_end);
+        // video.jump(page);
+        other = other_this;
+        checkUPORdown(other)
     }
-    function addVideo(pagesa,i){
-var div = document.createElement('div');
-      div.id = list[i];
-      div.className = 'swipe-box';
-       var top_div = document.createElement('div');
-      top_div.style.width  = window.innerWidth+'px';
-      top_div.style.height  = window.innerHeight+'px';
-
-    	delete(player[pagesa]);
-    		document.getElementById('top').removeChild(pages[pagesa]);
-    		var l = new YT.Player(list[i], {
-            height: window.innerHeight,
-            width: window.innerWidth,
-            videoId: dataUrl[i],
-            playerVars:{
-              autoplay:1,
-              controls:0,
-              fs:0,
-              loop:1,
-              playsinline:1,
-              rel:0,
-              iv_load_policy:3,
-              hl:'zh-cn',
-              rel:0,
-              modestbranding:1,
-              showinfo:0,
-              cc_load_policy:1
-            },
-            events: {
-             'onReady': onPlayerReady,
-             'onStateChange':onPlayerStateChange
-           }
-          });
-          player.splice(pagesa, 0, l)
-        document.getElementById('slip').querySelector('.swipe').insertBefore(div,player[pagesa]);
-         document.getElementById('top').insertBefore(top_div,  pages[pagesa]);
-    		pages = document.getElementById('top').querySelectorAll('div');
-        slip = Slip(document.getElementById('top'), 'y').webapp(pages).end(Slip_end);
+    var other = null;
+    function addVideo(pagesa){
+      document.getElementById('')
     }
     </script>
   </body>
