@@ -7,6 +7,10 @@
     <link rel="stylesheet" type="text/css" href="./feature/fonts/iconfont.css" />
 </head>
 <style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
 .swipe-box{
   z-index: -1;
 }
@@ -120,6 +124,13 @@
         console.log(JSON.stringify(event.data));
         if(event.data == YT.PlayerState.ENDED){
           event.target.playVideo();
+           event.target.unMute();
+        }else if(event.data == YT.PlayerState.PLAYING){
+        	 event.target.playVideo();
+        	  event.target.unMute();
+        }else if(event.data == YT.PlayerState.PAUSED){
+        	event.target.pauseVideo();
+        	  event.target.mute();
         }
         // if (event.data == YT.PlayerState.PLAYING && !done) {
         //   setTimeout(stopVideo, 6000);
@@ -159,7 +170,7 @@
         }
 
         pages = document.getElementById('top').querySelectorAll('div');
-        video = Slip(controls,'y').webapp(pages);
+        video = Slip(document.getElementById('slip'),'y').webapp(pages);
         slip = Slip(document.getElementById('top'), 'y').webapp(pages).start(function(){moveIsTrue = false}).move(function(){moveIsTrue = true}).end(Slip_end);
         // api.addEventListener({
         //     name: 'swipedown'
@@ -238,7 +249,7 @@ function Slip_end() {
         removeClass(document.getElementById('top'),'play-list')
     		player[page].pauseVideo();
         	player[page].unMute()
-          delete_video(page,'plus');
+          // delete_video(this.page,'plus');
     	page++
       	video.jump(page)
         	setTimeout(function(){player[page].unMute();
@@ -252,7 +263,7 @@ function Slip_end() {
           removeClass(document.getElementById('top'),'play-list')
     		player[page].pauseVideo();
         	player[page].unMute()
-            delete_video(page,'minu');
+            // delete_video(this.page,'minu');
     		page--
         	video.jump(page)
           	setTimeout(function(){player[page].unMute();
@@ -263,8 +274,8 @@ function Slip_end() {
       other = null;
     }
     function delete_video(pagesa,type){
-      controls.removeChild(document.getElementById(list[pagesa]));
-        document.getElementById('top').removeChild(pages[pagesa]);
+      controls.removeChild(controls.children[pagesa]);
+        document.getElementById('top').removeChild(document.getElementById('top').children[pagesa]);
         if(type == 'plus'){
           addVideo(page+1);
           page--;
@@ -314,7 +325,7 @@ function Slip_end() {
         video.destroy();
         slip.destroy();
         pages = document.getElementById('top').querySelectorAll('div');
-        video = Slip(controls,'y').webapp(pages);
+        video = Slip(document.getElementById('slip'),'y').webapp(pages);
         slip = Slip(document.getElementById('top'), 'y').webapp(pages).start(function(){moveIsTrue = false}).move(function(){moveIsTrue = true}).end(Slip_end);
         // video.jump(page);
         other = other_this;
@@ -322,7 +333,42 @@ function Slip_end() {
     }
     var other = null;
     function addVideo(pagesa){
-      document.getElementById('')
+    	 var div = document.createElement('div');
+      div.id = list[i];
+      div.className = 'swipe-box';
+      var top_div = document.createElement('div');
+      top_div.style.width  = window.innerWidth+'px';
+      top_div.style.height  = window.innerHeight+'px';
+      document.getElementById('slip').querySelector('.swipe').appendChild(div);
+      document.getElementById('top').appendChild(top_div);
+      YT.Player(list[i], {
+          height: window.innerHeight,
+          width: window.innerWidth,
+          videoId: dataUrl[i],
+          playerVars:{
+            autoplay:1,
+            controls:0,
+            fs:0,
+            loop:1,
+            playsinline:1,
+            rel:0,
+            iv_load_policy:3,
+            hl:'zh-cn',
+            rel:0,
+            modestbranding:1,
+            showinfo:0,
+            cc_load_policy:1
+          },
+          events: {
+           'onReady': onPlayerReady,
+           'onStateChange':onPlayerStateChange
+         }
+        });
+        video.destroy();
+        slip.destroy();
+        pages = document.getElementById('top').querySelectorAll('div');
+        video = Slip(document.getElementById('slip'),'y').webapp(pages);
+        slip = Slip(document.getElementById('top'), 'y').webapp(pages).start(function(){moveIsTrue = false}).move(function(){moveIsTrue = true}).end(Slip_end);
     }
     </script>
   </body>
